@@ -857,13 +857,19 @@
       if (!response.ok) throw new Error('Erreur réseau');
 
       const data = await response.json();
-
+               
+        // <-- Insère le console.log ici
+      console.log('Données API:', data);
+        
       // Le tableau des équipes dans le classement
-      const standings = data.data[0].standings; // selon la structure API Sportmonks
+      const standings = data?.data?.[0]?.standings; // selon la structure API Sportmonks
+
+        if (!standings || !Array.isArray(standings)) {
+          console.error('Structure inattendue des données:', data);
+          return;
+        }
 
       const tbody = document.getElementById('classementBody');
-      if (!tbody) return;
-
       tbody.innerHTML = ''; // vider l'ancien contenu
 
       standings.forEach((team, index) => {
@@ -910,6 +916,7 @@ s0.parentNode.insertBefore(s1,s0);
     
 </body>
 </html>
+
 
 
 
