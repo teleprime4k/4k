@@ -846,58 +846,98 @@
 </script>
 
 <script>
-  async function fetchAndUpdateClassement() {
-    const apiToken = 'GTqNiDRlu1ZFen48zZa5T5GA8YtUYOrP29uDIVhyIhB884UhJw4ddREe1OD2'; // Remplacez par votre clé API Sportmonks
-    const seasonId = '25651';     // Remplacez par l'ID de la saison (exemple : 12345)
+  (function () {
+    const API_TOKEN = "REMPLACE_ICI_PAR_TA_CLE"; // ⚠️ Ne laisse pas ta clé en public
+    const SEASON_ID = 25651;
+    const REFRESH_MS = 300000; // 5 minutes
 
-    const url = `https://soccer.sportmonks.com/api/v2.0/standings/season/${25651}?api_token=${GTqNiDRlu1ZFen48zZa5T5GA8YtUYOrP29uDIVhyIhB884UhJw4ddREe1OD2}`;
+    function normalizeStandings(apiJson) {
+      // Sportmonks peut renvoyer plusieurs formats selon endpoint / include.
+      // On essaye plusieurs chemins, puis on retombe sur un tableau vide.
+      if (!apiJson) return [];
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Erreur réseau');
+      // Cas 1 (le plus fréquent): { data: [ { standings: [...] } ] }
+      const a = apiJson?.data?.[0]?.standings;
+      if (Array.isArray(a)) return a;
 
-      const data = await response.json();
-               
-        // <-- Insère le console.log ici
-      console.log('Données API:', data);
-        
-      // Le tableau des équipes dans le classement
-      const standings = data?.data?.[0]?.standings; // selon la structure API Sportmonks
+      // Cas 2: { data: [...] } directement un tableau d'objets standing
+      const b = apiJson?.data;
+      if (Array.isArray(b) && b.length && (b[0].participant || b[0].participant_id)) return b;
 
-        if (!standings || !Array.isArray(standings)) {
-          console.error('Structure inattendue des données:', data);
+      // Cas 3: réponse déjà sous forme de tableau (ce que tu as collé)
+      if (Array.isArray(apiJson)) return apiJson;
+
+      // Cas 4: { standings: [...] }
+      const c = apiJson?.standings;
+      if (Array.isArray(c)) return c;
+
+      return [];
+    }
+
+    function getTeamName(row) {
+      // D’après ta sortie console: participant.name
+      return row?.participant?.name ?? row?.team_name ?? row?.name ?? "—";
+    }
+
+    async function fetchAndUpdateClassement() {
+      const tbody = document.getElementById("classementBody");
+      if (!tbody) {
+        console.error("tbody#classementBody introuvable dans le HTML.");
+        return;
+      }
+
+      const url = `https://soccer.sportmonks.com/api/v2.0/standings/season/${SEASON_ID}?api_token=${encodeURIComponent(API_TOKEN)}`;
+
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const json = await response.json();
+        console.log("Données API:", json);
+
+        const standings = normalizeStandings(json);
+
+        if (!standings.length) {
+          console.error("Aucun standings trouvé. Structure inattendue:", json);
           return;
         }
 
-      const tbody = document.getElementById('classementBody');
-      tbody.innerHTML = ''; // vider l'ancien contenu
+        // Tri de sécurité (au cas où l’API ne renvoie pas déjà trié)
+        standings.sort((x, y) => (x.position ?? 999) - (y.position ?? 999));
 
-      standings.forEach((team, index) => {
-        // Définir la classe CSS selon la position (exemple simplifié)
-        let qualifClass = '';
-        if (index < 2) qualifClass = 'qualif-champions';
-        else if (index < 4) qualifClass = 'qualif-europa';
-        else if (index >= standings.length - 3) qualifClass = 'relegation';
+        tbody.innerHTML = "";
 
-        const tr = document.createElement('tr');
-        tr.className = qualifClass;
-        tr.innerHTML = `
-          <td class="rank-number">${team.position}</td>
-          <td class="team-name">${team.team_name}</td>
-          <td class="points-col">${team.points}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    } catch (error) {
-      console.error('Erreur mise à jour classement :', error);
+        standings.forEach((row, index) => {
+          let qualifClass = "";
+          if (index < 2) qualifClass = "qualif-champions";
+          else if (index < 4) qualifClass = "qualif-europa";
+          else if (index >= standings.length - 3) qualifClass = "relegation";
+
+          const tr = document.createElement("tr");
+          tr.className = qualifClass;
+
+          const position = row.position ?? index + 1;
+          const points = row.points ?? row?.total?.points ?? row?.total_points ?? "—";
+
+          tr.innerHTML = `
+            <td class="rank-number">${position}</td>
+            <td class="team-name" title="${getTeamName(row)}">${getTeamName(row)}</td>
+            <td class="points-col">${points}</td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Erreur mise à jour classement :", err);
+      }
     }
-  }
 
-  // Appel initial
-  fetchAndUpdateClassement();
-
-  // Mise à jour toutes les 5 minutes (300000 ms)
-  setInterval(fetchAndUpdateClassement, 300000);
+    // Lance après chargement DOM (évite les soucis si le script est dans <head>)
+    window.addEventListener("DOMContentLoaded", () => {
+      fetchAndUpdateClassement();
+      setInterval(fetchAndUpdateClassement, REFRESH_MS);
+    });
+  })();
 </script>
 
     <!--Debut de ma nouvel Syteme de Chat Tawk.to Script-->
@@ -916,6 +956,7 @@ s0.parentNode.insertBefore(s1,s0);
     
 </body>
 </html>
+
 
 
 
