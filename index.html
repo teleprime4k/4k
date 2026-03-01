@@ -295,6 +295,11 @@
     overflow-y: auto;
 }
 </style>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+
 </head>
 <body>
 
@@ -445,11 +450,11 @@
             <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600">
                 <div class="flex justify-between items-start mb-4">
                     <span class="bg-indigo-700 text-[10px] px-2 py-1 rounded font-bold uppercase">UEFA CL</span>
-                    <span class="text-gray-500 text-[10px] font-bold">Mer. 11 Mars 21:00</span>
+                    <span class="text-gray-500 text-[10px] font-bold">Aujourdhui 21:00</span>
                 </div>
                 <div class="text-center py-4 text-gray-400">
-                    <p class="text-xs mb-2 font-title">8e de finale UEFA</p>
-                    <p class="font-bold text-sm uppercase">Real Madrid vs Manchester City</p>
+                    <p class="text-xs mb-2 font-title">Eliminatoires UEFA</p>
+                    <p class="font-bold text-sm uppercase">Real Madrid vs Benfica</p>
                 </div>
                 <button class="w-full mt-4 bg-indigo-600/20 py-2 rounded-xl text-xs font-bold transition">RAPPEL</button>
             </div>
@@ -730,6 +735,47 @@
     }
     setInterval(simulateGoal, 45000);
 
+
+              
+   /*
+      =========================
+      2) INITIALISATION FIREBASE
+      =========================
+      Place ceci AVANT ton code d'avis (submitReview/loadReviews).
+      Remplace par ta config (Firebase Console > ⚙️ Project settings > Your apps > Firebase SDK snippet > Config)
+    */
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdbwoklR7nm5vNUj2uIhwJ-un2mkneebY",
+      authDomain: "test-18f4d.firebaseapp.com",
+      projectId: "test-18f4d",
+      // storageBucket: "test-18f4d.firebasestorage.app",
+      // messagingSenderId: "156359286832",
+      // appId: "1:156359286832:web:f549292eb2b0261c1bcdf5"
+    };
+
+
+  let db;
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof firebase === 'undefined') {
+      console.error("Firebase n'est pas chargé. Vérifie les scripts dans le <head>.");
+      return;
+    }
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    db = firebase.firestore();
+    console.log("Firebase initialisé — Firestore prêt.");
+
+    if (typeof loadReviews === 'function') {
+      loadReviews();
+    }
+  });
+
+
+
             // --- SYSTEME D'AVIS ---
         let currentRating = 0;
 
@@ -846,98 +892,52 @@
 </script>
 
 <script>
-  (function () {
-    const API_TOKEN = "jGN5AVQdoOH0t9CoqdZ5HUUwIH5OAsMxqAiMb1p2I7T4FAvpY8T0V3Fd8wdz"; // ⚠️ Ne laisse pas ta clé en public
-    const SEASON_ID = 25651;
-    const REFRESH_MS = 300000; // 5 minutes
+  async function fetchAndUpdateClassement() {
+    const apiToken = 'GTqNiDRlu1ZFen48zZa5T5GA8YtUYOrP29uDIVhyIhB884UhJw4ddREe1OD2'; // Remplacez par votre clé API Sportmonks
+    const seasonId = '25651';     // Remplacez par l'ID de la saison (exemple : 12345)
 
-    function normalizeStandings(apiJson) {
-      // Sportmonks peut renvoyer plusieurs formats selon endpoint / include.
-      // On essaye plusieurs chemins, puis on retombe sur un tableau vide.
-      if (!apiJson) return [];
+    const url = `https://soccer.sportmonks.com/api/v2.0/standings/season/${25651}?api_token=${GTqNiDRlu1ZFen48zZa5T5GA8YtUYOrP29uDIVhyIhB884UhJw4ddREe1OD2}`;
 
-      // Cas 1 (le plus fréquent): { data: [ { standings: [...] } ] }
-      const a = apiJson?.data?.[0]?.standings;
-      if (Array.isArray(a)) return a;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Erreur réseau');
 
-      // Cas 2: { data: [...] } directement un tableau d'objets standing
-      const b = apiJson?.data;
-      if (Array.isArray(b) && b.length && (b[0].participant || b[0].participant_id)) return b;
+      const data = await response.json();
 
-      // Cas 3: réponse déjà sous forme de tableau (ce que tu as collé)
-      if (Array.isArray(apiJson)) return apiJson;
+      // Le tableau des équipes dans le classement
+      const standings = data.data[0].standings; // selon la structure API Sportmonks
 
-      // Cas 4: { standings: [...] }
-      const c = apiJson?.standings;
-      if (Array.isArray(c)) return c;
+      const tbody = document.getElementById('classementBody');
+      if (!tbody) return;
 
-      return [];
+      tbody.innerHTML = ''; // vider l'ancien contenu
+
+      standings.forEach((team, index) => {
+        // Définir la classe CSS selon la position (exemple simplifié)
+        let qualifClass = '';
+        if (index < 2) qualifClass = 'qualif-champions';
+        else if (index < 4) qualifClass = 'qualif-europa';
+        else if (index >= standings.length - 3) qualifClass = 'relegation';
+
+        const tr = document.createElement('tr');
+        tr.className = qualifClass;
+        tr.innerHTML = `
+          <td class="rank-number">${team.position}</td>
+          <td class="team-name">${team.team_name}</td>
+          <td class="points-col">${team.points}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (error) {
+      console.error('Erreur mise à jour classement :', error);
     }
+  }
 
-    function getTeamName(row) {
-      // D’après ta sortie console: participant.name
-      return row?.participant?.name ?? row?.team_name ?? row?.name ?? "—";
-    }
+  // Appel initial
+  fetchAndUpdateClassement();
 
-    async function fetchAndUpdateClassement() {
-      const tbody = document.getElementById("classementBody");
-      if (!tbody) {
-        console.error("tbody#classementBody introuvable dans le HTML.");
-        return;
-      }
-
-      const url = `https://soccer.sportmonks.com/api/v2.0/standings/season/${SEASON_ID}?api_token=${encodeURIComponent(API_TOKEN)}`;
-
-      try {
-        const response = await fetch(url, { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const json = await response.json();
-        console.log("Données API:", json);
-
-        const standings = normalizeStandings(json);
-
-        if (!standings.length) {
-          console.error("Aucun standings trouvé. Structure inattendue:", json);
-          return;
-        }
-
-        // Tri de sécurité (au cas où l’API ne renvoie pas déjà trié)
-        standings.sort((x, y) => (x.position ?? 999) - (y.position ?? 999));
-
-        tbody.innerHTML = "";
-
-        standings.forEach((row, index) => {
-          let qualifClass = "";
-          if (index < 2) qualifClass = "qualif-champions";
-          else if (index < 4) qualifClass = "qualif-europa";
-          else if (index >= standings.length - 3) qualifClass = "relegation";
-
-          const tr = document.createElement("tr");
-          tr.className = qualifClass;
-
-          const position = row.position ?? index + 1;
-          const points = row.points ?? row?.total?.points ?? row?.total_points ?? "—";
-
-          tr.innerHTML = `
-            <td class="rank-number">${position}</td>
-            <td class="team-name" title="${getTeamName(row)}">${getTeamName(row)}</td>
-            <td class="points-col">${points}</td>
-          `;
-
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error("Erreur mise à jour classement :", err);
-      }
-    }
-
-    // Lance après chargement DOM (évite les soucis si le script est dans <head>)
-    window.addEventListener("DOMContentLoaded", () => {
-      fetchAndUpdateClassement();
-      setInterval(fetchAndUpdateClassement, REFRESH_MS);
-    });
-  })();
+  // Mise à jour toutes les 5 minutes (300000 ms)
+  setInterval(fetchAndUpdateClassement, 300000);
 </script>
 
     <!--Debut de ma nouvel Syteme de Chat Tawk.to Script-->
@@ -956,6 +956,7 @@ s0.parentNode.insertBefore(s1,s0);
     
 </body>
 </html>
+
 
 
 
