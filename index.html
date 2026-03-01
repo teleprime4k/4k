@@ -841,8 +841,8 @@
             reviewsContainer.innerHTML = ''; // Vide le conteneur des avis statiques
 
             try {
-                // Récupère les avis, triés par date (du plus récent au plus ancien)
-                const snapshot = await db.collection("reviews").orderBy("timestamp", "desc").get();
+                // Récupère les avis, triés par date (du plus ancier au plus récent)
+                const snapshot = await db.collection("reviews").orderBy("timestamp", "asc").get();
 
                 snapshot.forEach(doc => {
                     displayReview(doc.data());
@@ -853,7 +853,7 @@
         }
 
         // Charge les avis dès que la page est entièrement chargée
-        window.addEventListener('load', loadReviews);
+        
 
 
     // --- SUPPORT CHAT ---
@@ -956,6 +956,7 @@ s0.parentNode.insertBefore(s1,s0);
     
 </body>
 </html>
+
 
 
 
