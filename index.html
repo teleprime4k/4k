@@ -227,32 +227,50 @@
     font-size: 1.5rem;
 }
 
-/* Style spécifique pour le bouton APK adapté au mobile */
-.btn-download-apk {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 1.5rem 1rem;
-    border: 2px dashed rgba(255, 215, 0, 0.4);
-    border-radius: 1.5rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    font-weight: 800;
-    
-    /* Utilisation de clamp pour éviter que le texte ne déborde sur petit écran */
-    font-size: clamp(0.75rem, 3.5vw, 1.25rem);
-    color: white;
-    background: rgba(255, 255, 255, 0.02);
-    line-height: 1.2;
-    word-wrap: break-word;
-}
-.btn-download-apk:hover {
-    background: rgba(255, 215, 0, 0.05);
-    border-color: var(--gold);
-    transform: scale(1.01);
-}
+/* Mis a jours du Style de telechargement APK avec un Bouton "Installer" et des icones */
+        .glass-square {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            aspect-ratio: 0.85 / 1; /* Légèrement plus haut pour laisser place au bouton */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-square:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #fbbf24;
+            transform: translateY(-4px);
+        }
+
+        .icon-box {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .btn-install {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .glass-square:hover .btn-install {
+            background: #fbbf24;
+            color: #000;
+            border-color: #fbbf24;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, #fbbf24);
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; scale: 0.9; }
+            to { opacity: 1; scale: 1; }
+        }
+
+        .animate-card {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
         
 /* Styles optimisés pour le tableau de classement compact */
 .table-ranking {
@@ -702,30 +720,123 @@
         }
     }
 </script>
+</section>
 
-            </section>
-
+    <!-- Jai mis a jours la selection INSTALLER APK en forme Grille, pour que tout les APK ce suive  -->
     <!-- SECTION APPS -->
     <section id="apps">
         <div class="glass p-8 rounded-[2.5rem] relative overflow-hidden">
-            <h2 class="font-title text-xl mb-6 uppercase text-white">Installer <span class="text-yellow-500">APK</span></h2>
+            <h2 class="font-title text-xl mb-6 uppercase text-white">Installer <span class="text-yellow-500">APK. TV📺 & ANDROID📱</span></h2>
             
-            <div class="mb-8">
-                <a href="http://go.aftvnews.com/6184727" download="Dream4k_Saga_Stalker.apk" class="btn-download-apk">
-                    CLIQUER ICI 👉 Dream4k_Saga_Stalker APK
-                </a>
-                
-                <a href="http://go.aftvnews.com/2257663" download class="btn-download-apk" aria-label="Télécharger Dream4k Saga Stalker APK">
-                    👉 Golden_Smart APK
-                 </a>
-                
-                <p class="text-center text-[10px] text-gray-500 mt-2 uppercase tracking-widest italic">
-                    Assurez-vous d'avoir autorisé les sources inconnues sur votre appareil.
-                </p>
-            </div>
+            <!-- GRILLE DE CARRÉS -->
+    <main class="w-full max-w-5xl mx-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            
+            <!-- App 1 -->
+            <a href="http://go.aftvnews.com/6184727" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
+                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Saga Stalker</h3>
+                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Code</span>
+                </div>
+                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                    Installer
+                </div>
+            </a>
 
-            <div id="apkList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <!-- App 2 -->
+            <a href="http://go.aftvnews.com/2257663" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.15s">
+                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Golden Smart</h3>
+                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Users</span>
+                </div>
+                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                    Installer
+                </div>
+            </a>
+
+            <!-- App 3 -->
+            <a href="http://go.aftvnews.com/3483955" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.2s">
+                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Saga v1.0.49</h3>
+                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Code</span>
+                </div>
+                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                    Installer
+                </div>
+            </a>
+
+            <!-- App 4 -->
+            <a href="http://go.aftvnews.com/5604791" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.25s">
+                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Stalker Mag</h3>
+                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Mag</span>
+                </div>
+                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                    Installer
+                </div>
+            </a>
+
+            <!-- App 5 -->
+            <a href="http://go.aftvnews.com/8626673" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.3s">
+                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Smarters v2</h3>
+                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Users</span>
+                </div>
+                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                    Installer
+                </div>
+            </a>
+
+            <!-- App 6 -->
+            <a href="http://go.aftvnews.com/9663676" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.35s">
+                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Box Ethernet</h3>
+                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Mag</span>
+                </div>
+                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                    Installer
+                </div>
+            </a>  
+                </div>
+
+        <!-- FOOTER -->
+        <div class="mt-12 text-center animate-card" style="animation-delay: 0.5s">
+            <div class="inline-flex items-center px-4 py-2 bg-yellow-500/5 border border-yellow-500/10 rounded-full">
+                <span class="text-yellow-500 mr-2">ℹ️</span>
+                <span class="text-[9px] text-gray-400 uppercase tracking-tight">Activez les sources inconnues sur votre tv ou smartphone.</span>
+            </div>
         </div>
+    </main>
     </section>
 
     <!-- SECTION REVIEWS -->
@@ -1033,6 +1144,7 @@ s0.parentNode.insertBefore(s1,s0);
     
 </body>
 </html>
+
 
 
 
