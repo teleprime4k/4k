@@ -314,6 +314,56 @@
     max-height: 320px;
     overflow-y: auto;
 }
+
+/* STYLE DU BOUTON DE RENOUVELEMENT IPTV */
+.btn-premium {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            background-size: 200% auto;
+            transition: 0.5s;
+            box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.4);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn-premium:hover {
+            background-position: right center;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 35px -5px rgba(168, 85, 247, 0.6);
+        }
+
+        .btn-premium:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 40%,
+                rgba(255, 255, 255, 0.4) 50%,
+                rgba(255, 255, 255, 0.1) 60%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-150%) rotate(45deg); }
+            100% { transform: translateX(150%) rotate(45deg); }
+        }
+        
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -715,7 +765,41 @@
 
         <p class="mt-2 text-[7px] text-gray-400 uppercase tracking-widest text-center">Paiement protégé par cryptage</p>
     </div>
+    </section>
+
+  <!-- Bouton Unique Renouvelement Abonnement  -->
+    <div 
+        id="mainButton"
+        onclick="executeSecureRedirect()"
+        class="btn-premium shimmer relative px-12 py-6 rounded-2xl text-white font-bold text-2xl flex items-center space-x-4"
+    >
+        <div class="bg-white/20 p-2 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </div>
+        <span class="tracking-wide">👉Renouveler Votre Abonnement IPTV👈 Cliquer ICI ✨ </span>
+    </div>
+
+    <!-- Fenêtre de configuration masquée -->
+    <div id="settingsModal" class="hidden fixed inset-0 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl w-full max-w-sm">
+            <h3 class="text-xl font-bold mb-2 text-white text-center">Configuration Lien</h3>
+            <p class="text-gray-400 text-xs text-center mb-6">Le lien sera automatiquement masqué.</p>
+            
+            <input 
+                type="text" 
+                id="linkInput" 
+                placeholder="https://mon-lien.com" 
+                class="w-full bg-slate-800 border-none ring-1 ring-slate-700 p-4 rounded-xl mb-6 text-white outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+            
+            <div class="flex space-x-3">
+                <button onclick="toggleSettings()" class="flex-1 py-3 text-gray-400 hover:text-white font-medium">Annuler</button>
+                <button onclick="saveEncodedLink()" class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold transition-colors">Valider</button>
+            </div>
+
 </div>
+    
 
 <!-- Toast notification -->
 <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-2.5 rounded-full opacity-0 transition-opacity duration-300 pointer-events-none shadow-xl z-50 text-sm">
@@ -1305,9 +1389,59 @@ s0.parentNode.insertBefore(s1,s0);
   // Initial render
   renderCart();
 </script>
-    
+
+<!-- Script du bouton de Renouvelement  -->
+<script>
+        let encodedLink = localStorage.getItem('secure_token_ref') || "";
+
+        function executeSecureRedirect() {
+            if (encodedLink) {
+                try {
+                    const destination = atob(encodedLink);
+                    window.location.href = destination;
+                } catch (e) {
+                    openAdmin();
+                }
+            } else {
+                openAdmin();
+            }
+        }
+
+        // Touche "K" pour configurer
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'k') {
+                openAdmin();
+            }
+        });
+
+        function openAdmin() {
+            const modal = document.getElementById('settingsModal');
+            const input = document.getElementById('linkInput');
+            input.value = encodedLink ? atob(encodedLink) : "";
+            modal.classList.remove('hidden');
+        }
+
+        function toggleSettings() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        function saveEncodedLink() {
+            const input = document.getElementById('linkInput');
+            let val = input.value.trim();
+            
+            if (val !== "") {
+                if (!/^https?:\/\//i.test(val)) val = 'https://' + val;
+                const secret = btoa(val);
+                encodedLink = secret;
+                localStorage.setItem('secure_token_ref', secret);
+                toggleSettings();
+            }
+        }
+    </script>
+  
 </body>
 </html>
+
 
 
 
