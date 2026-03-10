@@ -363,7 +363,7 @@
             0% { transform: translateX(-150%) rotate(45deg); }
             100% { transform: translateX(150%) rotate(45deg); }
         }
-        
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -767,7 +767,7 @@
     </div>
     </section>
 
-  <!-- Bouton Unique Renouvelement Abonnement  -->
+    <!-- Bouton Unique Renouvelement Abonnement  -->
     <div 
         id="mainButton"
         onclick="executeSecureRedirect()"
@@ -791,15 +791,17 @@
                 type="text" 
                 id="linkInput" 
                 placeholder="https://mon-lien.com" 
-                class="w-full bg-slate-800 border-none ring-1 ring-slate-700 p-4 rounded-xl mb-6 text-white outline-none focus:ring-2 focus:ring-purple-500 transition-all">
+                class="w-full bg-slate-800 border-none ring-1 ring-slate-700 p-4 rounded-xl mb-6 text-white outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+            >
             
             <div class="flex space-x-3">
                 <button onclick="toggleSettings()" class="flex-1 py-3 text-gray-400 hover:text-white font-medium">Annuler</button>
                 <button onclick="saveEncodedLink()" class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold transition-colors">Valider</button>
             </div>
+        </div>
+    </div>
 
 </div>
-    
 
 <!-- Toast notification -->
 <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-2.5 rounded-full opacity-0 transition-opacity duration-300 pointer-events-none shadow-xl z-50 text-sm">
@@ -1438,9 +1440,10 @@ s0.parentNode.insertBefore(s1,s0);
             }
         }
     </script>
-  
+    
 </body>
 </html>
+
 
 
 
