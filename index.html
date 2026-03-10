@@ -361,6 +361,69 @@
         <a href="#apps" class="hover:text-yellow-500 transition">Apps</a>
         <a href="#reviews" class="hover:text-yellow-500 transition">Avis</a>
     </nav>
+
+        <!--Mon Panier-->  
+    <style>
+  #cart-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  #cart-count {
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 7px;
+    font-size: 14px;
+    vertical-align: super;
+    margin-left: 5px;
+  }
+  #cart-details {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgb(78, 2, 64);
+    border: 1px solid #ccc;
+    padding: 15px;
+    display: none;
+    z-index: 1000;
+  }
+  #cart-details ul {
+    list-style: none;
+    padding: 0;
+  }
+  #cart-details li {
+    margin-bottom: 10px;
+  }
+  #checkout-button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #6772e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+</style>
+
+<div id="cart-icon">
+  🛒 Panier <span id="cart-count">0</span>
+</div>
+
+<div id="cart-details">
+  <h3>Votre panier</h3>
+  <ul id="cart-items">
+    <li>Votre panier est vide</li>
+  </ul>
+  <button id="checkout-button" style="display:none;">Payer</button>
+</div>
+        
 </header>
 
 <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll) -->
@@ -531,7 +594,12 @@
                         <span class="text-4xl font-bold">80€</span>
                         <span class="text-gray-500 text-sm">/ an</span>
                     </div>
-                    <button class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300">S'ABONNER MAINTENANT</button>
+                    <button 
+                    class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 add-to-cart" 
+                    data-name="Abonnement Annuel" 
+                    data-price="8000">
+                    S'ABONNER MAINTENANT
+                   </button>
                 </div>
 
                 <!-- PACK TRIO -->
@@ -566,7 +634,12 @@
                             <span class="text-gray-500 text-sm">/ an</span>
                         </div>
                     </div>
-                    <button class="w-full bg-purple-600 text-white py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 shadow-lg shadow-purple-500/20">PROFITER DE L'OFFRE</button>
+                    <button 
+                    class="w-full bg-purple-600 text-white py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 shadow-lg shadow-purple-500/20 add-to-cart" 
+                    data-name="Offre Spéciale" 
+                    data-price="20000">
+                    PROFITER DE L'OFFRE
+                   </button>
                 </div>
             </div>
         </section>
@@ -1158,9 +1231,84 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--Fin de Tawk.to Script-->
+
+    <!-- Le Script Du Panier -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const cart = [];
+  const cartCount = document.getElementById('cart-count');
+  const cartIcon = document.getElementById('cart-icon');
+  const cartDetails = document.getElementById('cart-details');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const checkoutButton = document.getElementById('checkout-button');
+
+  // Met à jour l'affichage du panier
+  function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<li>Votre panier est vide</li>';
+      checkoutButton.style.display = 'none';
+      cartCount.textContent = '0';
+      return;
+    }
+    cart.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name} - ${(item.price / 100).toFixed(2)} €`;
+      cartItemsContainer.appendChild(li);
+    });
+    checkoutButton.style.display = 'block';
+    cartCount.textContent = cart.length;
+  }
+
+
+  // Ajoute un article au panier
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', () => {
+      const name = button.getAttribute('data-name');
+      const price = parseInt(button.getAttribute('data-price'));
+      cart.push({ name, price });
+      renderCart();
+      // Ouvre automatiquement le panier à chaque ajout
+      cartDetails.style.display = 'block';
+    });
+  });
+
+  // Affiche/masque le panier au clic sur l'icône
+  cartIcon.addEventListener('click', () => {
+    if (cartDetails.style.display === 'block') {
+      cartDetails.style.display = 'none';
+    } else {
+      cartDetails.style.display = 'block';
+    }
+  });
+
+  // Initialisation Stripe
+  const stripe = Stripe('VOTRE_CLE_PUBLIQUE_STRIPE');
+
+  // Gestion du paiement
+  checkoutButton.addEventListener('click', () => {
+    fetch('/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: cart }),
+    })
+    .then(res => res.json())
+    .then(session => {
+      return stripe.redirectToCheckout({ sessionId: session.id });
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Erreur lors de la création de la session de paiement.');
+    });
+  });
+
+  // Initial render
+  renderCart();
+</script>
     
 </body>
 </html>
+
 
 
 
