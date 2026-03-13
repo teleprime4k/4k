@@ -28,6 +28,13 @@
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
+              
+                    /* Couleur message alerte */
+               --alert-bg: rgba(255, 255, 255, 0.95);
+            --accent-color: #e63946; /* Rouge pour l'accentuation */
+            --text-dark: #1d3557;   /* Bleu marine pour le titre */
+            --text-body: #457b9d;   /* Bleu moyen pour le corps du texte */
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .font-title { font-family: 'Syncopate', sans-serif; }
@@ -476,6 +483,123 @@
     cursor: pointer;
     font-size: 16px;
   }
+
+/* Conteneur de l'alerte */
+        #alertMessage {
+            position: fixed;
+            top: -100px; /* Caché au début pour l'animation */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px; /* Plus large pour les TV/Tablettes */
+            background: var(--alert-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-dark);
+            padding: 20px 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(9, 198, 37, 0.2);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            box-shadow: var(--shadow);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        #alertMessage.show {
+            top: 5%; /* Position relative au haut de l'écran */
+        }
+
+        #alertMessage.hide {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px) scale(0.95);
+        }
+
+        /* Icône adaptable */
+        .alert-icon {
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Texte adaptable */
+        .alert-content {
+            flex-grow: 1;
+            line-height: 1.4;
+            font-size: 1.2rem; /* Taille de base plus grande pour TV */
+            color: var(--text-body); 
+        }
+
+        .alert-content strong {
+            color: var(--accent-color);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        /* Barre de progression temporelle */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent-color);
+            width: 100%;
+            transform-origin: left;
+        }
+
+        @keyframes shrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        /* --- ADAPTATIONS SPECIFIQUES --- */
+
+        /* Tablettes (Écrans moyens) */
+        @media (max-width: 1024px) {
+            #alertMessage {
+                width: 80%;
+                padding: 20px;
+            }
+            .alert-content { font-size: 1.1rem; }
+            .alert-content strong { font-size: 1.3rem; }
+        }
+
+        /* Téléphones (Petits écrans) */
+        @media (max-width: 600px) {
+            #alertMessage {
+                width: 92%;
+                padding: 15px;
+                gap: 12px;
+                border-radius: 15px;
+            }
+            .alert-icon { font-size: 2rem; }
+            .alert-content { font-size: 0.95rem; }
+            .alert-content strong { font-size: 1.1rem; }
+        }
+
+        /* Télévisions (Grand écrans & recul) */
+        @media (min-width: 1900px) {
+            #alertMessage {
+                max-width: 1000px;
+                padding: 40px;
+                border-radius: 30px;
+            }
+            .alert-icon { font-size: 4rem; }
+            .alert-content { font-size: 1.6rem; }
+            .alert-content strong { font-size: 2.2rem; }
+            .progress-bar { height: 10px; }
+           }
+        
 </style>
 
 <div id="cart-icon">
@@ -1475,11 +1599,52 @@ s0.parentNode.insertBefore(s1,s0);
         alert.style.display = 'none';
       }, 1000); // correspond à la durée de la transition CSS
     }, 15000);
-  });
+  }); 
 </script>
+
+    <!-- Message d'alerte -->
+<!-- Structure de l'alerte -->
+<div id="alertMessage" onclick="closeAlert()">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-content">
+        <strong>Optimisez votre connexion IPTV</strong>
+        Utilisez un VPN pour contourner les géo-restrictions en France et éviter les blocages ou bugs causés par votre fournisseur d'accès (FAI).
+    </div>
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<script>
+    function closeAlert() {
+        const alert = document.getElementById('alertMessage');
+        alert.classList.add('hide');
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 600);
+    }
+
+    window.addEventListener('load', function() {
+        const alert = document.getElementById('alertMessage');
+        const progressBar = document.getElementById('progressBar');
+        const duration = 15000; // 15 secondes
+
+        // Affichage avec un petit délai
+        setTimeout(() => {
+            alert.classList.add('show');
+            
+            // Lancer l'animation de la barre de progression
+            progressBar.style.animation = `shrink ${duration}ms linear forwards`;
+
+            // Disparition automatique
+            setTimeout(() => {
+                closeAlert();
+            }, duration);
+        }, 500);
+    });
+    </script>
     
 </body>
 </html>
+
 
 
 
