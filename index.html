@@ -1443,9 +1443,44 @@ s0.parentNode.insertBefore(s1,s0);
             }
         }
     </script>
+
+    <!-- Message d'alerte -->
+<div id="alertMessage" style="
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff0000;
+    color: black;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 10000;
+    opacity: 1;
+    transition: opacity 1s ease;
+">
+   ⚠️❗Utiliser un VPN pour votre abonnement IPTV ! cela permettra d'optimiser en contournant les géo-restrictions en FRANCE 👉les Blocages,bugs provoquer par vos fournisseurs d'accès internet (FAI) ⚠️❗
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    const alert = document.getElementById('alertMessage');
+    // Après 15 secondes, faire disparaître le message en fondu
+    setTimeout(() => {
+      alert.style.opacity = '0';
+      // Après la transition, retirer le message du DOM
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 1000); // correspond à la durée de la transition CSS
+    }, 15000);
+  });
+</script>
     
 </body>
 </html>
+
 
 
 
