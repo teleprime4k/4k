@@ -1534,7 +1534,6 @@ s0.parentNode.insertBefore(s1,s0);
 <!--Fin de Tawk.to Script-->
 
     <!-- Le Script Du Panier -->
-<script src="https://js.stripe.com/v3/"></script>
 <script>
   const cart = [];
   const cartCount = document.getElementById('cart-count');
@@ -1561,7 +1560,6 @@ s0.parentNode.insertBefore(s1,s0);
     cartCount.textContent = cart.length;
   }
 
-
   // Ajoute un article au panier
   document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', () => {
@@ -1583,30 +1581,20 @@ s0.parentNode.insertBefore(s1,s0);
     }
   });
 
-  // Initialisation Stripe
-  const stripe = Stripe('VOTRE_CLE_PUBLIQUE_STRIPE');
-
-  // Gestion du paiement
+  // Au clic sur le bouton checkout, redirection directe vers le lien Lydia
   checkoutButton.addEventListener('click', () => {
-    fetch('/create-checkout-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: cart }),
-    })
-    .then(res => res.json())
-    .then(session => {
-      return stripe.redirectToCheckout({ sessionId: session.id });
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Erreur lors de la création de la session de paiement.');
-    });
+    if (cart.length === 0) {
+      alert('Votre panier est vide.');
+      return;
+    }
+    window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
   });
 
   // Initial render
   renderCart();
 </script>
 
+    
 <!-- Script du bouton de Renouvelement  -->
 <script>
         let encodedLink = localStorage.getItem('secure_token_ref') || "";
