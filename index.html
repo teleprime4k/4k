@@ -615,15 +615,13 @@
 
 <!-- Section paiement et message -->
     <div id="payment-section" style="margin-top: 15px;">
-  
-  </div>
   <h4>Choisissez votre mode de paiement :</h4>
   <label><input type="radio" name="payment-method" value="carte" checked /> Carte bancaire</label><br />
-  <label><input type="radio" name="payment-method" value="lydia" /> Lydia </label><br />
+  <label><input type="radio" name="payment-method" value="lydia" /> Lydia</label><br />
   <label><input type="radio" name="payment-method" value="applepay" /> Apple Pay</label><br />
   <label><input type="radio" name="payment-method" value="googlepay" /> Google Pay</label><br />
   <div id="cart-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-<button id="checkout-button" style="display:none;">Payer</button>
+  <button id="checkout-button" style="display:none; margin-top: 10px;">Payer</button>
 </div>
 </header>
 
@@ -1558,7 +1556,6 @@ s0.parentNode.insertBefore(s1,s0);
 
   let selectedPaymentMethod = 'carte';
 
-  // Calcule le total en centimes
   function calculateTotal() {
     return cart.reduce((sum, item) => sum + item.price, 0);
   }
@@ -1569,21 +1566,34 @@ s0.parentNode.insertBefore(s1,s0);
     let displayPriceCents = totalCents;
     let message = '';
 
-    if (selectedPaymentMethod === 'carte') {
+    const totalWithFees = (totalCents + 200) / 100;
+
+    if (selectedPaymentMethod === 'carte' || selectedPaymentMethod === 'applepay' || selectedPaymentMethod === 'googlepay') {
       displayPriceCents += 200; // +2€ en centimes
-      message = "+2€ Frais, Avec Cart Bancaire, vous “Payez " + ((totalCents + 200) / 100).toFixed(2) + "€ !";
+      let modeLabel = '';
+      if (selectedPaymentMethod === 'carte') modeLabel = 'Carte Bancaire';
+      else if (selectedPaymentMethod === 'applepay') modeLabel = 'Apple Pay';
+      else if (selectedPaymentMethod === 'googlepay') modeLabel = 'Google Pay';
+
+      message = `+2€ de frais avec ${modeLabel}, vous payez ${totalWithFees.toFixed(2)} € !`;
       if (paymentBadge) paymentBadge.style.display = 'inline-block';
-    } else {
+    } else if (selectedPaymentMethod === 'lydia') {
+      message = `❤️‍🔥Utiliser Lydia pour payer❤️‍🔥 ${ (totalCents / 100).toFixed(2) } €🔥`;
       if (paymentBadge) paymentBadge.style.display = 'none';
-      if (selectedPaymentMethod === 'applepay' || selectedPaymentMethod === 'googlepay') {
-        message = "+2€ Frais Avec Apple Pay ou Google Pay vous “Payez " + ((totalCents + 200) / 100).toFixed(2) + "€ !";
-      } else if (selectedPaymentMethod === 'lydia') {
-        message = "Utiliser Lydia pour payer !";
-        displayPriceCents = 8000; // Forcer 80€
+    } else {
+      message = '';
+      if (paymentBadge) paymentBadge.style.display = 'none';
+    }
+
+    if (cartMessage) {
+      cartMessage.textContent = message;
+      if (selectedPaymentMethod === 'lydia') {
+        cartMessage.style.color = 'green';
+      } else {
+        cartMessage.style.color = 'red';
       }
     }
 
-    if (cartMessage) cartMessage.textContent = message;
     checkoutButton.textContent = `Payer ${(displayPriceCents / 100).toFixed(2)} €`;
   }
 
@@ -1632,26 +1642,20 @@ s0.parentNode.insertBefore(s1,s0);
     });
   });
 
-  // Au clic sur le bouton checkout, redirection selon mode de paiement
+  // Au clic sur le bouton checkout, redirection systématique vers Lydia
   checkoutButton.addEventListener('click', () => {
     if (cart.length === 0) {
       alert('Votre panier est vide.');
       return;
     }
-    if (selectedPaymentMethod === 'lydia') {
-      window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
-    } else {
-      alert(`Paiement par ${selectedPaymentMethod} pour un total de ${(calculateTotal() / 100).toFixed(2)} €`);
-      // Ajoutez ici la logique réelle de paiement
-    }
+    window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
   });
 
   // Initial render
   renderCart();
 </script>
 
-
-    
+ 
 <!-- Script du bouton de Renouvelement  -->
 <script>
         let encodedLink = localStorage.getItem('secure_token_ref') || "";
@@ -1744,4 +1748,3 @@ s0.parentNode.insertBefore(s1,s0);
     
 </body>
 </html>
-
