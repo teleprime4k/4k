@@ -614,20 +614,21 @@
 
 <!-- Section paiement et message -->
     <div id="payment-section" style="margin-top: 15px;">
-      <h4>Choisissez votre mode de paiement :</h4>
-      <label><input type="radio" name="payment-method" value="carte" checked /> Carte bancaire +2€ de frais !</label><br />
-      <label><input type="radio" name="payment-method" value="lydia" /> Lydia💎PAS DE FRAIS👍🏻</label><br />
-      <label><input type="radio" name="payment-method" value="applepay" /> Apple Pay +2€ de frais !</label><br />
-      <label><input type="radio" name="payment-method" value="googlepay" /> Google Pay +2€ de frais !</label><br />
-      <div id="cart-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-    </div>
+  
+  </div>
+  <h4>Choisissez votre mode de paiement :</h4>
+  <label><input type="radio" name="payment-method" value="carte" checked /> Carte bancaire</label><br />
+  <label><input type="radio" name="payment-method" value="lydia" /> Lydia </label><br />
+  <label><input type="radio" name="payment-method" value="applepay" /> Apple Pay</label><br />
+  <label><input type="radio" name="payment-method" value="googlepay" /> Google Pay</label><br />
+  <div id="cart-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
+</div>
+
 
   <button id="checkout-button" style="display:none;">Payer</button>
 </div>
 
-    
-  <button id="checkout-button" style="display:none;">Payer</button>
-</div>
+
         
 </header>
 
@@ -796,7 +797,7 @@
                         <p class="text-sm text-gray-400">L'essentiel pour progresser seul et sans limites.</p>
                     </div>
                     <div class="flex items-baseline gap-1 mb-8">
-                        <span class="text-4xl font-bold">82€</span>
+                        <span class="text-4xl font-bold">80€</span>
                         <span class="text-gray-500 text-sm">/ an</span>
                     </div>
                     <button 
@@ -826,16 +827,16 @@
                     </svg>
                             
                         </div>
-                        <span class="text-green-400 text-[10px] font-bold tracking-widest uppercase">Économie 42€</span>
+                        <span class="text-green-400 text-[10px] font-bold tracking-widest uppercase">Économie 40€</span>
                     </div>
                     <div class="mb-8">
                         <h3 class="font-title text-lg font-bold mb-2">PACK TRIO</h3>
                         <p class="text-sm text-gray-400">Deux fois plus de puissance pour partager l'expérience, 3 CODES !</p> 
                     </div>
                     <div class="flex flex-col mb-8">
-                        <span class="text-gray-500 line-through text-sm">242€</span>
+                        <span class="text-gray-500 line-through text-sm">240€</span>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-5xl font-bold text-white">202€</span>
+                            <span class="text-5xl font-bold text-white">200€</span>
                             <span class="text-gray-500 text-sm">/ an</span>
                         </div>
                     </div>
@@ -1557,6 +1558,40 @@ s0.parentNode.insertBefore(s1,s0);
   const cartItemsContainer = document.getElementById('cart-items');
   const checkoutButton = document.getElementById('checkout-button');
 
+  const paymentBadge = document.getElementById('payment-badge');
+  const cartMessage = document.getElementById('cart-message');
+
+  let selectedPaymentMethod = 'carte';
+
+  // Calcule le total en centimes
+  function calculateTotal() {
+    return cart.reduce((sum, item) => sum + item.price, 0);
+  }
+
+  // Met à jour le message et le badge selon le mode de paiement et le total
+  function updateCartMessageAndPrice() {
+    const totalCents = calculateTotal();
+    let displayPriceCents = totalCents;
+    let message = '';
+
+    if (selectedPaymentMethod === 'carte') {
+      displayPriceCents += 200; // +2€ en centimes
+      message = "+2€ Frais, Avec Cart Bancaire, vous “Payez " + ((totalCents + 200) / 100).toFixed(2) + "€ !";
+      if (paymentBadge) paymentBadge.style.display = 'inline-block';
+    } else {
+      if (paymentBadge) paymentBadge.style.display = 'none';
+      if (selectedPaymentMethod === 'applepay' || selectedPaymentMethod === 'googlepay') {
+        message = "+2€ Frais Avec Apple Pay ou Google Pay vous “Payez " + ((totalCents + 200) / 100).toFixed(2) + "€ !";
+      } else if (selectedPaymentMethod === 'lydia') {
+        message = "Utiliser Lydia pour payer !";
+        displayPriceCents = 8000; // Forcer 80€
+      }
+    }
+
+    if (cartMessage) cartMessage.textContent = message;
+    checkoutButton.textContent = `Payer ${(displayPriceCents / 100).toFixed(2)} €`;
+  }
+
   // Met à jour l'affichage du panier
   function renderCart() {
     cartItemsContainer.innerHTML = '';
@@ -1564,15 +1599,18 @@ s0.parentNode.insertBefore(s1,s0);
       cartItemsContainer.innerHTML = '<li>Votre panier est vide</li>';
       checkoutButton.style.display = 'none';
       cartCount.textContent = '0';
+      if (cartMessage) cartMessage.textContent = '';
+      if (paymentBadge) paymentBadge.style.display = 'none';
       return;
     }
-    cart.forEach((item, index) => {
+    cart.forEach(item => {
       const li = document.createElement('li');
       li.textContent = `${item.name} - ${(item.price / 100).toFixed(2)} €`;
       cartItemsContainer.appendChild(li);
     });
     checkoutButton.style.display = 'block';
     cartCount.textContent = cart.length;
+    updateCartMessageAndPrice();
   }
 
   // Ajoute un article au panier
@@ -1582,32 +1620,41 @@ s0.parentNode.insertBefore(s1,s0);
       const price = parseInt(button.getAttribute('data-price'));
       cart.push({ name, price });
       renderCart();
-      // Ouvre automatiquement le panier à chaque ajout
       cartDetails.style.display = 'block';
     });
   });
 
   // Affiche/masque le panier au clic sur l'icône
   cartIcon.addEventListener('click', () => {
-    if (cartDetails.style.display === 'block') {
-      cartDetails.style.display = 'none';
-    } else {
-      cartDetails.style.display = 'block';
-    }
+    cartDetails.style.display = (cartDetails.style.display === 'block') ? 'none' : 'block';
   });
 
-  // Au clic sur le bouton checkout, redirection directe vers le lien Lydia
+  // Gestion du changement de mode de paiement
+  document.querySelectorAll('input[name="payment-method"]').forEach(input => {
+    input.addEventListener('change', (e) => {
+      selectedPaymentMethod = e.target.value;
+      updateCartMessageAndPrice();
+    });
+  });
+
+  // Au clic sur le bouton checkout, redirection selon mode de paiement
   checkoutButton.addEventListener('click', () => {
     if (cart.length === 0) {
       alert('Votre panier est vide.');
       return;
     }
-    window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
+    if (selectedPaymentMethod === 'lydia') {
+      window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
+    } else {
+      alert(`Paiement par ${selectedPaymentMethod} pour un total de ${(calculateTotal() / 100).toFixed(2)} €`);
+      // Ajoutez ici la logique réelle de paiement
+    }
   });
 
   // Initial render
   renderCart();
 </script>
+
 
     
 <!-- Script du bouton de Renouvelement  -->
