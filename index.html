@@ -686,26 +686,28 @@
 
 </style>
 
-  <!-- Structure du Panier -->
+ <!-- Interface Panier -->
   <div id="cart-icon">
-    🛒 Panier <span id="cart-count">0</span>
+    <span>🛒 Panier</span>
+    <span id="cart-count">0</span>
   </div>
 
   <div id="cart-details">
-    <h3>Votre panier</h3>
+    <h3>Mon Panier</h3>
     <ul id="cart-items">
-      <li>Votre panier est vide</li>
+      <!-- Les articles s'afficheront ici -->
     </ul>
 
-    <div id="payment-section">
-      <h4>Choisissez votre mode de paiement :</h4>
-      <label><input type="radio" name="payment-method" value="carte" checked /> 💳 Carte bancaire</label>
-      <label><input type="radio" name="payment-method" value="lydia" /> 📲 Lydia (Sans frais)</label>
-      <label><input type="radio" name="payment-method" value="applepay" /> 🍎 Apple Pay</label>
-      <label><input type="radio" name="payment-method" value="googlepay" /> 🤖 Google Pay</label>
+    <div id="payment-section" style="display:none;">
+      <div class="payment-methods">
+        <label><input type="radio" name="payment-method" value="lydia" checked /> 📲 Lydia (0€ frais)</label>
+        <label><input type="radio" name="payment-method" value="carte" /> 💳 Carte bancaire (+2€ frais)</label>
+        <label><input type="radio" name="payment-method" value="applepay" /> 🍎 Apple Pay (+2€ frais)</label>
+        <label><input type="radio" name="payment-method" value="googlepay" /> 🤖 Google Pay (+2€ frais)</label>
+      </div>
       
       <div id="cart-message"></div>
-      <button id="checkout-button" style="display:none;">Payer</button>
+      <button id="checkout-button">Payer</button>
     </div>
 </header>
 
@@ -1641,110 +1643,106 @@ s0.parentNode.insertBefore(s1,s0);
     
     <!-- Le Script Du Panier -->
 <script>
-    const cart = [];
-    const cartCount = document.getElementById('cart-count');
+    let cart = [];
+    let selectedPaymentMethod = 'lydia';
+
+    // Sélecteurs
     const cartIcon = document.getElementById('cart-icon');
     const cartDetails = document.getElementById('cart-details');
-    const cartItemsContainer = document.getElementById('cart-items');
+    const cartItemsList = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const paymentSection = document.getElementById('payment-section');
     const checkoutButton = document.getElementById('checkout-button');
     const cartMessage = document.getElementById('cart-message');
 
-    let selectedPaymentMethod = 'carte';
+    // Mise à jour de l'affichage
+    function updateDisplay() {
+      // 1. Compteur
+      cartCount.textContent = cart.length;
 
-    function calculateTotal() {
-      return cart.reduce((sum, item) => sum + item.price, 0);
-    }
-
-    function updateCartMessageAndPrice() {
-      const totalCents = calculateTotal();
-      if (totalCents === 0) return;
-
-      let displayPriceCents = totalCents;
-      let message = '';
-      const feeCents = 200; // 2€ de frais
-
-      if (selectedPaymentMethod === 'lydia') {
-        message = `❤️‍🔥 Utiliser Lydia pour payer : ${(totalCents / 100).toFixed(2)} € 🔥`;
-        cartMessage.style.color = '#2ecc71'; // Vert
-      } else {
-        displayPriceCents += feeCents;
-        let modeLabel = '';
-        if (selectedPaymentMethod === 'carte') modeLabel = 'Carte';
-        else if (selectedPaymentMethod === 'applepay') modeLabel = 'Apple Pay';
-        else if (selectedPaymentMethod === 'googlepay') modeLabel = 'Google Pay';
-
-        message = `+2€ de frais avec ${modeLabel}. Total : ${(displayPriceCents / 100).toFixed(2)} €`;
-        cartMessage.style.color = '#ff4757'; // Rouge
-      }
-
-      cartMessage.textContent = message;
-      checkoutButton.textContent = `Payer ${(displayPriceCents / 100).toFixed(2)} €`;
-    }
-
-    function renderCart() {
-      cartItemsContainer.innerHTML = '';
-      
+      // 2. Liste des articles
+      cartItemsList.innerHTML = '';
       if (cart.length === 0) {
-        cartItemsContainer.innerHTML = '<li>Votre panier est vide</li>';
-        checkoutButton.style.display = 'none';
-        cartCount.textContent = '0';
-        cartMessage.textContent = '';
+        cartItemsList.innerHTML = '<div class="empty-cart-msg">Votre panier est encore vide...</div>';
+        paymentSection.style.display = 'none';
         return;
       }
 
+      paymentSection.style.display = 'block';
+      let subtotal = 0;
+
       cart.forEach((item, index) => {
+        subtotal += item.price;
         const li = document.createElement('li');
         li.innerHTML = `
-          <span>${item.name} - ${(item.price / 100).toFixed(2)}€</span>
-          <button class="remove-item" onclick="removeItem(${index})">✕</button>
+          <span>${item.name}</span>
+          <div>
+            <span>${(item.price / 100).toFixed(2)}€</span>
+            <button class="remove-item" onclick="removeItem(${index})">×</button>
+          </div>
         `;
-        cartItemsContainer.appendChild(li);
+        cartItemsList.appendChild(li);
       });
 
-      checkoutButton.style.display = 'block';
-      cartCount.textContent = cart.length;
-      updateCartMessageAndPrice();
+      // 3. Calcul du total avec frais
+      let total = subtotal;
+      if (selectedPaymentMethod !== 'lydia') {
+        total += 200; // Ajout des 2€ de frais (en centimes)
+        let label = "la transaction";
+        if (selectedPaymentMethod === 'carte') label = "Carte";
+        if (selectedPaymentMethod === 'applepay') label = "Apple Pay";
+        if (selectedPaymentMethod === 'googlepay') label = "Google Pay";
+
+        cartMessage.textContent = `Frais avec ${label} : +2.00 €`;
+        cartMessage.style.color = "#ffb8b8";
+      } else {
+        cartMessage.textContent = "🔥 Pas de frais avec Lydia ! 🔥";
+        cartMessage.style.color = "#2ecc71";
+      }
+
+      checkoutButton.textContent = `Payer ${(total / 100).toFixed(2)} €`;
     }
 
-    // Fonction pour supprimer un article
-    window.removeItem = (index) => {
-      cart.splice(index, 1);
-      renderCart();
-    };
-
-    // Ajoute un article
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-      button.addEventListener('click', () => {
-        const name = button.getAttribute('data-name');
-        const price = parseInt(button.getAttribute('data-price'));
+    // Ajouter un produit
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name = btn.getAttribute('data-name');
+        const price = parseInt(btn.getAttribute('data-price'));
         cart.push({ name, price });
-        renderCart();
-        cartDetails.style.display = 'block'; // Ouvre le panier lors de l'ajout
+        updateDisplay();
+        cartDetails.style.display = 'block';
       });
     });
 
-    // Toggle Panier
-    cartIcon.addEventListener('click', (e) => {
+    // Supprimer un produit
+    window.removeItem = (index) => {
+      cart.splice(index, 1);
+      updateDisplay();
+    };
+
+    // Ouvrir/Fermer le panier
+    cartIcon.addEventListener('click', () => {
       cartDetails.style.display = (cartDetails.style.display === 'block') ? 'none' : 'block';
     });
 
-    // Changement de paiement
+    // Changement de méthode de paiement
     document.querySelectorAll('input[name="payment-method"]').forEach(input => {
       input.addEventListener('change', (e) => {
         selectedPaymentMethod = e.target.value;
-        updateCartMessageAndPrice();
+        updateDisplay();
       });
     });
 
-    // Bouton de paiement final
+    // Bouton Payer
     checkoutButton.addEventListener('click', () => {
-      if (cart.length === 0) return;
-      // Redirection Lydia
-      window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
+      if (cart.length > 0) {
+        // Redirection vers ton lien Lydia
+        window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
+      }
     });
 
-    // Initialisation
-    renderCart();
+    // Init
+    updateDisplay();
   </script>
  
 <!-- Script du bouton de Renouvelement  -->
