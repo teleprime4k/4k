@@ -437,52 +437,136 @@
 
         <!--Mon Panier-->  
     <style>
-  #cart-icon {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-    font-size: 24px;
-  }
-  #cart-count {
-    background: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 7px;
-    font-size: 14px;
-    vertical-align: super;
-    margin-left: 5px;
-  }
-  #cart-details {
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    width: 300px;
-    max-height: 400px;
-    overflow-y: auto;
-    background: rgb(78, 2, 64);
-    border: 1px solid #ccc;
-    padding: 15px;
-    display: none;
-    z-index: 1000;
-  }
-  #cart-details ul {
-    list-style: none;
-    padding: 0;
-  }
-  #cart-details li {
-    margin-bottom: 10px;
-  }
-  #checkout-button {
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px;
-    background-color: #6772e5;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-  }
+        
+ #cart-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      font-size: 20px;
+      background: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 1001;
+      user-select: none;
+    }
+
+    #cart-count {
+      background: #ff4757;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    #cart-details {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 320px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: rgb(78, 2, 64); /* Ton style violet */
+      color: white; /* Texte blanc pour la lisibilité */
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    #cart-details h3 {
+      margin-top: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 10px;
+    }
+
+    #cart-items {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    #cart-items li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.05);
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    .remove-item {
+      background: transparent;
+      border: none;
+      color: #ff4757;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0 5px;
+    }
+
+    #payment-section h4 {
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: #dfdfdf;
+    }
+
+    #payment-section label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    #checkout-button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background-color: #6772e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    #checkout-button:hover {
+      background-color: #5469d4;
+    }
+
+    #cart-message {
+      font-size: 0.85rem;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    /* Style pour les boutons d'achat sur ta page */
+    .product-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      display: inline-block;
+      margin: 10px;
+      border-radius: 8px;
+    }
+
+    .add-to-cart {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
 /* Conteneur de l'alerte */
         #alertMessage {
@@ -602,27 +686,33 @@
 
 </style>
 
-<div id="cart-icon">
-  🛒 Panier <span id="cart-count">0</span>
-</div>
+<div class="product-card">
+    <h3>Article Test B</h3>
+    <p>Prix: 25.50 €</p>
+    <button class="add-to-cart" data-name="Article Test B" data-price="2550">Ajouter</button>
+  </div>
 
-<div id="cart-details">
-  <h3>Votre panier</h3>
-  <ul id="cart-items">
-    <li>Votre panier est vide</li>
-  </ul>
+  <!-- Structure du Panier -->
+  <div id="cart-icon">
+    🛒 Panier <span id="cart-count">0</span>
+  </div>
 
+  <div id="cart-details">
+    <h3>Votre panier</h3>
+    <ul id="cart-items">
+      <li>Votre panier est vide</li>
+    </ul>
 
-<!-- Section paiement et message -->
-    <div id="payment-section" style="margin-top: 15px;">
-  <h4>Choisissez votre mode de paiement :</h4>
-  <label><input type="radio" name="payment-method" value="carte" checked /> Carte bancaire</label><br />
-  <label><input type="radio" name="payment-method" value="lydia" /> Lydia</label><br />
-  <label><input type="radio" name="payment-method" value="applepay" /> Apple Pay</label><br />
-  <label><input type="radio" name="payment-method" value="googlepay" /> Google Pay</label><br />
-  <div id="cart-message" style="color: red; font-weight: bold; margin-top: 10px;"></div>
-  <button id="checkout-button" style="display:none; margin-top: 10px;">Payer</button>
-</div>
+    <div id="payment-section">
+      <h4>Choisissez votre mode de paiement :</h4>
+      <label><input type="radio" name="payment-method" value="carte" checked /> 💳 Carte bancaire</label>
+      <label><input type="radio" name="payment-method" value="lydia" /> 📲 Lydia (Sans frais)</label>
+      <label><input type="radio" name="payment-method" value="applepay" /> 🍎 Apple Pay</label>
+      <label><input type="radio" name="payment-method" value="googlepay" /> 🤖 Google Pay</label>
+      
+      <div id="cart-message"></div>
+      <button id="checkout-button" style="display:none;">Payer</button>
+    </div>
 </header>
 
 <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll) -->
@@ -1557,117 +1647,111 @@ s0.parentNode.insertBefore(s1,s0);
     
     <!-- Le Script Du Panier -->
 <script>
-  const cart = [];
-  const cartCount = document.getElementById('cart-count');
-  const cartIcon = document.getElementById('cart-icon');
-  const cartDetails = document.getElementById('cart-details');
-  const cartItemsContainer = document.getElementById('cart-items');
-  const checkoutButton = document.getElementById('checkout-button');
+    const cart = [];
+    const cartCount = document.getElementById('cart-count');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartDetails = document.getElementById('cart-details');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const checkoutButton = document.getElementById('checkout-button');
+    const cartMessage = document.getElementById('cart-message');
 
-  const paymentBadge = document.getElementById('payment-badge');
-  const cartMessage = document.getElementById('cart-message');
+    let selectedPaymentMethod = 'carte';
 
-  let selectedPaymentMethod = 'carte';
-
-  function calculateTotal() {
-    return cart.reduce((sum, item) => sum + item.price, 0);
-  }
-
-  // Met à jour le message et le badge selon le mode de paiement et le total
-  function updateCartMessageAndPrice() {
-    const totalCents = calculateTotal();
-    let displayPriceCents = totalCents;
-    let message = '';
-
-    const totalWithFees = (totalCents + 200) / 100;
-
-    if (selectedPaymentMethod === 'carte' || selectedPaymentMethod === 'applepay' || selectedPaymentMethod === 'googlepay') {
-      displayPriceCents += 200; // +2€ en centimes
-      let modeLabel = '';
-      if (selectedPaymentMethod === 'carte') modeLabel = 'Carte Bancaire';
-      else if (selectedPaymentMethod === 'applepay') modeLabel = 'Apple Pay';
-      else if (selectedPaymentMethod === 'googlepay') modeLabel = 'Google Pay';
-
-      message = `+2€ de frais avec ${modeLabel}, vous payez ${totalWithFees.toFixed(2)} € !`;
-      if (paymentBadge) paymentBadge.style.display = 'inline-block';
-    } else if (selectedPaymentMethod === 'lydia') {
-      message = `❤️‍🔥Utiliser Lydia pour payer❤️‍🔥 ${ (totalCents / 100).toFixed(2) } €🔥`;
-      if (paymentBadge) paymentBadge.style.display = 'none';
-    } else {
-      message = '';
-      if (paymentBadge) paymentBadge.style.display = 'none';
+    function calculateTotal() {
+      return cart.reduce((sum, item) => sum + item.price, 0);
     }
 
-    if (cartMessage) {
-      cartMessage.textContent = message;
+    function updateCartMessageAndPrice() {
+      const totalCents = calculateTotal();
+      if (totalCents === 0) return;
+
+      let displayPriceCents = totalCents;
+      let message = '';
+      const feeCents = 200; // 2€ de frais
+
       if (selectedPaymentMethod === 'lydia') {
-        cartMessage.style.color = 'green';
+        message = `❤️‍🔥 Utiliser Lydia pour payer : ${(totalCents / 100).toFixed(2)} € 🔥`;
+        cartMessage.style.color = '#2ecc71'; // Vert
       } else {
-        cartMessage.style.color = 'red';
+        displayPriceCents += feeCents;
+        let modeLabel = '';
+        if (selectedPaymentMethod === 'carte') modeLabel = 'Carte';
+        else if (selectedPaymentMethod === 'applepay') modeLabel = 'Apple Pay';
+        else if (selectedPaymentMethod === 'googlepay') modeLabel = 'Google Pay';
+
+        message = `+2€ de frais avec ${modeLabel}. Total : ${(displayPriceCents / 100).toFixed(2)} €`;
+        cartMessage.style.color = '#ff4757'; // Rouge
       }
+
+      cartMessage.textContent = message;
+      checkoutButton.textContent = `Payer ${(displayPriceCents / 100).toFixed(2)} €`;
     }
 
-    checkoutButton.textContent = `Payer ${(displayPriceCents / 100).toFixed(2)} €`;
-  }
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<li>Votre panier est vide</li>';
+        checkoutButton.style.display = 'none';
+        cartCount.textContent = '0';
+        cartMessage.textContent = '';
+        return;
+      }
 
-  // Met à jour l'affichage du panier
-  function renderCart() {
-    cartItemsContainer.innerHTML = '';
-    if (cart.length === 0) {
-      cartItemsContainer.innerHTML = '<li>Votre panier est vide</li>';
-      checkoutButton.style.display = 'none';
-      cartCount.textContent = '0';
-      if (cartMessage) cartMessage.textContent = '';
-      if (paymentBadge) paymentBadge.style.display = 'none';
-      return;
-    }
-    cart.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = `${item.name} - ${(item.price / 100).toFixed(2)} €`;
-      cartItemsContainer.appendChild(li);
-    });
-    checkoutButton.style.display = 'block';
-    cartCount.textContent = cart.length;
-    updateCartMessageAndPrice();
-  }
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${item.name} - ${(item.price / 100).toFixed(2)}€</span>
+          <button class="remove-item" onclick="removeItem(${index})">✕</button>
+        `;
+        cartItemsContainer.appendChild(li);
+      });
 
-  // Ajoute un article au panier
-  document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', () => {
-      const name = button.getAttribute('data-name');
-      const price = parseInt(button.getAttribute('data-price'));
-      cart.push({ name, price });
-      renderCart();
-      cartDetails.style.display = 'block';
-    });
-  });
-
-  // Affiche/masque le panier au clic sur l'icône
-  cartIcon.addEventListener('click', () => {
-    cartDetails.style.display = (cartDetails.style.display === 'block') ? 'none' : 'block';
-  });
-
-  // Gestion du changement de mode de paiement
-  document.querySelectorAll('input[name="payment-method"]').forEach(input => {
-    input.addEventListener('change', (e) => {
-      selectedPaymentMethod = e.target.value;
+      checkoutButton.style.display = 'block';
+      cartCount.textContent = cart.length;
       updateCartMessageAndPrice();
-    });
-  });
-
-  // Au clic sur le bouton checkout, redirection systématique vers Lydia
-  checkoutButton.addEventListener('click', () => {
-    if (cart.length === 0) {
-      alert('Votre panier est vide.');
-      return;
     }
-    window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
-  });
 
-  // Initial render
-  renderCart();
-</script>
+    // Fonction pour supprimer un article
+    window.removeItem = (index) => {
+      cart.splice(index, 1);
+      renderCart();
+    };
 
+    // Ajoute un article
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const name = button.getAttribute('data-name');
+        const price = parseInt(button.getAttribute('data-price'));
+        cart.push({ name, price });
+        renderCart();
+        cartDetails.style.display = 'block'; // Ouvre le panier lors de l'ajout
+      });
+    });
+
+    // Toggle Panier
+    cartIcon.addEventListener('click', (e) => {
+      cartDetails.style.display = (cartDetails.style.display === 'block') ? 'none' : 'block';
+    });
+
+    // Changement de paiement
+    document.querySelectorAll('input[name="payment-method"]').forEach(input => {
+      input.addEventListener('change', (e) => {
+        selectedPaymentMethod = e.target.value;
+        updateCartMessageAndPrice();
+      });
+    });
+
+    // Bouton de paiement final
+    checkoutButton.addEventListener('click', () => {
+      if (cart.length === 0) return;
+      // Redirection Lydia
+      window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
+    });
+
+    // Initialisation
+    renderCart();
+  </script>
  
 <!-- Script du bouton de Renouvelement  -->
 <script>
@@ -1720,7 +1804,7 @@ s0.parentNode.insertBefore(s1,s0);
 
     <!-- Message d'alerte -->
 <!-- Structure de l'alerte -->
-<div id="alertMessage" onclick="closeAlert()">
+<!-- <div id="alertMessage" onclick="closeAlert()"> 
     <div class="alert-icon">⚠️</div>
     <div class="alert-content">
         <strong>Optimisez votre connexion IPTV</strong>
@@ -1728,7 +1812,7 @@ s0.parentNode.insertBefore(s1,s0);
     </div>
     <div class="progress-bar" id="progressBar"></div>
 </div>
-
+-->
 <script>
     function closeAlert() {
         const alert = document.getElementById('alertMessage');
