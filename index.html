@@ -386,6 +386,67 @@
             z-index: 10;
         }
 
+/* Nouveaux Style FILM & SÉRIES */
+/* Masquage de la barre de défilement */
+        .pas de barre de défilement : -webkit-scrollbar { affichage : aucun; }
+        .pas de barre de défilement { -style de débordement MS : aucun; largeur de la barre de défilement : aucun; }
+
+        /* Effet Glassmorphisme poussé */
+        .verre-carte {
+            contexte: rgba (255, 255, 255, 0,03);
+            filtre de toile de fond : flou (flou)12px);
+            frontière: 1px solide rgba (255, 255, 255, 0,08);
+            transition : tout 0,4s cubique-bezier (0,23, 1, 0,32, 1);
+        }
+
+        /* Hover uniquement sur les appareils qui le support (Bureau) */
+        @médias (survoler : planer) {
+            .glass-card: survoler {
+                contexte: rgba (255, 255, 255, 0,07);
+                couleur de la bordure : rgba (234, 179, 8, 0,5);
+                transformer: traduireY (-10px) échelle (1.02);
+                encadré : 0 20px 40px rgba (0, 0, 0, 0,4), 0 0 20px rgba (234, 179, 8, 0,1);
+            }
+            .glass-card : survoler .img-container img {
+                transformer: échelle (1.1);
+            }
+        }
+
+        /* Animation de l'image interne */
+        .img-container img {
+            transition : transform 0.6s cubique-bezier (0,23, 1, 0,32, 1);
+        }
+
+        /* Dégradé sur les bords du carrousel - Adapté mobile */
+        .carousel-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 40px; /* Plus petit sur mobile */
+            contexte: linear-gradient(to gauche, #020617, transparent);
+            pointer-events: aucun;
+            z-index: 10;
+        }
+        
+        @médias (min-width: 768px) {
+            .carousel-wrapper::after {
+                width: 100px;
+            }
+        }
+
+        /* Badge néon */
+        .badge {
+            font-size: 8px; /* Plus petit pour mobile */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        @media (min-width: 768px) {
+            .badge { font-size: 9px; }
+        }
 
 </style>
 
@@ -929,41 +990,129 @@
             </div>
         </section>
     
-    <!-- SECTION MOVIES -->
-    <section id="movies">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div class="flex items-center gap-4 flex-grow">
-                <h2 class="font-title text-xl font-bold uppercase tracking-tighter text-white">Cinéma & <span class="text-yellow-500">Séries</span></h2>
-                <div class="h-[1px] flex-grow bg-white/10"></div>
+    <!-- SECTION FILMS -->
+    <section identifiant="films" classe="max-w-7xl mx-auto relatif">
+        
+        <!-- En-tête stylé -->
+        <div classe="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
+            <div classe="espace-y-2">
+                <div classe="éléments flexibles-centre gap-2">
+                    <portée classe="w-6 md:w-8 h-[2px] bg-jaune-500"></portée>
+                    <portée classe=« Text-yellow-500 text-[10px] md :text-xs font-bold uppercase tracking-[0.3em] »>Exclusivités</portée>
+                </div>
+                <h2 classe=« Text-3xl md : text-5xl font-extrabold tracking-tighter italique »>
+                    CINÉMA & <portée classe="texte-transparent bg-clip-texte bg-gradient-à-r du jaune-400 au jaune-600">SÉRIES</portée>
+                </h2>
+            </div>
+            
+            <!- Navigation (Cachée sur petit mobile pour gagner de la place, priorité tactile) -->
+            <div classe="sm caché:flex gap-3">
+                <bouton oncliquez="scrollCarousel(-1)" classe=« W-10 h-10 md : w-12 md : h-12 arrondi-xl verre-carte flex éléments-centre justify-centre hover : bg-jaune-500 hover : texte-noir transition-couleurs groupe »>
+                    <svg xmlns="http://www.w3.org/2000/svg" largeur="20" hauteur="20" voirBox="002424" remplir="aucun" coup="couleur actuelle" largeur de course="2,5" cartable="rond" trait-lignejoindre="rond"><chemin d="m15 18-6-6 6-6"/></svg>
+                </bouton>
+                <bouton oncliquez="scrollCarousel(1)" classe=« W-10 h-10 md : w-12 md : h-12 arrondi-xl verre-carte flex éléments-centre justify-centre hover : bg-jaune-500 hover : texte-noir transition-couleurs groupe »>
+                    <svg xmlns="http://www.w3.org/2000/svg" largeur="20" hauteur="20" voirBox="002424" remplir="aucun" coup="couleur actuelle" largeur de course="2,5" cartable="rond" trait-lignejoindre="rond"><chemin d="m9186-6-6-6"/></svg>
+                </bouton>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-12">
-            <div class="glass p-2 rounded-2xl group cursor-pointer overflow-hidden border border-white/5 hover:border-yellow-500/30 transition-all duration-300">
-                <img src="https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg" class="rounded-xl w-full aspect-[2/3] object-cover poster-zoom" alt="Avatar : Feu et Cendre">
+        <!-- Emballage de carrousel -->
+        <div classe="parent carrousel-emballage">
+            <div identifiant="carrousel" classe=« Fllex overflow-x-auto gap-4 md :gap-8 pb-8 md :pb-12 no-scrollbar scroll-smooth snap-x snap-obligatoire px-2 »>
+                
+                <!-- Point 1: Avatar -->
+                <div classe="flex-aucun w-[160px] md:w-[260px] snap-start">
+                    <div classe=« Glass-Card p-2 md : p-3 arrondi-[1,5rem] md : relatif au curseur-pointeur du groupe arrondi-[2rem] »>
+                        <div classe="haut absolu 4 droite-4 z-20">
+                            <portée classe="badge bg-jaune-500 texte-noir">Nouveau</portée>
+                        </div>
+                        <div classe=« Conteneur IMG arrondi-[1rem] md : arrondi-[1,5rem] aspect caché par débordement-[2/3] relatif »>
+                            <img src="https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg" 
+                                 classe="w-h-couverture d'objet complète" alt="Avatar">
+                            <div classe=« Absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md :opacity-0 md :group-hover :opacity-100 transition-opacity duration-500 flex items-end p-4 md :p-6 »>
+                                <bouton classe=« W-full py-2 md : py-3 bg-white text-black font-bold arrondi-lg md : arrondi-xl text-[10px] md :text-sm »>Regarder</bouton>
+                            </div>
+                        </div>
+                        <div classe="mt-3 md:mt-4 px-1 md:px-2">
+                            <h3 classe="font-bold text-sm md : text-lg lead-tight group-hover : text-yellow-500 transition-colors truncate">Avatar : Feu et cendres</h3>
+                            <p classe=« Text-[9px] md : text-xs text-gray-500 mt-1 majuscule police-semi-gras tracking-wider »>Aventure • 2025</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Point 2 : Maison du Dragon ->
+                <div classe="flex-aucun w-[160px] md:w-[260px] snap-start">
+                    <div classe=« Glass-Card p-2 md : p-3 arrondi-[1,5rem] md : relatif au curseur-pointeur du groupe arrondi-[2rem] »>
+                        <div classe="haut absolu 4 droite-4 z-20">
+                            <portée classe="badge bg-bleu-500 texte-blanc">Saison 2</portée>
+                        </div>
+                        <div class="img-container rounded-[1rem] md:rounded-[1.5rem] overflow-hidden aspect-[2/3]">
+                            <img src="https://vystava.co.uk/cdn/shop/files/house-of-the-dragon-throne-movie-poster-61x91-5cm-new-37753-1-p.jpg?v=1725259128&width=1100" 
+                                 class="w-full h-full object-cover" alt="HOTD">
+                        </div>
+                        <div class="mt-3 md:mt-4 px-1 md:px-2">
+                            <h3 class="font-bold text-sm md:text-lg leading-tight group-hover:text-yellow-500 transition-colors truncate">House Of The Dragon</h3>
+                            <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">Drame • Fantastique</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3: Harry Potter -->
+                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                    <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
+                        </div>
+                        <div class="img-container rounded-[1rem] md:rounded-[1.5rem] overflow-hidden aspect-[2/3]">
+                            <img src="https://media.posterstore.com/site_images/68631db092c536b9cc92b06f_775081888_WB0101-5.jpg" 
+                                 class="w-full h-full object-cover" alt="Harry Potter">
+                        </div>
+                        <div class="mt-3 md:mt-4 px-1 md:px-2">
+                            <h3 class="font-bold text-sm md:text-lg leading-tight group-hover:text-yellow-500 transition-colors truncate">Harry Potter</h3>
+                            <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">Magie • Classique</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4: Dora -->
+                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                    <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
+                        <div class="img-container rounded-[1rem] md:rounded-[1.5rem] overflow-hidden aspect-[2/3]">
+                            <img src="https://m.media-amazon.com/images/I/71u9S9S8S4L._AC_SL1500_.jpg" 
+                                 class="w-full h-full object-cover" alt="Dora">
+                        </div>
+                        <div class="mt-3 md:mt-4 px-1 md:px-2">
+                            <h3 class="font-bold text-sm md:text-lg leading-tight group-hover:text-yellow-500 transition-colors truncate">Dora & la Cité Perdue</h3>
+                            <p classe=« Text-[9px] md : text-xs text-gray-500 mt-1 majuscule police-semi-gras tracking-wider »>Famille • Exploration</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 5 : Carte Premium DOM-TOM ->
+                <div classe="flex-aucun w-[160px] md:w-[260px] snap-start">
+                    <div classe=« H-full border-2 border-dashed border-yellow-500/30 arrondi-[1.5rem] md : arrondi-[2rem] flex-col items-center justify-center p-6 md :p-8 text-center groupe curseur-pointeur hover : bg-yellow-500/5 transition-all duration-500 »>
+                        <div classe="w-14 h-14 md :w-20 md :h-20 bg-gradient-à-br du jaune-400 à l'orange-600 arrondi-2xl md : arrondi-3xl flex items-centre justify-centre text-2xl md :text-4xl shadow-lg shadow-yellow-500/20 group-hover :transition-transformée rotative-12">
+                            🏝️
+                        </div>
+                        <h3 classe=« Mt-4 md : mt-6 font-black text-sm md : text-xl text-white uppercase tracking-tighter »>Chaînes<br>DOM-TOM</h3>
+                        <p classe="mt-3 md:mt-4 text-[8px] md:text-[10px] text-gray-400 majuscule font-bold tracking-[0,2em]">En direct • Direct</p>
+                    </div>
+                </div>
+
             </div>
-            <div class="glass p-2 rounded-2xl group cursor-pointer overflow-hidden border border-white/5 hover:border-yellow-500/30 transition-all duration-300">
-                <img src="https://vystava.co.uk/cdn/shop/files/house-of-the-dragon-throne-movie-poster-61x91-5cm-new-37753-1-p.jpg?v=1725259128&width=1100" class="rounded-xl w-full aspect-[2/3] object-cover poster-zoom" alt="House Of The Dragon Throne">
-            </div>
-            <div class="glass p-2 rounded-2xl group cursor-pointer overflow-hidden border border-white/5 hover:border-yellow-500/30 transition-all duration-300">
-                <img src="https://media.posterstore.com/site_images/68631db092c536b9cc92b06f_775081888_WB0101-5.jpg" class="rounded-xl w-full aspect-[2/3] object-cover poster-zoom" alt="Harry Potter">
-            </div>
-            <div class="glass p-2 rounded-2xl group cursor-pointer overflow-hidden border border-white/5 hover:border-yellow-500/30 transition-all duration-300">
-                <img src="https://play-lh.googleusercontent.com/TBq_f2WWaJvO4p17ZtXULOyPgQdwWqMGaZSi36y-K-3WApek7OzOP49oh8s_T-Yw8MSo" class="rounded-xl w-full aspect-[2/3] object-cover poster-zoom" alt="Dora">
-            </div>
-            <!-- <div class="glass p-2 rounded-2xl group cursor-pointer overflow-hidden border border-white/5 hover:border-yellow-500/30 transition-all duration-300"> 
-                <img src="https://resizing.flixster.com/BloftNvQKmYU59oc4agzJxUD4kw=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p23343_p_v12_ai.jpg" class="rounded-xl w-full aspect-[2/3] object-cover poster-zoom" alt="American Pie">
-            </div> -->
-             <div class="glass p-2 rounded-2xl group cursor-pointer overflow-hidden border border-white/5 hover:border-yellow-500/30 transition-all duration-300">
-                <img src="https://m.media-amazon.com/images/I/91mKZxQOu3L._AC_SY445_.jpg" class="rounded-xl w-full aspect-[2/3] object-cover poster-zoom" alt="Grizzly Night">
-            </div>
-            <!-- Carte DOM-TOM existante -->
-    <div id="domtom" class="group cursor-pointer border-2 border-dashed border-yellow-500/40 rounded-2xl flex flex-col items-center justify-center p-4 aspect-[2/3] hover:bg-yellow-500/5 transition">
-        <span class="text-3xl mb-2">🌴</span>
-        <p class="text-[10px] font-title text-center font-bold uppercase text-white">Chaînes<br>DOM-TOM</p>
-        <p class="text-[8px] text-gray-500 mt-2 uppercase tracking-widest text-center">Guadeloupe, Martinique, Réunion</p>
-    </div>
         </div>
+    </section>
+
+    <script>
+        fonction scrollCarousel(direction) {
+            const carrousel = document.getElementById('carrousel');
+            const largeur de carte = carrousel.sélecteur de requêtes('.flex-aucun').largeur de décalage + (fenêtre.largeur intérieure < 768 ? 16 : 32); 
+            carrousel.défilementPar({
+                gauche: largeur de carte * direction,
+                comportement: 'lisse'
+            });
+        }
+    </script>
 
         <!-- Intégration Lyf Pay dans la grille cinéma avec style DOM-TOM 
 <div id="movieGrid" class="grid grid-cols-2 md:grid-cols-6 gap-6 mb-12">
