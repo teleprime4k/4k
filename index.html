@@ -386,35 +386,36 @@
             z-index: 10;
         }
 
-/* Nouveaux Style FILM & SÉRIES */
-/* Masquage de la barre de défilement */
-        .pas de barre de défilement : -webkit-scrollbar { affichage : aucun; }
-        .pas de barre de défilement { -style de débordement MS : aucun; largeur de la barre de défilement : aucun; }
 
-        /* Effet Glassmorphisme poussé */
-        .verre-carte {
-            contexte: rgba (255, 255, 255, 0,03);
-            filtre de toile de fond : flou (flou)12px);
-            frontière: 1px solide rgba (255, 255, 255, 0,08);
-            transition : tout 0,4s cubique-bezier (0,23, 1, 0,32, 1);
+
+/* Masquage de la scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Effet Glassmorphism poussé */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* Hover uniquement sur les appareils qui le support (Bureau) */
-        @médias (survoler : planer) {
-            .glass-card: survoler {
-                contexte: rgba (255, 255, 255, 0,07);
-                couleur de la bordure : rgba (234, 179, 8, 0,5);
-                transformer: traduireY (-10px) échelle (1.02);
-                encadré : 0 20px 40px rgba (0, 0, 0, 0,4), 0 0 20px rgba (234, 179, 8, 0,1);
+        /* Hover uniquement sur les appareils qui le supportent (Desktop) */
+        @media (hover: hover) {
+            .glass-card:hover {
+                background: rgba(255, 255, 255, 0.07);
+                border-color: rgba(234, 179, 8, 0.5);
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(234, 179, 8, 0.1);
             }
-            .glass-card : survoler .img-container img {
-                transformer: échelle (1.1);
+            .glass-card:hover .img-container img {
+                transform: scale(1.1);
             }
         }
 
         /* Animation de l'image interne */
         .img-container img {
-            transition : transform 0.6s cubique-bezier (0,23, 1, 0,32, 1);
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         /* Dégradé sur les bords du carrousel - Adapté mobile */
@@ -423,12 +424,12 @@
             position: absolute;
             top: 0; right: 0; bottom: 0;
             width: 40px; /* Plus petit sur mobile */
-            contexte: linear-gradient(to gauche, #020617, transparent);
-            pointer-events: aucun;
+            background: linear-gradient(to left, #020617, transparent);
+            pointer-events: none;
             z-index: 10;
         }
         
-        @médias (min-width: 768px) {
+        @media (min-width: 768px) {
             .carousel-wrapper::after {
                 width: 100px;
             }
@@ -447,6 +448,7 @@
         @media (min-width: 768px) {
             .badge { font-size: 9px; }
         }
+
 
 </style>
 
@@ -991,60 +993,60 @@
         </section>
     
     <!-- SECTION FILMS -->
-    <section identifiant="films" classe="max-w-7xl mx-auto relatif">
+    <section id="films" class="max-w-7xl mx-auto relative">
         
         <!-- En-tête stylé -->
-        <div classe="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
-            <div classe="espace-y-2">
-                <div classe="éléments flexibles-centre gap-2">
-                    <portée classe="w-6 md:w-8 h-[2px] bg-jaune-500"></portée>
-                    <portée classe=« Text-yellow-500 text-[10px] md :text-xs font-bold uppercase tracking-[0.3em] »>Exclusivités</portée>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
+            <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="w-6 md:w-8 h-[2px] bg-yellow-500"></span>
+                    <span class="text-yellow-500 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em]">Exclusivités</span>
                 </div>
-                <h2 classe=« Text-3xl md : text-5xl font-extrabold tracking-tighter italique »>
-                    CINÉMA & <portée classe="texte-transparent bg-clip-texte bg-gradient-à-r du jaune-400 au jaune-600">SÉRIES</portée>
+                <h2 class="text-3xl md:text-5xl font-extrabold tracking-tighter italic">
+                    CINÉMA & <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">SÉRIES</span>
                 </h2>
             </div>
             
-            <!- Navigation (Cachée sur petit mobile pour gagner de la place, priorité tactile) -->
-            <div classe="sm caché:flex gap-3">
-                <bouton oncliquez="scrollCarousel(-1)" classe=« W-10 h-10 md : w-12 md : h-12 arrondi-xl verre-carte flex éléments-centre justify-centre hover : bg-jaune-500 hover : texte-noir transition-couleurs groupe »>
-                    <svg xmlns="http://www.w3.org/2000/svg" largeur="20" hauteur="20" voirBox="002424" remplir="aucun" coup="couleur actuelle" largeur de course="2,5" cartable="rond" trait-lignejoindre="rond"><chemin d="m15 18-6-6 6-6"/></svg>
-                </bouton>
-                <bouton oncliquez="scrollCarousel(1)" classe=« W-10 h-10 md : w-12 md : h-12 arrondi-xl verre-carte flex éléments-centre justify-centre hover : bg-jaune-500 hover : texte-noir transition-couleurs groupe »>
-                    <svg xmlns="http://www.w3.org/2000/svg" largeur="20" hauteur="20" voirBox="002424" remplir="aucun" coup="couleur actuelle" largeur de course="2,5" cartable="rond" trait-lignejoindre="rond"><chemin d="m9186-6-6-6"/></svg>
-                </bouton>
+            <!-- Navigation (Cachée sur petit mobile pour gagner de la place, tactile prioritaire) -->
+            <div class="hidden sm:flex gap-3">
+                <button onclick="scrollCarousel(-1)" class="w-10 h-10 md:w-12 md:h-12 rounded-xl glass-card flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-colors group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button onclick="scrollCarousel(1)" class="w-10 h-10 md:w-12 md:h-12 rounded-xl glass-card flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-colors group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
             </div>
         </div>
 
-        <!-- Emballage de carrousel -->
-        <div classe="parent carrousel-emballage">
-            <div identifiant="carrousel" classe=« Fllex overflow-x-auto gap-4 md :gap-8 pb-8 md :pb-12 no-scrollbar scroll-smooth snap-x snap-obligatoire px-2 »>
+        <!-- Carousel Wrapper -->
+        <div class="carousel-wrapper relative">
+            <div id="carousel" class="flex overflow-x-auto gap-4 md:gap-8 pb-8 md:pb-12 no-scrollbar scroll-smooth snap-x snap-mandatory px-2">
                 
-                <!-- Point 1: Avatar -->
-                <div classe="flex-aucun w-[160px] md:w-[260px] snap-start">
-                    <div classe=« Glass-Card p-2 md : p-3 arrondi-[1,5rem] md : relatif au curseur-pointeur du groupe arrondi-[2rem] »>
-                        <div classe="haut absolu 4 droite-4 z-20">
-                            <portée classe="badge bg-jaune-500 texte-noir">Nouveau</portée>
+                <!-- Item 1: Avatar -->
+                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                    <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="badge bg-yellow-500 text-black">Nouveau</span>
                         </div>
-                        <div classe=« Conteneur IMG arrondi-[1rem] md : arrondi-[1,5rem] aspect caché par débordement-[2/3] relatif »>
+                        <div class="img-container rounded-[1rem] md:rounded-[1.5rem] overflow-hidden aspect-[2/3] relative">
                             <img src="https://upload.wikimedia.org/wikipedia/en/9/95/Avatar_Fire_and_Ash_poster.jpeg" 
-                                 classe="w-h-couverture d'objet complète" alt="Avatar">
-                            <div classe=« Absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md :opacity-0 md :group-hover :opacity-100 transition-opacity duration-500 flex items-end p-4 md :p-6 »>
-                                <bouton classe=« W-full py-2 md : py-3 bg-white text-black font-bold arrondi-lg md : arrondi-xl text-[10px] md :text-sm »>Regarder</bouton>
+                                 class="w-full h-full object-cover" alt="Avatar">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 md:p-6">
+                                <button class="w-full py-2 md:py-3 bg-white text-black font-bold rounded-lg md:rounded-xl text-[10px] md:text-sm">Regarder</button>
                             </div>
                         </div>
-                        <div classe="mt-3 md:mt-4 px-1 md:px-2">
-                            <h3 classe="font-bold text-sm md : text-lg lead-tight group-hover : text-yellow-500 transition-colors truncate">Avatar : Feu et cendres</h3>
-                            <p classe=« Text-[9px] md : text-xs text-gray-500 mt-1 majuscule police-semi-gras tracking-wider »>Aventure • 2025</p>
+                        <div class="mt-3 md:mt-4 px-1 md:px-2">
+                            <h3 class="font-bold text-sm md:text-lg leading-tight group-hover:text-yellow-500 transition-colors truncate">Avatar: Fire & Ash</h3>
+                            <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">Aventure • 2025</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Point 2 : Maison du Dragon ->
-                <div classe="flex-aucun w-[160px] md:w-[260px] snap-start">
-                    <div classe=« Glass-Card p-2 md : p-3 arrondi-[1,5rem] md : relatif au curseur-pointeur du groupe arrondi-[2rem] »>
-                        <div classe="haut absolu 4 droite-4 z-20">
-                            <portée classe="badge bg-bleu-500 texte-blanc">Saison 2</portée>
+                <!-- Item 2: House of the Dragon -->
+                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                    <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
+                        <div class="absolute top-4 right-4 z-20">
+                            <span class="badge bg-blue-500 text-white">Saison 2</span>
                         </div>
                         <div class="img-container rounded-[1rem] md:rounded-[1.5rem] overflow-hidden aspect-[2/3]">
                             <img src="https://vystava.co.uk/cdn/shop/files/house-of-the-dragon-throne-movie-poster-61x91-5cm-new-37753-1-p.jpg?v=1725259128&width=1100" 
@@ -1083,19 +1085,19 @@
                         </div>
                         <div class="mt-3 md:mt-4 px-1 md:px-2">
                             <h3 class="font-bold text-sm md:text-lg leading-tight group-hover:text-yellow-500 transition-colors truncate">Dora & la Cité Perdue</h3>
-                            <p classe=« Text-[9px] md : text-xs text-gray-500 mt-1 majuscule police-semi-gras tracking-wider »>Famille • Exploration</p>
+                            <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">Famille • Exploration</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Article 5 : Carte Premium DOM-TOM ->
-                <div classe="flex-aucun w-[160px] md:w-[260px] snap-start">
-                    <div classe=« H-full border-2 border-dashed border-yellow-500/30 arrondi-[1.5rem] md : arrondi-[2rem] flex-col items-center justify-center p-6 md :p-8 text-center groupe curseur-pointeur hover : bg-yellow-500/5 transition-all duration-500 »>
-                        <div classe="w-14 h-14 md :w-20 md :h-20 bg-gradient-à-br du jaune-400 à l'orange-600 arrondi-2xl md : arrondi-3xl flex items-centre justify-centre text-2xl md :text-4xl shadow-lg shadow-yellow-500/20 group-hover :transition-transformée rotative-12">
+                <!-- Item 5: DOM-TOM Premium Card -->
+                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                    <div class="h-full border-2 border-dashed border-yellow-500/30 rounded-[1.5rem] md:rounded-[2rem] flex flex-col items-center justify-center p-6 md:p-8 text-center group cursor-pointer hover:bg-yellow-500/5 transition-all duration-500">
+                        <div class="w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-2xl md:rounded-3xl flex items-center justify-center text-2xl md:text-4xl shadow-lg shadow-yellow-500/20 group-hover:rotate-12 transition-transform">
                             🏝️
                         </div>
-                        <h3 classe=« Mt-4 md : mt-6 font-black text-sm md : text-xl text-white uppercase tracking-tighter »>Chaînes<br>DOM-TOM</h3>
-                        <p classe="mt-3 md:mt-4 text-[8px] md:text-[10px] text-gray-400 majuscule font-bold tracking-[0,2em]">En direct • Direct</p>
+                        <h3 class="mt-4 md:mt-6 font-black text-sm md:text-xl text-white uppercase tracking-tighter">Chaînes<br>DOM-TOM</h3>
+                        <p class="mt-3 md:mt-4 text-[8px] md:text-[10px] text-gray-400 uppercase font-bold tracking-[0.2em]">Live • Direct</p>
                     </div>
                 </div>
 
@@ -1104,15 +1106,16 @@
     </section>
 
     <script>
-        fonction scrollCarousel(direction) {
-            const carrousel = document.getElementById('carrousel');
-            const largeur de carte = carrousel.sélecteur de requêtes('.flex-aucun').largeur de décalage + (fenêtre.largeur intérieure < 768 ? 16 : 32); 
-            carrousel.défilementPar({
-                gauche: largeur de carte * direction,
-                comportement: 'lisse'
+        function scrollCarousel(direction) {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = carousel.querySelector('.flex-none').offsetWidth + (window.innerWidth < 768 ? 16 : 32); 
+            carousel.scrollBy({
+                left: cardWidth * direction,
+                behavior: 'smooth'
             });
         }
     </script>
+
 
         <!-- Intégration Lyf Pay dans la grille cinéma avec style DOM-TOM 
 <div id="movieGrid" class="grid grid-cols-2 md:grid-cols-6 gap-6 mb-12">
@@ -1886,7 +1889,7 @@ s0.parentNode.insertBefore(s1,s0);
     checkoutButton.addEventListener('click', () => {
       if (cart.length > 0) {
         // Redirection vers ton lien Lydia
-        window.location.href = '';   
+        window.location.href = 'https://pay.lydia.me/l?t=dhouamirdina941o';
       }
     });
 
