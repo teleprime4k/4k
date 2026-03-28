@@ -750,6 +750,7 @@
 
 
 /* Wrapper de la grille scrollable APPS  (Application)*/
+/* Wrapper de la grille scrollable */
 .grid-carousel-wrapper {
   position: relative;
 }
@@ -785,8 +786,8 @@
   right: 8px;
 }
 
-/* Masquer les flèches sur mobile */
-@media (max-width: 720px) {
+/* Masquer les flèches uniquement sur petits mobiles */
+@media (max-width: 480px) {
   .carousel-btn {
     display: none;
   }
@@ -824,6 +825,7 @@
 .grid-carousel > a:hover {
   transform: scale(1.05);
 }
+
 
 
 
