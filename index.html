@@ -747,6 +747,86 @@
             .progress-bar { height: 10px; }
         }
 
+
+
+/* Wrapper de la grille scrollable APPS  (Application)*/
+.grid-carousel-wrapper {
+  position: relative;
+}
+
+/* Boutons flèches */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10,15,30,0.6);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  font-size: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+.carousel-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+.carousel-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.carousel-btn.prev {
+  left: 8px;
+}
+.carousel-btn.next {
+  right: 8px;
+}
+
+/* Masquer les flèches sur mobile */
+@media (max-width: 720px) {
+  .carousel-btn {
+    display: none;
+  }
+}
+
+/* Grille scrollable */
+.grid-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 160px; /* largeur fixe des items */
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* scroll fluide iOS */
+  padding-bottom: 1rem;
+  scroll-behavior: smooth;
+}
+
+/* Items de la grille */
+.grid-carousel > a {
+  scroll-snap-align: start;
+  background: #222; /* Exemple de fond, adapte selon ton design */
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  color: white;
+  flex-shrink: 0;
+  width: 160px; /* même que grid-auto-columns */
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+.grid-carousel > a:hover {
+  transform: scale(1.05);
+}
+
+
+
 </style>
 
  <!-- Interface Panier -->
@@ -1343,34 +1423,48 @@
 </section>
 
     <!-- Jai mis a jours la selection INSTALLER APK en forme Grille, pour que tout les APK ce suive  -->
+
     <!-- SECTION APPS -->
-    <section id="apps">
-        <div class="glass p-8 rounded-[2.5rem] relative overflow-hidden">
-            <h2 class="font-title text-xl mb-6 uppercase text-white">Installer <span class="text-yellow-500">APK. TV📺 & ANDROID📱</span></h2>
-            
-            <!-- GRILLE DE CARRÉS -->
-    <main class="w-full max-w-5xl mx-auto">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            
-            <!-- App 1 -->
-            <a href="http://go.aftvnews.com/6184727" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
-                <span class="badge-nouveau">Nouveau !</span>
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Saga Stalker</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Mag</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>
+<section id="apps">
+  <div class="glass p-8 rounded-[2.5rem] relative overflow-hidden">
+    <h2 class="font-title text-xl mb-6 uppercase text-white">
+      Installer <span class="text-yellow-500">APK. TV📺 & ANDROID📱</span>
+    </h2>
+
+    <!-- Wrapper de la grille scrollable -->
+    <div class="grid-carousel-wrapper relative">
+
+      <!-- Flèches de navigation (optionnel, tu peux les enlever si tu veux un scroll natif uniquement) -->
+       <!--  <button class="carousel-btn prev" aria-label="Défiler vers la gauche">‹</button>
+      <button class="carousel-btn next" aria-label="Défiler vers la droite">›</button>  -->
+
+      <!-- Grille scrollable -->
+      <div id="carousel" class="grid-carousel" tabindex="0" role="list" aria-label="Liste défilante d'applications">
+
+
+        <!-- App 1 -->
+        <a href="http://go.aftvnews.com/6184727" download="Dream4k_Saga_Stalker.apk"
+           class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
+            <span class="badge-nouveau">Nouveau !</span>
+            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <div>
+                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Saga Stalker</h3>
+                <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Mag</span>
+            </div>
+            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
+                Installer
+            </div>
+        </a>
 
             <!-- App 2 -->
-             <a href="http://go.aftvnews.com/8415512" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.15s">
+             <a href="http://go.aftvnews.com/8415512" download 
+             class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+             style="animation-delay: 0.1s">
             <span class="badge-nouveau">Fonctione avec VPN !</span>
                 <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1388,7 +1482,8 @@
             
 
             <!-- App 3 -->
-            <a href="http://go.aftvnews.com/3483955" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.2s">
+            <a href="http://go.aftvnews.com/3483955" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
                <span class="badge-nouveau">Nouveau !</span>
                 <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1405,7 +1500,8 @@
             </a>
 
             <!-- App 4 -->
-            <a href="http://go.aftvnews.com/5604791" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.25s">
+            <a href="http://go.aftvnews.com/5604791" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
                 <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -1421,7 +1517,8 @@
             </a>
 
             <!-- App 5 -->
-            <a href="http://go.aftvnews.com/2257663" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.15s">
+            <a href="http://go.aftvnews.com/2257663" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
                 <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -1437,7 +1534,8 @@
             </a>
 
             <!-- App 6 -->
-            <a href="http://go.aftvnews.com/9663676" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.35s">
+            <a href="http://go.aftvnews.com/9663676" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
                 <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -1453,7 +1551,8 @@
             </a>  
 
             <!-- App 7 -->
-            <a href="http://go.aftvnews.com/2925946" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.15s">
+            <a href="http://go.aftvnews.com/2925946" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
                 <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -1469,7 +1568,8 @@
             </a>
 
             <!-- App 8 Surfshark VPN (Couleurs Sécurité Optimisées) -->          
-            <a href="https://www.mediafire.com/file/e992r3yre9ukv8h/Surfshark.Android.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
+            <a href="https://www.mediafire.com/file/e992r3yre9ukv8h/Surfshark.Android.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
               <span class="badge-nouveau">VPN PAYANT</span>
             <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/40 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #09bd33 0%, #0f172a 100%)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1486,7 +1586,8 @@
         </a>
 
           <!-- App 9 Proton VPN -->
-           <a href="https://www.mediafire.com/file/31ty2f1m8zj93cq/ProtonVPN.Android_TV.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
+           <a href="https://www.mediafire.com/file/31ty2f1m8zj93cq/ProtonVPN.Android_TV.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
               <span class="badge-nouveau">VPN GRATUIT</span>
             <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #969b0a 100%)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1503,7 +1604,8 @@
         </a>
 
             <!-- App 10 Google Play -->
-        <a href="https://www.mediafire.com/file/kfwukk0i574vdsc/Google_Playa-Andoid.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
+        <a href="https://www.mediafire.com/file/kfwukk0i574vdsc/Google_Playa-Andoid.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
            
             <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #830a9b 100%)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -1521,7 +1623,8 @@
         </a>
 
         <!-- App 11 Downloader by AFTVnews -->
-        <a href="https://www.mediafire.com/file/hdqtj1q80cf041f/.downloader-2-0-1-ForGoogleAndroid.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
+        <a href="https://www.mediafire.com/file/hdqtj1q80cf041f/.downloader-2-0-1-ForGoogleAndroid.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
            
             <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #c5267b 100%)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -1539,7 +1642,8 @@
         </a>
 
         <!-- App 12 Uptodown -->
-        <a href="https://www.mediafire.com/file/j2u8oiba9pyj74y/uptodown-app-store.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card" style="animation-delay: 0.1s">
+        <a href="https://www.mediafire.com/file/j2u8oiba9pyj74y/uptodown-app-store.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
+           style="animation-delay: 0.1s">
            
             <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #0a449b 100%)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -1557,15 +1661,81 @@
         </a>
                 </div>
 
-        <!-- FOOTER -->
-        <div class="mt-12 text-center animate-card" style="animation-delay: 0.5s">
-            <div class="inline-flex items-center px-4 py-2 bg-yellow-500/5 border border-yellow-500/10 rounded-full">
-                <span class="text-yellow-500 mr-2">ℹ️</span>
-                <span class="text-[9px] text-gray-400 uppercase tracking-tight">Activez les sources inconnues sur votre tv ou smartphone.</span>
-            </div>
-        </div>
-    </main>
-    </section>
+        <!-- Info footer -->
+    <div class="mt-12 text-center animate-card" style="animation-delay: 0.5s">
+      <div class="inline-flex items-center px-4 py-2 bg-yellow-500/5 border border-yellow-500/10 rounded-full">
+        <span class="text-yellow-500 mr-2">ℹ️</span>
+        <span class="text-[9px] text-gray-400 uppercase tracking-tight">Activez les sources inconnues sur votre tv ou smartphone.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Script JavaScript pour gérer le défilement -->
+<script>
+  (function(){
+    const carousel = document.getElementById('carousel');
+    const btnPrev = document.querySelector('.carousel-btn.prev');
+    const btnNext = document.querySelector('.carousel-btn.next');
+
+    if(!carousel || !btnPrev || !btnNext) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function getStep(){
+      const card = carousel.querySelector('.glass-square');
+      if(!card) return 160;
+      const cardWidth = Math.round(card.getBoundingClientRect().width);
+      const style = getComputedStyle(carousel);
+      const gap = parseFloat(style.gap) || 16;
+      return cardWidth + gap;
+    }
+
+    function updateButtons(){
+      const max = carousel.scrollWidth - carousel.clientWidth - 1;
+      btnPrev.disabled = carousel.scrollLeft <= 2;
+      btnNext.disabled = carousel.scrollLeft >= max;
+    }
+
+    function scrollByDir(dir, count = 1){
+      const step = getStep();
+      const left = dir * step * count;
+      carousel.scrollBy({ left, behavior: prefersReduced ? 'auto' : 'smooth' });
+    }
+
+    btnPrev.addEventListener('click', () => scrollByDir(-1, 1));
+    btnNext.addEventListener('click', () => scrollByDir(1, 1));
+
+    carousel.addEventListener('scroll', () => requestAnimationFrame(updateButtons), { passive: true });
+
+    carousel.addEventListener('keydown', e => {
+      if(e.key === 'ArrowRight'){
+        e.preventDefault();
+        scrollByDir(1, 1);
+      }
+      if(e.key === 'ArrowLeft'){
+        e.preventDefault();
+        scrollByDir(-1, 1);
+      }
+    });
+
+    function handleResize(){
+      const isMobile = window.matchMedia('(max-width: 720px)').matches;
+      btnPrev.style.display = isMobile ? 'none' : '';
+      btnNext.style.display = isMobile ? 'none' : '';
+      updateButtons();
+    }
+    window.addEventListener('resize', () => requestAnimationFrame(handleResize));
+
+    // Initialisation
+    handleResize();
+    updateButtons();
+  })();
+</script>
+
+
 
     <!-- SECTION REVIEWS -->
     <section id="reviews" class="pb-12">
