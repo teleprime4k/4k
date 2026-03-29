@@ -705,21 +705,21 @@
         }
 
         /* Barre de progression temporelle */
-        .progress-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 4px;
-            background: var(--accent-color);
-            width: 100%;
-            transform-origin: left;
-            animation: shrink 60s linear forwards;/* 1 minutes avant disparition */
-        }
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: var(--accent-color);
+    width: 100%;
+    transform-origin: left;
+    /* L'animation sera ajoutée par le JS */
+}
 
-        @keyframes shrink {
-            from { transform: scaleX(1); }
-            to { transform: scaleX(0); }
-        }
+@keyframes shrink {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
 
         /* --- ADAPTATIONS SPECIFIQUES --- */
 
@@ -2077,8 +2077,8 @@ s0.parentNode.insertBefore(s1,s0);
  <div id="alertMessage" onclick="closeAlert()"> 
     <div class="alert-icon">⚠️</div>
     <div class="alert-content">
-        <strong>Optimisez votre connexion IPTV</strong>
-        Utilisez un VPN pour contourner les géo-restrictions en France et éviter les blocages ou bugs causés par votre fournisseur d'accès (FAI).
+        <strong>Une Question ?</strong>
+        Contactez-nous sur le Tchat Bleu en bas de l'ecrant a droit, Possible de payer💳via le tchat aussi💰
     </div>
     <div class="progress-bar" id="progressBar"></div>
 </div>
@@ -2086,31 +2086,38 @@ s0.parentNode.insertBefore(s1,s0);
 <script>
     function closeAlert() {
         const alert = document.getElementById('alertMessage');
-        alert.classList.add('hide');
-        setTimeout(() => {
-            alert.style.display = 'none';
-        }, 600);
+        if (alert) {
+            alert.classList.remove('show'); // On retire 'show' pour l'animation de sortie
+            alert.classList.add('hide');
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 600);
+        }
     }
 
     window.addEventListener('load', function() {
         const alert = document.getElementById('alertMessage');
         const progressBar = document.getElementById('progressBar');
-        const duration = 15000; // 15 secondes
+        
+        // --- RÉGLAGE : 60000ms = 1 MINUTE ---
+        const duration = 60000; 
 
-        // Affichage avec un petit délai
+        // Affichage de l'alerte 1 seconde après le chargement
         setTimeout(() => {
             alert.classList.add('show');
             
-            // Lancer l'animation de la barre de progression
-            progressBar.style.animation = `shrink ${duration}ms linear forwards`;
+            // Lancer l'animation de la barre de progression (exactement 1 minute)
+            if (progressBar) {
+                progressBar.style.animation = `shrink ${duration}ms linear forwards`;
+            }
 
-            // Disparition automatique
+            // Disparition automatique après la durée définie
             setTimeout(() => {
                 closeAlert();
             }, duration);
-        }, 61000);
+            
+        }, 1000);
     });
-
 </script>
     
 </body>
