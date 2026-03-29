@@ -760,43 +760,54 @@
 
 
 
-/* Wrapper de la grille scrollable APPS  (Application)*/
+/* Wrapper du carrousel */
 .grid-carousel-wrapper {
   position: relative;
+  width: 100%;
 }
-
 
 /* Grille scrollable */
 .grid-carousel {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 160px; /* largeur fixe des items */
-  gap: 16px;
+  display: flex; /* Flex est souvent plus fiable que Grid pour les carrousels horizontaux simples */
   overflow-x: auto;
+  gap: 1.5rem; /* Espace entre les cartes */
   scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch; /* scroll fluide iOS */
-  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem 0.5rem 2rem 0.5rem; /* Padding pour ne pas couper l'ombre/effet de zoom au survol */
   scroll-behavior: smooth;
+  scrollbar-width: none; /* Cache la scrollbar sur Firefox */
 }
 
-/* Items de la grille */
+/* Cache la scrollbar sur Chrome/Safari/Edge */
+.grid-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Items du carrousel */
 .grid-carousel > a {
-  scroll-snap-align: start;
-  background: #222; /* Exemple de fond, adapte selon ton design */
-  border-radius: 1rem;
-  padding: 1rem;
+  scroll-snap-align: center; /* Centre l'élément lors du scroll */
+  flex: 0 0 auto; /* Empêche les cartes de rétrécir */
+  width: 160px; /* Largeur fixe */
+  background: rgba(255, 255, 255, 0.05); /* Effet verre sombre */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   text-align: center;
   color: white;
-  flex-shrink: 0;
-  width: 160px; /* même que grid-auto-columns */
-  box-sizing: border-box;
-  transition: transform 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
+
+/* Effet au survol */
 .grid-carousel > a:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px) scale(1.05);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 
@@ -1396,317 +1407,239 @@
 </script>
 </section>
 
-    <!-- Jai mis a jours la selection INSTALLER APK en forme Grille, pour que tout les APK ce suive  -->
+    
+ <main class="w-full max-w-6xl mx-auto mt-12"> <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+            <span class="w-2 h-6 rounded-full" style="background-color: #3b82f6;"></span> Applications TV📺 & ANDROID📱 Premium 💎
+        </h2>
 
-    <!-- SECTION APPS -->
-<section id="apps">
-  <div class="glass p-8 rounded-[2.5rem] relative overflow-hidden">
-    <h2 class="font-title text-xl mb-6 uppercase text-white">
-      Installer <span class="text-yellow-500">APK. TV📺 & ANDROID📱</span>
-    </h2>
-
-    <!-- Wrapper de la grille scrollable -->
-    <div class="grid-carousel-wrapper relative">
-
-      <!-- Flèches de navigation (optionnel, tu peux les enlever si tu veux un scroll natif uniquement) -->
-       <!--  <button class="carousel-btn prev" aria-label="Défiler vers la gauche">‹</button>
-      <button class="carousel-btn next" aria-label="Défiler vers la droite">›</button>  -->
-
-      <!-- Grille scrollable -->
-      <div id="carousel" class="grid-carousel" tabindex="0" role="list" aria-label="Liste défilante d'applications">
-
-
-        <!-- App 1 -->
-        <a href="http://go.aftvnews.com/6184727" download="Dream4k_Saga_Stalker.apk"
-           class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-            <span class="badge-nouveau">Nouveau !</span>
-            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        <div class="hidden md:flex gap-2">
+            <button onclick="scrollLeftBtn2()" class="nav-btn w-10 h-10 rounded-full flex items-center justify-center" aria-label="Précédent">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
-            </div>
-            <div>
-                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Saga Stalker</h3>
-                <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Mag</span>
-            </div>
-            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                Installer
-            </div>
-        </a>
+            </button>
+            <button onclick="scrollRightBtn2()" class="nav-btn w-10 h-10 rounded-full flex items-center justify-center" aria-label="Suivant">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </div>
 
-            <!-- App 2 -->
-             <a href="http://go.aftvnews.com/8415512" download 
-             class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-             style="animation-delay: 0.1s">
-            <span class="badge-nouveau">Fonctione avec VPN !</span>
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Ibo Player</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Users</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>
+    <div class="carousel-wrapper relative group">
+        
+        <button onclick="scrollLeftBtn2()" class="absolute -left-4 top-1/2 -translate-y-1/2 z-10 nav-btn w-12 h-12 rounded-full flex md:hidden items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <div id="carousel2" class="flex overflow-x-auto gap-4 md:gap-6 pb-8 no-scrollbar scroll-smooth snap-x snap-mandatory px-4">
             
+            <script>
+                const apps2 = [
+                    { 
+                        name: "Saga Stalker", 
+                        category: "Direct", 
+                        icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z", 
+                        badge: "Nouveau", 
+                        badgeColor: "#ef4444", // Rouge
+                        downloadLink: "http://go.aftvnews.com/2257663",
+                        delay: "0.3s" 
+                    },
+                    { 
+                        name: "Ibo Player", 
+                        category: "Outil", 
+                        // EXEMPLE AVEC UNE IMAGE :
+                        icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", 
+                        badge: "Fonctione avec VPN !", 
+                        badgeColor: "#3b82f6", // Bleu
+                        downloadLink: "http://go.aftvnews.com/8415512",
+                        delay: "0.4s" 
+                    },
+                    {
+                        name: "Saga v1.0.49", 
+                        category: "Streaming", 
+                        // Tu peux mettre un code SVG ou le lien d'une image (ex: "img/netflix.png")
+                        icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", 
+                        badge: "Nouveau", 
+                        badgeColor: "#f97316", // Orange
+                        downloadLink: "http://go.aftvnews.com/3483955",
+                        delay: "0.1s" 
+                    },
+                    { 
+                        name: "Stalker Mag", 
+                        category: "Musique", 
+                        icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", 
+                        badge: "PRO", 
+                        badgeColor: "#10b981", // Vert
+                        downloadLink: "http://go.aftvnews.com/5604791",
+                        delay: "0.2s" 
+                    },
+                    { 
+                        name: "Golden Smart", 
+                        category: "Direct", 
+                        icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z", 
+                        badge: "HOT", 
+                        badgeColor: "#ef4444", // Rouge
+                        downloadLink: "http://go.aftvnews.com/2257663",
+                        delay: "0.3s" 
+                    },
+                    { 
+                        name: "Box Ethernet", 
+                        category: "Outil", 
+                        // EXEMPLE AVEC UNE IMAGE :
+                        icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", 
+                        badge: "FREE", 
+                        badgeColor: "#3b82f6", // Bleu
+                        downloadLink: "http://go.aftvnews.com/9663676",
+                        delay: "0.4s" 
+                    },
 
-            <!-- App 3 -->
-            <a href="http://go.aftvnews.com/3483955" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-               <span class="badge-nouveau">Nouveau !</span>
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Saga v1.0.49</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Code</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>
+                    {
+                        name: "Ibo Golden", 
+                        category: "Streaming", 
+                        // Tu peux mettre un code SVG ou le lien d'une image (ex: "img/netflix.png")
+                        icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z", 
+                        badge: "TOP", 
+                        badgeColor: "#f97316", // Orange
+                        downloadLink: "http://go.aftvnews.com/2925946",
+                        delay: "0.1s" 
+                    },
+                    { 
+                        name: "Surfshark VPN illimité", 
+                        category: "Sécurité VPN", 
+                        icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", 
+                        badge: "VPN PRO PAYANT", 
+                        badgeColor: "#10b981", // Vert
+                        downloadLink: "https://www.mediafire.com/file/e992r3yre9ukv8h/Surfshark.Android.apk/file",
+                        delay: "0.2s" 
+                    },
+                    { 
+                        name: "Proton VPN illimité", 
+                        category: "Sécurité VPN", 
+                        icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", 
+                        badge: "VPN FREE", 
+                        badgeColor: "#ef4444", // Rouge
+                        downloadLink: "https://www.mediafire.com/file/31ty2f1m8zj93cq/ProtonVPN.Android_TV.apk/file",
+                        delay: "0.3s" 
+                    },
+                    { 
+                        name: "Google Play", 
+                        category: "Outil", 
+                        // EXEMPLE AVEC UNE IMAGE :
+                        icon: "M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z", 
+                        badge: "FREE", 
+                        badgeColor: "#3b82f6", // Bleu
+                        downloadLink: "https://www.mediafire.com/file/kfwukk0i574vdsc/Google_Playa-Andoid.apk/file",
+                        delay: "0.4s" 
+                    },
 
-            <!-- App 4 -->
-            <a href="http://go.aftvnews.com/5604791" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Stalker Mag</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Mag</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>
+                    { 
+                        name: "Downloader by AFTVnews", 
+                        category: "Direct", 
+                        icon: "M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z", 
+                        badge: "HOT", 
+                        badgeColor: "#ef4444", // Rouge
+                        downloadLink: "https://www.mediafire.com/file/hdqtj1q80cf041f/.downloader-2-0-1-ForGoogleAndroid.apk/file",
+                        delay: "0.3s" 
+                    },
+                    { 
+                        name: "Uptodown", 
+                        category: "Outil", 
+                        // EXEMPLE AVEC UNE IMAGE :
+                        icon: "M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z", 
+                        badge: "FREE", 
+                        badgeColor: "#3b82f6", // Bleu
+                        downloadLink: "https://www.mediafire.com/file/j2u8oiba9pyj74y/uptodown-app-store.apk/file",
+                        delay: "0.4s" 
+                    },
+                ];
 
-            <!-- App 5 -->
-            <a href="http://go.aftvnews.com/2257663" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Golden Smart</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Users</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>
 
-            <!-- App 6 -->
-            <a href="http://go.aftvnews.com/9663676" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Box Ethernet</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Code</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>  
 
-            <!-- App 7 -->
-            <a href="http://go.aftvnews.com/2925946" download class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-                <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Ibo Golden</h3>
-                    <span class="text-[8px] text-yellow-500/80 font-bold uppercase tracking-wider">Connect Users</span>
-                </div>
-                <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                    Installer
-                </div>
-            </a>
 
-            <!-- App 8 Surfshark VPN (Couleurs Sécurité Optimisées) -->          
-            <a href="https://www.mediafire.com/file/e992r3yre9ukv8h/Surfshark.Android.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-              <span class="badge-nouveau">VPN PAYANT</span>
-            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/40 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #09bd33 0%, #0f172a 100%)">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-            </div>
-            <div>
-                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Surfshark VPN illimité</h3>
-                <span class="text-[8px] text-emerald-400 font-bold uppercase tracking-wider">Sécurité VPN</span>
-            </div>
-            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                Installer
-            </div>
-        </a>
+                document.write(apps2.map(app => `
+                    <div class="flex-shrink-0 w-36 md:w-44 glass-square rounded-[2rem] p-5 flex flex-col items-center justify-between text-center group snap-center animate-card" style="animation-delay: ${app.delay}">
+                        
+                        <span class="badge-nouveau uppercase" style="background: ${app.badgeColor};">
+                            ${app.badge}
+                        </span>
 
-          <!-- App 9 Proton VPN -->
-           <a href="https://www.mediafire.com/file/31ty2f1m8zj93cq/ProtonVPN.Android_TV.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-              <span class="badge-nouveau">VPN GRATUIT</span>
-            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #969b0a 100%)">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-            </div>
-            <div>
-                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Proton VPN illimité </h3>
-                <span class="text-[8px] text-emerald-400 font-bold uppercase tracking-wider">Sécurité VPN</span>
-            </div>
-            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                Installer
-            </div>
-        </a>
+                        <div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-black/20 group-hover:scale-110 transition-transform mb-4" 
+                             style="background: linear-gradient(135deg, ${app.badgeColor} 0%, #0f172a 100%)">
+                            
+                            ${app.icon.startsWith('M') || app.icon.startsWith('m')
+                                ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${app.icon}" />
+                                   </svg>`
+                                : `<img src="${app.icon}" class="w-8 h-8 object-contain" alt="${app.name}">`
+                            }
+                        </div>
 
-            <!-- App 10 Google Play -->
-        <a href="https://www.mediafire.com/file/kfwukk0i574vdsc/Google_Playa-Andoid.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-           
-            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #830a9b 100%)">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z" />
-               </svg>
+                        <div class="mb-4">
+                            <h3 class="font-bold text-[12px] md:text-[14px] leading-tight text-white mb-1">${app.name}</h3>
+                            <span class="text-[9px] font-bold uppercase tracking-wider" style="color: ${app.badgeColor};">${app.category}</span>
+                        </div>
 
-            </div>
-            <div>
-                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Google Play</h3>
-                <span class="text-[8px] text-emerald-400 font-bold uppercase tracking-wider">Android APK</span>
-            </div>
-            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                Installer
-            </div>
-        </a>
-
-        <!-- App 11 Downloader by AFTVnews -->
-        <a href="https://www.mediafire.com/file/hdqtj1q80cf041f/.downloader-2-0-1-ForGoogleAndroid.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-           
-            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #c5267b 100%)">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z" />
-                </svg>
-
-            </div>
-            <div>
-                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Downloader by AFTVnews</h3>
-                <span class="text-[8px] text-emerald-400 font-bold uppercase tracking-wider">Android APK</span>
-            </div>
-            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                Installer
-            </div>
-        </a>
-
-        <!-- App 12 Uptodown -->
-        <a href="https://www.mediafire.com/file/j2u8oiba9pyj74y/uptodown-app-store.apk/file" download="Dream4k_Saga_Stalker.apk" class="glass-square rounded-[2rem] p-4 flex flex-col items-center justify-between text-center group animate-card flex-shrink-0 w-40"
-           style="animation-delay: 0.1s">
-           
-            <div class="icon-box w-11 h-11 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform" style="background: linear-gradient(135deg, #3a564d 0%, #0a449b 100%)">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                </svg>
-
-            </div>
-            <div>
-                <h3 class="font-bold text-[11px] leading-tight text-white mb-0.5">Uptodown </h3>
-                <span class="text-[8px] text-emerald-400 font-bold uppercase tracking-wider">Android APK</span>
-            </div>
-            <div class="btn-install w-full py-1.5 rounded-xl text-[9px] font-extrabold uppercase tracking-tighter">
-                Installer
-            </div>
-        </a>
-                </div>
-
-        <!-- Info footer -->
+                        <a href="${app.downloadLink}" target="_blank" class="btn-install block w-full py-2.5 rounded-xl text-[10px] font-extrabold uppercase tracking-tighter shadow-sm hover:brightness-110 transition-all text-white no-underline">
+                            Télécharger
+                        </a>
+                    </div>
+                `).join(''));
+ 
+            </script>
+        </div>
+        </div>
+</main>
+<!-- Info footer -->
     <div class="mt-12 text-center animate-card" style="animation-delay: 0.5s">
       <div class="inline-flex items-center px-4 py-2 bg-yellow-500/5 border border-yellow-500/10 rounded-full">
         <span class="text-yellow-500 mr-2">ℹ️</span>
-        <span class="text-[9px] text-gray-400 uppercase tracking-tight">Activez les sources inconnues sur votre tv ou smartphone.</span>
+        <span class="text-[9px] text-gray-400 uppercase tracking-tight">Activez les sources inconnues sur votre tv ou smartphone !</span>
       </div>
-    </div>
-  </div>
-</section>
 
-
-
-<!-- Script JavaScript pour gérer le défilement -->
 <script>
-  (function(){
-    const carousel = document.getElementById('carousel');
-    const btnPrev = document.querySelector('.carousel-btn.prev');
-    const btnNext = document.querySelector('.carousel-btn.next');
+    const carousel2 = document.getElementById('carousel2');
 
-    if(!carousel || !btnPrev || !btnNext) return;
+    // Fonction pour faire défiler vers la droite
+    function scrollLeftBtn2() {
+        const scrollAmount = carousel2.offsetWidth * 0.8;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // Si on arrive au bout, on revient au début
+    if (carousel2.scrollLeft + carousel2.offsetWidth >= carousel2.scrollWidth - 10) {
+        carousel2.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+        carousel2.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+}
 
-    function getStep(){
-      const card = carousel.querySelector('.glass-square');
-      if(!card) return 160;
-      const cardWidth = Math.round(card.getBoundingClientRect().width);
-      const style = getComputedStyle(carousel);
-      const gap = parseFloat(style.gap) || 16;
-      return cardWidth + gap;
+    function scrollRightBtn2() {
+        const scrollAmount = carousel2.offsetWidth * 0.8;
+        carousel2.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
 
-    function updateButtons(){
-      const max = carousel.scrollWidth - carousel.clientWidth - 1;
-      btnPrev.disabled = carousel.scrollLeft <= 2;
-      btnNext.disabled = carousel.scrollLeft >= max;
-    }
+// Fonction pour démarrer le défilement automatique
+function startAutoScroll() {
+    autoScrollInterval = setInterval(scrollRightBtn2, 3000); // Défile toutes les 3 secondes
+}
 
-    function scrollByDir(dir, count = 1){
-      const step = getStep();
-      const left = dir * step * count;
-      carousel.scrollBy({ left, behavior: prefersReduced ? 'auto' : 'smooth' });
-    }
+// Fonction pour arrêter le défilement automatique
+function stopAutoScroll() {
+    clearInterval(autoScrollInterval);
+}
 
-    btnPrev.addEventListener('click', () => scrollByDir(-1, 1));
-    btnNext.addEventListener('click', () => scrollByDir(1, 1));
+// Lancement automatique au chargement
+startAutoScroll();
 
-    carousel.addEventListener('scroll', () => requestAnimationFrame(updateButtons), { passive: true });
+// Gestion du survol pour le confort de l'utilisateur
+carousel2.addEventListener('mouseenter', stopAutoScroll);
+carousel2.addEventListener('mouseleave', startAutoScroll);
 
-    carousel.addEventListener('keydown', e => {
-      if(e.key === 'ArrowRight'){
-        e.preventDefault();
-        scrollByDir(1, 1);
-      }
-      if(e.key === 'ArrowLeft'){
-        e.preventDefault();
-        scrollByDir(-1, 1);
-      }
-    });
+// Support tactile : on arrête l'auto-scroll si l'utilisateur touche le carrousel
+carousel2.addEventListener('touchstart', stopAutoScroll);
 
-    function handleResize(){
-      const isMobile = window.matchMedia('(max-width: 720px)').matches;
-      btnPrev.style.display = isMobile ? 'none' : '';
-      btnNext.style.display = isMobile ? 'none' : '';
-      updateButtons();
-    }
-    window.addEventListener('resize', () => requestAnimationFrame(handleResize));
-
-    // Initialisation
-    handleResize();
-    updateButtons();
-  })();
 </script>
 
 
