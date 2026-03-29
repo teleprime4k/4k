@@ -713,6 +713,7 @@
             background: var(--accent-color);
             width: 100%;
             transform-origin: left;
+            animation: shrink 60s linear forwards;/* 1 minutes avant disparition */
         }
 
         @keyframes shrink {
@@ -2073,7 +2074,7 @@ s0.parentNode.insertBefore(s1,s0);
 
     <!-- Message d'alerte -->
 <!-- Structure de l'alerte -->
-<!-- <div id="alertMessage" onclick="closeAlert()"> 
+ <div id="alertMessage" onclick="closeAlert()"> 
     <div class="alert-icon">⚠️</div>
     <div class="alert-content">
         <strong>Optimisez votre connexion IPTV</strong>
@@ -2081,7 +2082,7 @@ s0.parentNode.insertBefore(s1,s0);
     </div>
     <div class="progress-bar" id="progressBar"></div>
 </div>
--->
+
 <script>
     function closeAlert() {
         const alert = document.getElementById('alertMessage');
@@ -2107,7 +2108,7 @@ s0.parentNode.insertBefore(s1,s0);
             setTimeout(() => {
                 closeAlert();
             }, duration);
-        }, 500);
+        }, 61000);
     });
 
 </script>
