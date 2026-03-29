@@ -96,6 +96,26 @@
     z-index: 10;
 }
 
+/* Cache la bulle au départ */
+.snap-liquid-wrapper {
+    display: none; /* Caché par défaut */
+    opacity: 0;
+    top: -100px; /* Position de départ au-dessus de l'écran */
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Classe qui sera ajoutée par le JavaScript */
+.snap-liquid-wrapper.show-snap {
+    display: block;
+    opacity: 1;
+    top: 20px; /* Position finale */
+}
+
+/* Définit la couleur si elle n'est pas déjà là */
+:root {
+    --snap-yellow: #FFFC00;
+}
+        
 /* --- STYLES GÉNÉRAUX --- */
 .glass {
     background: rgba(255, 255, 255, 0.03);
@@ -470,6 +490,7 @@
 </head>
 <body>
 
+   <!--  l'effet Gooey (liquide/gluant) que je vois sur ma bulle Snapchat-->
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
 <defs>
     <filter id="gooey-filter">
@@ -488,7 +509,35 @@
         </svg>
     </a>
 </div>
+    
+<script>
+    window.addEventListener('load', function() {
+        // Sélectionne la bulle Snapchat
+        const snapWrapper = document.querySelector('.snap-liquid-wrapper');
 
+        // Délai de 1 minute 20 secondes (80000 ms)
+        const delay = 80000; 
+
+        setTimeout(() => {
+            if (snapWrapper) {
+                // On affiche l'élément
+                snapWrapper.style.display = 'block';
+                
+                // Petit délai technique pour que la transition CSS fonctionne
+                setTimeout(() => {
+                    snapWrapper.classList.add('show-snap');
+                }, 100);
+
+                // OPTIONNEL : Si tu veux qu'elle disparaisse après un certain temps (ex: 20s)
+                // setTimeout(() => {
+                //    snapWrapper.classList.remove('show-snap');
+                //    setTimeout(() => snapWrapper.style.display = 'none', 800);
+                // }, 20000);
+            }
+        }, delay);
+    });
+</script>
+    
     <!--L'ANIMATION GOAL BUT DA LA PAGE WEB-->
 <div id="goalAlert" class="goal-alert font-title flex items-center gap-3">
     <span class="text-2xl">⚽</span> BUT !!! <span id="goalInfo" class="text-sm">LIGUE 1+</span>
