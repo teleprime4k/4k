@@ -2148,24 +2148,24 @@ s0.parentNode.insertBefore(s1,s0);
         const alert = document.getElementById('alertMessage');
         const progressBar = document.getElementById('progressBar');
         
-        // --- RÉGLAGE : 60000ms = 1 MINUTE ---
-        const duration = 60000; 
+        // --- RÉGLAGE : 30000ms = 30 SECONDE ---
+        const duration = 30000; 
 
         // Affichage de l'alerte 1 seconde après le chargement
         setTimeout(() => {
             alert.classList.add('show');
             
-            // Lancer l'animation de la barre de progression (exactement 1 minute)
+            // Lancer l'animation de la barre de progression (exactement 30 seconde)
             if (progressBar) {
                 progressBar.style.animation = `shrink ${duration}ms linear forwards`;
             }
 
-            // Disparition automatique après la durée définie
+            // Disparition automatique après la durée définie ( après les 30 secondes d'affichage )
             setTimeout(() => {
                 closeAlert();
             }, duration);
             
-        }, 1000);
+        }, 7000); // <--- C'est ici qu'on règle le délai d'ouverture (7000ms = 7s)
     });
 </script>
     
