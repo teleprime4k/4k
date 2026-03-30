@@ -693,6 +693,8 @@
         
 /* Conteneur de l'alerte */
         #alertMessage {
+            display: none; /* <--- AJOUTEZ CECI : Cache totalement au départ */
+            opacity: 0;    /* <--- AJOUTEZ CECI : Pour la transition fluide après */
             position: fixed;
             top: -100px; /* Caché au début pour l'animation */
             left: 50%;
@@ -2153,7 +2155,13 @@ s0.parentNode.insertBefore(s1,s0);
 
         // Affichage de l'alerte 7 seconde après le chargement du site
         setTimeout(() => {
+           alert.style.display = 'flex'; // <--- AJOUTEZ CECI : On remet l'élément dans la page ( alert.classList.add('show');)
+
+            // On laisse un micro-délai pour que le navigateur comprenne le changement de display
+            setTimeout(() => {
+            alert.style.opacity = '1';
             alert.classList.add('show');
+            }, 10);
             
             // Lancer l'animation de la barre de progression (exactement 30 seconde)
             if (progressBar) {
