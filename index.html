@@ -2175,8 +2175,8 @@ s0.parentNode.insertBefore(s1,s0);
         // Enregistrer les données mises à jour
         localStorage.setItem('visitData', JSON.stringify(visitData));
 
-        // Afficher l'alerte seulement si le visiteur a moins de 3 visites aujourd'hui
-        if (visitData.count < 3) {
+        // Afficher l'alerte seulement si le visiteur a moins de 4 visites aujourd'hui
+        if (visitData.count < 4) 
 
         // Affichage de l'alerte 7 seconde après le chargement du site
         setTimeout(() => {
