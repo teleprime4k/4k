@@ -298,49 +298,70 @@
             animation: fadeIn 0.4s ease-out forwards;
         }
         
-/* Styles optimisés pour le tableau de classement compact */
-.table-ranking {
+/* Style global pour le tableau de Ligue 1*/
+.table-ranking { 
+    width: 100%; /* Occupe toute la largeur disponible */
+    margin: 0 auto; 
+    border-collapse: separate; 
+    border-spacing: 0 2px; 
+}
+.table-ranking th { 
+    font: 700 10px 'Syncopate', sans-serif; 
+    color: #4b5563; 
+    text-align: left; 
+    padding: 8px 12px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+    position: sticky; 
+    top: 0; 
+    background: #050505; 
+    z-index: 10; 
+}
+.table-ranking tr { 
+    background: rgba(255, 255, 255, 0.01); 
+    transition: 0.2s; 
+}
+.table-ranking tr:hover { 
+    background: rgba(255, 215, 0, 0.08); 
+}
+.table-ranking td { 
+    padding: 8px 12px; 
+    font-size: 12px; 
+    color: #e5e7eb;
+}
+
+/* Identifiants colonnes */
+.rank-number { width: 40px; font-weight: 700; color: #6b7280; text-align: center; }
+.team-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.points-col { font-weight: 800; color: #ffd700; text-align: center; width: 60px; }
+
+/* Zones de couleurs (Bordures gauches) */
+.qualif-champions { border-left: 3px solid #3b82f6; }
+.qualif-europa { border-left: 3px solid #fbbf24; }
+.relegation { border-left: 3px solid #ef4444; }
+
+/* CONTENEUR DÉFILANT : Hauteur limitée à environ 3 équipes */
+.ranking-container { 
+    max-height: 125px; /* Ajusté pour laisser de l'espace aux lignes plus larges */
+    overflow-y: auto; 
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 transparent;
+}
+
+/* Style de la barre de défilement */
+.ranking-container::-webkit-scrollbar { width: 4px; }
+.ranking-container::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
+
+/* Conteneur principal sans limite de largeur */
+.main-card {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 2px;
+    background: #000;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-sizing: border-box;
 }
-.table-ranking th {
-    font-family: 'Syncopate', sans-serif;
-    font-size: 9px;
-    color: #4b5563;
-    text-align: left;
-    padding: 6px 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    position: sticky;
-    top: 0;
-    background: #050505;
-    z-index: 10;
-}
-.table-ranking tr {
-    background: rgba(255, 255, 255, 0.01);
-    transition: background 0.2s ease;
-}
-.table-ranking tr:hover {
-    background: rgba(255, 215, 0, 0.08);
-}
-.table-ranking td {
-    padding: 6px 8px;
-    font-size: 11px;
-}
-.rank-number { width: 30px; font-weight: 700; color: #6b7280; text-align: center; }
-.team-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
-.points-col { font-weight: 800; color: var(--gold); text-align: center; width: 45px; }
-.qualif-champions { border-left: 2px solid #3b82f6; }
-.qualif-europa { border-left: 2px solid #fbbf24; }
-.qualif-conference { border-left: 2px solid #08a425; }
-.relegation { border-left: 2px solid #ef4444; }
-
-.ranking-container {
-    max-height: 320px;
-    overflow-y: auto;
-}
-
+        
 /* STYLE DU BOUTON DE RENOUVELEMENT IPTV */
 .btn-premium {
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
@@ -896,88 +917,55 @@
     <iframe src="https://teleprime4k.github.io/-Connectivit-r-seau-mondiale/" width="100%" height="100%" style="border:none;"></iframe>
 </div>
     
-<!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll) 
-   <div class="glass rounded-3xl p-4 border border-white/5 h-fit">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-title text-[9px] font-bold uppercase text-white">Classement L1 <span class="text-yellow-500">25/26</span></h3>
-                    <span class="text-[8px] text-gray-600 font-bold uppercase tracking-widest">J24</span>
-                </div>
-                <div class="ranking-container custom-scrollbar pr-1">
-                    <table class="table-ranking">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Équipe</th>
-                                <th class="text-center">PTS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="classementBody">
-                            <tr class="qualif-champions">
-                                <td class="rank-number">1</td>
-                                <td class="team-name">Paris SG</td>
-                                <td class="points-col">57</td>
-                            </tr>
-                            <tr class="qualif-champions">
-                                <td class="rank-number">2</td>
-                                <td class="team-name">Lens</td>
-                                <td class="points-col">56</td>
-                            </tr>
-                            <tr class="qualif-champions">
-                                <td class="rank-number">3</td>
-                                <td class="team-name">Marseille</td>
-                                <td class="points-col">49</td>
-                            </tr>
-                            <tr class="qualif-champions">
-                                <td class="rank-number">4</td>
-                                <td class="team-name">Lyon</td>
-                                <td class="points-col">47</td>
-                            </tr>
-                            <tr class="qualif-europa">
-                                <td class="rank-number">5</td>
-                                <td class="team-name">Lille</td>
-                                <td class="points-col">44</td>
-                            </tr>
-                            <tr class="qualif-europa">
-                                <td class="rank-number">6</td>
-                                <td class="team-name">Monaco</td>
-                                <td class="points-col">44</td>
-                            </tr>
-                            <tr><td class="rank-number">7</td><td class="team-name">Renne</td><td class="points-col">43</td></tr>
-                            <tr><td class="rank-number">8</td><td class="team-name">Strasbourg</td><td class="points-col">37</td></tr>
-                            <tr><td class="rank-number">9</td><td class="team-name">Lorient</td><td class="points-col">37</td></tr>
-                            <tr><td class="rank-number">10</td><td class="team-name">Brest</td><td class="points-col">36</td></tr>
-                            <tr><td class="rank-number">11</td><td class="team-name">Toulouse</td><td class="points-col">34</td></tr>
-                            <tr><td class="rank-number">12</td><td class="team-name">Angers</td><td class="points-col">32</td></tr>
-                            <tr><td class="rank-number">13</td><td class="team-name">Paris FC</td><td class="points-col">28</td></tr>
-                            <tr><td class="rank-number">14</td><td class="team-name">Le Havre</td><td class="points-col">27</td></tr>
-                            <tr><td class="rank-number">15</td><td class="team-name">Nice</td><td class="points-col">27</td></tr>
-                            <tr class="relegation">
-                                <td class="rank-number">16</td>
-                                <td class="team-name">Auxerre</td>
-                                <td class="points-col">19</td>
-                            </tr>
-                            <tr class="relegation">
-                                <td class="rank-number">17</td>
-                                <td class="team-name">Nantes</td>
-                                <td class="points-col">17</td>
-                            </tr>
-                            <tr class="relegation">
-                                <td class="rank-number">18</td>
-                                <td class="team-name">Metz</td>
-                                <td class="points-col">13</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-3 flex flex-wrap gap-3 justify-center border-t border-white/5 pt-3">
-                    <span class="text-[7px] text-blue-500 font-bold uppercase tracking-tighter">● LDC</span>
-                    <span class="text-[7px] text-yellow-500 font-bold uppercase tracking-tighter">● EUROPA</span>
-                    <span class="text-[7px] text-green-500 font-bold uppercase tracking-tighter">● CONF.</span>
-                    <Spain class="text-[7px] text-red-500 font-bold uppercase tracking-tighter">● RELEG.</span>
-        </div>
-     </div>
+ <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll)  -->
+   <div class="main-card" style="font-family: sans-serif;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
+            Classement L1 <span style="color: #eab308">25/26</span>
+        </h3>
+        <span style="font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Journée 24</span>
     </div>
-<main class="max-w-7xl mx-auto space-y-16"> -->
+
+    <!-- Conteneur avec scroll et pleine largeur -->
+    <div class="ranking-container">
+        <table class="table-ranking">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Équipe</th>
+                    <th style="text-align:center">PTS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="qualif-champions"><td class="rank-number">1</td><td class="team-name">Paris Saint-Germain</td><td class="points-col">57</td></tr>
+                <tr class="qualif-champions"><td class="rank-number">2</td><td class="team-name">RC Lens</td><td class="points-col">56</td></tr>
+                <tr class="qualif-champions"><td class="rank-number">3</td><td class="team-name">Olympique de Marseille</td><td class="points-col">49</td></tr>
+                <tr class="qualif-champions"><td class="rank-number">4</td><td class="team-name">Olympique Lyonnais</td><td class="points-col">47</td></tr>
+                <tr class="qualif-europa"><td class="rank-number">5</td><td class="team-name">LOSC Lille</td><td class="points-col">44</td></tr>
+                <tr class="qualif-europa"><td class="rank-number">6</td><td class="team-name">AS Monaco</td><td class="points-col">44</td></tr>
+                <tr><td class="rank-number">7</td><td class="team-name">Stade Rennais</td><td class="points-col">43</td></tr>
+                <tr><td class="rank-number">8</td><td class="team-name">RC Strasbourg</td><td class="points-col">37</td></tr>
+                <tr><td class="rank-number">9</td><td class="team-name">FC Lorient</td><td class="points-col">37</td></tr>
+                <tr><td class="rank-number">10</td><td class="team-name">Stade Brestois 29</td><td class="points-col">36</td></tr>
+                <tr><td class="rank-number">11</td><td class="team-name">Toulouse FC</td><td class="points-col">34</td></tr>
+                <tr><td class="rank-number">12</td><td class="team-name">Angers SCO</td><td class="points-col">32</td></tr>
+                <tr><td class="rank-number">13</td><td class="team-name">Paris FC</td><td class="points-col">28</td></tr>
+                <tr><td class="rank-number">14</td><td class="team-name">Le Havre AC</td><td class="points-col">27</td></tr>
+                <tr><td class="rank-number">15</td><td class="team-name">OGC Nice</td><td class="points-col">27</td></tr>
+                <tr class="relegation"><td class="rank-number">16</td><td class="team-name">AJ Auxerre</td><td class="points-col">19</td></tr>
+                <tr class="relegation"><td class="rank-number">17</td><td class="team-name">FC Nantes</td><td class="points-col">17</td></tr>
+                <tr class="relegation"><td class="rank-number">18</td><td class="team-name">FC Metz</td><td class="points-col">13</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Légende -->
+    <div style="margin-top: 1rem; display: flex; gap: 15px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+        <span style="font-size: 8px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">● LDC</span>
+        <span style="font-size: 8px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">● UEL</span>
+        <span style="font-size: 8px; color: #ef4444; font-weight: bold; text-transform: uppercase;">● REL</span>
+    </div>
+</div>
 
     <!-- SECTION SPORTS -->
     <section id="sports">
