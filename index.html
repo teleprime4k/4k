@@ -331,25 +331,22 @@
 .rank-number { 
     width: 45px; 
     font-weight: 700; 
-    color: #ffffff; 
+    color: #ffffff !important; /* <- FORCE LE NUMÉRO EN BLANC */
     text-align: center; 
 }
 
-/* 4. COULEURS DES INDICATEURS (Bordures et Fonds) */
+/* 4. INDICATEURS (Bordure latérale uniquement, pas de couleur sur le chiffre) */
 /* C'est ici que j'ai ajouté les bordures à gauche sur la colonne # */
 .qualif-champions .rank-number { 
-    border-left: 4px solid #3b82f6; /* Bleu LDC */
-    background: rgba(59, 130, 246, 0.15); 
+    border-left: 4px solid #3b82f6; /* Bleu LDC sur la bordure */
 }
 .qualif-europa .rank-number { 
-    border-left: 4px solid #fbbf24; /* Jaune Europa */
-    background: rgba(251, 191, 36, 0.15); 
+    border-left: 4px solid #fbbf24; /* Jaune Europa sur la bordure */
 }
 .relegation .rank-number { 
-    border-left: 4px solid #ef4444; /* Rouge Relégation */
-    background: rgba(239, 68, 68, 0.15); 
+    border-left: 4px solid #ef4444; /* Rouge Relégation sur la bordure */
 }
-
+        
 /* 5. FONCTION DÉFILEMENT (Scroll) */
 .ranking-container { 
     max-height: 110px; /* <- FONCTION : Limite la vue à environ 3 équipes */
