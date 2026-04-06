@@ -299,12 +299,15 @@
         }
         
 /* Style global pour le tableau de Ligue 1*/
+/* 1. MISE EN PAGE GLOBALE (Pleine largeur) */
 .table-ranking { 
-    width: 100%; /* Occupe toute la largeur disponible */
+    width: 100%; /* Occupe toute la largeur comme demandé */
     margin: 0 auto; 
     border-collapse: separate; 
     border-spacing: 0 2px; 
 }
+
+/* 2. EN-TÊTE FIXE (Reste en haut quand on défile) */
 .table-ranking th { 
     font: 700 10px 'Syncopate', sans-serif; 
     color: #4b5563; 
@@ -312,53 +315,60 @@
     padding: 8px 12px; 
     text-transform: uppercase; 
     letter-spacing: 0.05em; 
-    position: sticky; 
+    position: sticky; /* <- FONCTION : Garde le titre visible */
     top: 0; 
     background: #050505; 
     z-index: 10; 
 }
-.table-ranking tr { 
-    background: rgba(255, 255, 255, 0.01); 
-    transition: 0.2s; 
-}
-.table-ranking tr:hover { 
-    background: rgba(255, 215, 0, 0.08); 
-}
+
 .table-ranking td { 
     padding: 8px 12px; 
     font-size: 12px; 
     color: #e5e7eb;
 }
 
-/* Identifiants colonnes */
-.rank-number { width: 40px; font-weight: 700; color: #6b7280; text-align: center; }
-.team-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.points-col { font-weight: 800; color: #ffd700; text-align: center; width: 60px; }
+/* 3. COLONNE DU RANG (Le carré avec le numéro) */
+.rank-number { 
+    width: 45px; 
+    font-weight: 700; 
+    color: #ffffff; 
+    text-align: center; 
+}
 
-/* Zones de couleurs (Bordures gauches) */
-.qualif-champions { border-left: 3px solid #3b82f6; }
-.qualif-europa { border-left: 3px solid #fbbf24; }
-.relegation { border-left: 3px solid #ef4444; }
+/* 4. COULEURS DES INDICATEURS (Bordures et Fonds) */
+/* C'est ici que j'ai ajouté les bordures à gauche sur la colonne # */
+.qualif-champions .rank-number { 
+    border-left: 4px solid #3b82f6; /* Bleu LDC */
+    background: rgba(59, 130, 246, 0.15); 
+}
+.qualif-europa .rank-number { 
+    border-left: 4px solid #fbbf24; /* Jaune Europa */
+    background: rgba(251, 191, 36, 0.15); 
+}
+.relegation .rank-number { 
+    border-left: 4px solid #ef4444; /* Rouge Relégation */
+    background: rgba(239, 68, 68, 0.15); 
+}
 
-/* CONTENEUR DÉFILANT : Hauteur limitée à environ 3 équipes */
+/* 5. FONCTION DÉFILEMENT (Scroll) */
 .ranking-container { 
-    max-height: 125px; /* Ajusté pour laisser de l'espace aux lignes plus larges */
-    overflow-y: auto; 
+    max-height: 110px; /* <- FONCTION : Limite la vue à environ 3 équipes */
+    overflow-y: auto; /* <- FONCTION : Active le scroll vertical */
     scrollbar-width: thin;
     scrollbar-color: #4b5563 transparent;
 }
 
-/* Style de la barre de défilement */
+/* Design de la barre de scroll */
 .ranking-container::-webkit-scrollbar { width: 4px; }
 .ranking-container::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
 
-/* Conteneur principal sans limite de largeur */
+/* 6. CADRE PRINCIPAL (Bordure blanche fine) */
 .main-card {
     width: 100%;
     background: #000;
     border-radius: 1rem;
     padding: 1.25rem;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1); /* <- FONCTION : La bordure du tour */
     box-sizing: border-box;
 }
         
@@ -919,6 +929,7 @@
     
  <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll)  -->
    <div class="main-card" style="font-family: sans-serif;">
+       <!-- En-tête du Widget -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
             Classement L1 <span style="color: #eab308">25/26</span>
@@ -926,7 +937,7 @@
         <span style="font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Journée 24</span>
     </div>
 
-    <!-- Conteneur avec scroll et pleine largeur -->
+    <!-- Zone de défilement -->
     <div class="ranking-container">
         <table class="table-ranking">
             <thead>
@@ -937,21 +948,27 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Classes ajoutées ici pour activer les couleurs du CSS -->
                 <tr class="qualif-champions"><td class="rank-number">1</td><td class="team-name">Paris Saint-Germain</td><td class="points-col">57</td></tr>
                 <tr class="qualif-champions"><td class="rank-number">2</td><td class="team-name">RC Lens</td><td class="points-col">56</td></tr>
                 <tr class="qualif-champions"><td class="rank-number">3</td><td class="team-name">Olympique de Marseille</td><td class="points-col">49</td></tr>
+                
                 <tr class="qualif-champions"><td class="rank-number">4</td><td class="team-name">Olympique Lyonnais</td><td class="points-col">47</td></tr>
                 <tr class="qualif-europa"><td class="rank-number">5</td><td class="team-name">LOSC Lille</td><td class="points-col">44</td></tr>
                 <tr class="qualif-europa"><td class="rank-number">6</td><td class="team-name">AS Monaco</td><td class="points-col">44</td></tr>
                 <tr><td class="rank-number">7</td><td class="team-name">Stade Rennais</td><td class="points-col">43</td></tr>
+                
                 <tr><td class="rank-number">8</td><td class="team-name">RC Strasbourg</td><td class="points-col">37</td></tr>
                 <tr><td class="rank-number">9</td><td class="team-name">FC Lorient</td><td class="points-col">37</td></tr>
                 <tr><td class="rank-number">10</td><td class="team-name">Stade Brestois 29</td><td class="points-col">36</td></tr>
                 <tr><td class="rank-number">11</td><td class="team-name">Toulouse FC</td><td class="points-col">34</td></tr>
+                
                 <tr><td class="rank-number">12</td><td class="team-name">Angers SCO</td><td class="points-col">32</td></tr>
                 <tr><td class="rank-number">13</td><td class="team-name">Paris FC</td><td class="points-col">28</td></tr>
                 <tr><td class="rank-number">14</td><td class="team-name">Le Havre AC</td><td class="points-col">27</td></tr>
                 <tr><td class="rank-number">15</td><td class="team-name">OGC Nice</td><td class="points-col">27</td></tr>
+                
+                <!-- ... Reste du classement ... -->
                 <tr class="relegation"><td class="rank-number">16</td><td class="team-name">AJ Auxerre</td><td class="points-col">19</td></tr>
                 <tr class="relegation"><td class="rank-number">17</td><td class="team-name">FC Nantes</td><td class="points-col">17</td></tr>
                 <tr class="relegation"><td class="rank-number">18</td><td class="team-name">FC Metz</td><td class="points-col">13</td></tr>
@@ -959,7 +976,7 @@
         </table>
     </div>
 
-    <!-- Légende -->
+    <!-- Légende en bas -->
     <div style="margin-top: 1rem; display: flex; gap: 15px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
         <span style="font-size: 8px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">● LDC</span>
         <span style="font-size: 8px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">● UEL</span>
