@@ -299,81 +299,107 @@
         }
         
 /* Style global pour le tableau de Ligue 1*/
-/* 1. MISE EN PAGE GLOBALE (Pleine largeur) */
-.table-ranking { 
-    width: 100%; /* Occupe toute la largeur comme demandé */
-    margin: 0 auto; 
-    border-collapse: separate; 
-    border-spacing: 0 2px; 
-}
+/* 1. MISE EN PAGE GLOBALE - Le tableau occupe toute la largeur disponible */
+        .table-ranking { 
+            width: 100%; 
+            margin: 0 auto; 
+            border-collapse: separate; 
+            border-spacing: 0 2px; 
+        }
 
-/* 2. EN-TÊTE FIXE (Reste en haut quand on défile) */
-.table-ranking th { 
-    font: 700 10px 'Syncopate', sans-serif; 
-    color: #4b5563; 
-    text-align: left; 
-    padding: 8px 12px; 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
-    position: sticky; /* <- FONCTION : Garde le titre visible */
-    top: 0; 
-    background: #050505; 
-    z-index: 10; 
-}
+        /* 2. EN-TÊTE FIXE - Reste visible en haut lors du défilement */
+        .table-ranking th { 
+            font: 700 10px sans-serif; 
+            color: #4b5563; 
+            text-align: left; 
+            padding: 8px 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em; 
+            position: sticky; /* Fixation en haut */
+            top: 0; 
+            background: #000; 
+            z-index: 10; 
+        }
 
-.table-ranking td { 
-    padding: 8px 12px; 
-    font-size: 12px; 
-    color: #e5e7eb;
-}
+        .table-ranking td { 
+            padding: 8px 12px; 
+            font-size: 12px; 
+            color: #e5e7eb;
+        }
 
-/* 3. COLONNE DU RANG (Le carré avec le numéro) */
-.rank-number { 
-    width: 45px; 
-    font-weight: 700; 
-    color: #ffffff !important; /* <- FORCE LE NUMÉRO EN BLANC */
-    text-align: center; 
-}
+        /* Style spécifique pour la colonne des points */
+        .points-col {
+            text-align: center;
+            font-weight: bold;
+        }
 
-/* 4. INDICATEURS (Bordure latérale uniquement, pas de couleur sur le chiffre) */
-/* C'est ici que j'ai ajouté les bordures à gauche sur la colonne # */
-.qualif-champions .rank-number { 
-    border-left: 4px solid #3b82f6; /* Bleu LDC sur la bordure */
-}
-.qualif-europa .rank-number { 
-    border-left: 4px solid #fbbf24; /* Jaune Europa sur la bordure */
-}
-.relegation .rank-number { 
-    border-left: 4px solid #ef4444; /* Rouge Relégation sur la bordure */
-}
+        /* 3. COLONNE DU RANG - Formatage du numéro de classement */
+        .rank-number { 
+            width: 35px; 
+            font-weight: 700; 
+            color: #ffffff !important; 
+            text-align: center; 
+        }
+
+        /* 4. INDICATEURS DE COULEUR - Bordures latérales pour les qualifications */
+        .qualif-champions .rank-number { border-left: 4px solid #3b82f6; } /* Bleu : Ligue des Champions */
+        .qualif-europa .rank-number { border-left: 4px solid #fbbf24; }    /* Jaune : Europa League */
+        .relegation .rank-number { border-left: 4px solid #ef4444; }       /* Rouge : Relégation */
         
-/* 5. FONCTION DÉFILEMENT (Scroll) - (Optimisée TV) */
-.ranking-container { 
-    max-height: 110px; /* <- FONCTION : Limite la vue à environ 3 équipes */
-    overflow-y: auto; /* <- FONCTION : Active le scroll vertical */
-    scrollbar-width: thin;
-    scrollbar-color: #4b5563 transparent;
-    outline: none; /* Enlever la bordure de sélection par défaut */
-}
+        /* 5. ZONE DE DÉFILEMENT - Paramètres de la fenêtre de vue */
+        .ranking-container { 
+            /*  Hauteur ajustée pour afficher exactement 3 lignes par défaut */
+            max-height: 125px; /* Hauteur maximale visible */
+            overflow-y: auto; 
+            scrollbar-width: none; /* Cache la barre sur Firefox */
+            scroll-behavior: smooth; /* Animation fluide lors du scroll */
+            outline: none;
+        }
 
-/* Effet visuel quand la zone est sélectionnée sur TV */
-.ranking-container:focus {
-    background: rgba(255, 255, 255, 0.03);
-}
+        /* Cache la barre de défilement sur Chrome, Safari et Edge */
+        .ranking-container::-webkit-scrollbar { display: none; }
 
-/* Design de la barre de scroll */
-.ranking-container::-webkit-scrollbar { width: 4px; }
-.ranking-container::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
+        /* 6. CADRE PRINCIPAL - Style du conteneur noir */
+        .main-card {
+            width: 100%; 
+            background: #000;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-sizing: border-box;
+            position: relative;
+        }
 
-/* 6. CADRE PRINCIPAL (Bordure blanche fine) */
-.main-card {
-    width: 100%;
-    background: #000;
-    border-radius: 1rem;
-    padding: 1.25rem;
-    border: 1px solid rgba(255,255,255,0.1); /* <- FONCTION : La bordure du tour */
-    box-sizing: border-box;
-}
+        /* 7. BOUTONS DE NAVIGATION - Style des flèches en haut à droite */
+        .scroll-controls {
+            display: flex;
+            gap: 5px;
+            margin-left: 10px; /* Espace entre le texte "Journée" et les boutons */
+        }
+
+        .scroll-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .scroll-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .scroll-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
         
 /* STYLE DU BOUTON DE RENOUVELEMENT IPTV */
 .btn-premium {
@@ -931,63 +957,91 @@
 </div>
     
  <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll)  -->
-   <div class="main-card" style="font-family: sans-serif;">
-       <!-- En-tête du Widget -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
-            Classement L1 <span style="color: #eab308">25/26</span>
-        </h3>
-        <span style="font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Journée 24</span>
+  <div class="main-card" style="font-family: sans-serif;">
+        
+        <!-- En-tête : Titre à gauche, Journée et Boutons à droite -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <!-- Titre du widget -->
+            <div>
+                <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
+                    Classement L1 <span style="color: #eab308">25/26</span>
+                </h3>
+            </div>
+
+            <!-- Bloc de droite : Infos journée et contrôle du scroll -->
+            <div style="display: flex; align-items: center;">
+                <div style="font-size: 9px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+                    Journée 24
+                </div>
+                <div class="scroll-controls">
+                    <!-- Bouton flèche vers le haut -->
+                    <button class="scroll-btn" onclick="scrollRanking(-60)" title="Haut">
+                        <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                    </button>
+                    <!-- Bouton flèche vers le bas -->
+                    <button class="scroll-btn" onclick="scrollRanking(60)" title="Bas">
+                        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteneur de la table avec ID pour le contrôle JavaScript -->
+        <div class="ranking-container" id="rankingScroll" tabindex="0">
+            <table class="table-ranking">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Équipe</th>
+                        <th style="text-align:center">PTS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Lignes du tableau avec classes de qualification -->
+                    <tr class="qualif-champions"><td class="rank-number">1</td><td class="team-name">Paris Saint-Germain</td><td class="points-col">57</td></tr>
+                    <tr class="qualif-champions"><td class="rank-number">2</td><td class="team-name">RC Lens</td><td class="points-col">56</td></tr>
+                    <tr class="qualif-champions"><td class="rank-number">3</td><td class="team-name">Olympique de Marseille</td><td class="points-col">49</td></tr>
+                    <tr class="qualif-champions"><td class="rank-number">4</td><td class="team-name">Olympique Lyonnais</td><td class="points-col">47</td></tr>
+                    <tr class="qualif-europa"><td class="rank-number">5</td><td class="team-name">LOSC Lille</td><td class="points-col">44</td></tr>
+                    <tr class="qualif-europa"><td class="rank-number">6</td><td class="team-name">AS Monaco</td><td class="points-col">44</td></tr>
+                    <tr><td class="rank-number">7</td><td class="team-name">Stade Rennais</td><td class="points-col">43</td></tr>
+                    <tr><td class="rank-number">8</td><td class="team-name">RC Strasbourg</td><td class="points-col">37</td></tr>
+                    <tr><td class="rank-number">9</td><td class="team-name">FC Lorient</td><td class="points-col">37</td></tr>
+                    <tr><td class="rank-number">10</td><td class="team-name">Stade Brestois 29</td><td class="points-col">36</td></tr>
+                    <tr><td class="rank-number">11</td><td class="team-name">Toulouse FC</td><td class="points-col">34</td></tr>
+                    <tr><td class="rank-number">12</td><td class="team-name">Angers SCO</td><td class="points-col">32</td></tr>
+                    <tr><td class="rank-number">13</td><td class="team-name">Paris FC</td><td class="points-col">28</td></tr>
+                    <tr><td class="rank-number">14</td><td class="team-name">Le Havre AC</td><td class="points-col">27</td></tr>
+                    <tr><td class="rank-number">15</td><td class="team-name">OGC Nice</td><td class="points-col">27</td></tr>
+                    <tr class="relegation"><td class="rank-number">16</td><td class="team-name">AJ Auxerre</td><td class="points-col">19</td></tr>
+                    <tr class="relegation"><td class="rank-number">17</td><td class="team-name">FC Nantes</td><td class="points-col">17</td></tr>
+                    <tr class="relegation"><td class="rank-number">18</td><td class="team-name">FC Metz</td><td class="points-col">13</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Légende explicative des couleurs -->
+        <div style="margin-top: 1rem; display: flex; gap: 15px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+            <span style="font-size: 8px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">● LDC</span>
+            <span style="font-size: 8px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">● UEL</span>
+            <span style="font-size: 8px; color: #ef4444; font-weight: bold; text-transform: uppercase;">● REL</span>
+        </div>
     </div>
 
-    <!-- Zone de défilement : tabindex="0" permet aux TV de cibler cette zone -->
-    <div class="ranking-container" tabindex="0">
-        <table class="table-ranking">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Équipe</th>
-                    <th style="text-align:center">PTS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Classes ajoutées ici pour activer les couleurs du CSS -->
-                <tr class="qualif-champions"><td class="rank-number">1</td><td class="team-name">Paris Saint-Germain</td><td class="points-col">57</td></tr>
-                <tr class="qualif-champions"><td class="rank-number">2</td><td class="team-name">RC Lens</td><td class="points-col">56</td></tr>
-                <tr class="qualif-champions"><td class="rank-number">3</td><td class="team-name">Olympique de Marseille</td><td class="points-col">49</td></tr>
-                
-                <tr class="qualif-champions"><td class="rank-number">4</td><td class="team-name">Olympique Lyonnais</td><td class="points-col">47</td></tr>
-                <tr class="qualif-europa"><td class="rank-number">5</td><td class="team-name">LOSC Lille</td><td class="points-col">44</td></tr>
-                <tr class="qualif-europa"><td class="rank-number">6</td><td class="team-name">AS Monaco</td><td class="points-col">44</td></tr>
-                <tr><td class="rank-number">7</td><td class="team-name">Stade Rennais</td><td class="points-col">43</td></tr>
-                
-                <tr><td class="rank-number">8</td><td class="team-name">RC Strasbourg</td><td class="points-col">37</td></tr>
-                <tr><td class="rank-number">9</td><td class="team-name">FC Lorient</td><td class="points-col">37</td></tr>
-                <tr><td class="rank-number">10</td><td class="team-name">Stade Brestois 29</td><td class="points-col">36</td></tr>
-                <tr><td class="rank-number">11</td><td class="team-name">Toulouse FC</td><td class="points-col">34</td></tr>
-                
-                <tr><td class="rank-number">12</td><td class="team-name">Angers SCO</td><td class="points-col">32</td></tr>
-                <tr><td class="rank-number">13</td><td class="team-name">Paris FC</td><td class="points-col">28</td></tr>
-                <tr><td class="rank-number">14</td><td class="team-name">Le Havre AC</td><td class="points-col">27</td></tr>
-                <tr><td class="rank-number">15</td><td class="team-name">OGC Nice</td><td class="points-col">27</td></tr>
-                
-                <!-- ... Reste du classement ... -->
-                <tr class="relegation"><td class="rank-number">16</td><td class="team-name">AJ Auxerre</td><td class="points-col">19</td></tr>
-                <tr class="relegation"><td class="rank-number">17</td><td class="team-name">FC Nantes</td><td class="points-col">17</td></tr>
-                <tr class="relegation"><td class="rank-number">18</td><td class="team-name">FC Metz</td><td class="points-col">13</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Légende en bas -->
-    <div style="margin-top: 1rem; display: flex; gap: 15px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-        <span style="font-size: 8px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">● LDC</span>
-        <span style="font-size: 8px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">● UEL</span>
-        <span style="font-size: 8px; color: #ef4444; font-weight: bold; text-transform: uppercase;">● REL</span>
-    </div>
-</div>
-
-   
+    <!-- Script de gestion du défilement -->
+    <script>
+        /**
+         * Déplace le scroll du tableau
+         * @param {number} distance - Pixels à parcourir (négatif = haut, positif = bas)
+         */
+        function scrollRanking(distance) {
+            const container = document.getElementById('rankingScroll');
+            container.scrollBy({
+                top: distance,
+                behavior: 'smooth' // Mouvement fluide
+            });
+        }
+    </script>
 
     <!-- SECTION SPORTS -->
     <section id="sports">
