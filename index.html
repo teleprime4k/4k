@@ -347,12 +347,18 @@
     border-left: 4px solid #ef4444; /* Rouge Relégation sur la bordure */
 }
         
-/* 5. FONCTION DÉFILEMENT (Scroll) */
+/* 5. FONCTION DÉFILEMENT (Scroll) - (Optimisée TV) */
 .ranking-container { 
     max-height: 110px; /* <- FONCTION : Limite la vue à environ 3 équipes */
     overflow-y: auto; /* <- FONCTION : Active le scroll vertical */
     scrollbar-width: thin;
     scrollbar-color: #4b5563 transparent;
+    outline: none; /* Enlever la bordure de sélection par défaut */
+}
+
+/* Effet visuel quand la zone est sélectionnée sur TV */
+.ranking-container:focus {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 /* Design de la barre de scroll */
@@ -934,8 +940,8 @@
         <span style="font-size: 10px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Journée 24</span>
     </div>
 
-    <!-- Zone de défilement -->
-    <div class="ranking-container">
+    <!-- Zone de défilement : tabindex="0" permet aux TV de cibler cette zone -->
+    <div class="ranking-container" tabindex="0">
         <table class="table-ranking">
             <thead>
                 <tr>
