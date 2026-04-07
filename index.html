@@ -1031,30 +1031,7 @@
     </div>
 </div>
 
-    <script>
-    const container = document.getElementById('scrollContainer');
-    const scrollStep = 80; // Distance du défilement
-
-    // Fonction de défilement pour les boutons
-    function scrollTable(direction) {
-        if (direction === 'down') {
-            container.scrollTop += scrollStep;
-        } else {
-            container.scrollTop -= scrollStep;
-        }
-    }
-
-    // Support télécommande (Flèches clavier)
-    container.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowDown') {
-            scrollTable('down');
-            e.preventDefault();
-        } else if (e.key === 'ArrowUp') {
-            scrollTable('up');
-            e.preventDefault();
-        }
-    });
-</script>
+   
 
     <!-- SECTION SPORTS -->
     <section id="sports">
