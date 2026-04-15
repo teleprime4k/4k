@@ -922,7 +922,34 @@
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Style de base du bouton Flèche Droite & Gauche ( L'effet Animation ) Pour mes Applications TV📺 & ANDROID📱 Premium 💎 */
+.nav-btn {
+  background: rgb(8, 0, 0);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  cursor: pointer;
+}
 
+/* Effet quand on clique (pseudo-état natif) */
+.nav-btn:active {
+  transform: translateY(2px) scale(0.99);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  background-color: #b4b217; /* léger gris */
+}
+
+/* Focus visible pour clavier (accessibilité) */
+.nav-btn:focus {
+  outline: 3px solid rgba(59,130,246,0.25);
+  outline-offset: 2px;
+}
+
+/* Classe ajoutée par JS pendant le maintien du clic / du touch */
+.nav-btn.is-pressed {
+  transform: translateY(2px) scale(0.99);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  background-color: #eef2ff; /* variante colorée si tu veux */
+}
 
 </style>
 
@@ -1028,17 +1055,20 @@
         </div>
     </div>
 
-    <!-- Script de gestion du défilement -->
+    <!-- Script de gestion du défilement Pour CINÉMA SÉRIES & SPORTS +18 Adults -->
     <script>
         /**
-         * Déplace le scroll du tableau
-         * @param {number} distance - Pixels à parcourir (négatif = haut, positif = bas)
+         * Déplace le défilement (scroll) du tableau
+         * @param {number} distance - Nombre de pixels à parcourir (négatif = vers le haut, positif = vers le bas)
          */
         function scrollRanking(distance) {
+            // Récupère l'élément HTML avec l'id 'rankingScroll'
             const container = document.getElementById('rankingScroll');
+            
+            // Fait défiler cet élément verticalement de la distance spécifiée
             container.scrollBy({
-                top: distance,
-                behavior: 'smooth' // Mouvement fluide
+                top: distance,     // Distance en pixels à défiler verticalement
+                behavior: 'smooth' // Animation fluide du défilement
             });
         }
     </script>
@@ -1489,19 +1519,32 @@
 </script>
 </section>
 
-    <!-- Mes Applications TV📺 & ANDROID📱 Premium 💎-->
- <main class="w-full max-w-6xl mx-auto mt-12"> <div class="flex justify-between items-center mb-6">
+ <!-- Section principale contenant Mes Applications TV📺 & ANDROID📱 Premium 💎 -->
+<main class="w-full max-w-6xl mx-auto mt-12">
+
+    <!-- En-tête avec titre et boutons de navigation -->
+    <div class="flex justify-between items-center mb-6">
+        
+        <!-- Titre de la section avec un indicateur coloré -->
         <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2">
-            <span class="w-2 h-6 rounded-full" style="background-color: #3b82f6;"></span> Applications TV📺 & ANDROID📱 Premium 💎
+            <!-- Petit rectangle bleu à gauche du titre -->
+            <span class="w-2 h-6 rounded-full" style="background-color: #3b82f6;"></span> 
+            Applications TV📺 & ANDROID📱 Premium 💎
         </h2>
 
+        <!-- Boutons de navigation visibles uniquement sur écrans moyens et plus larges (md et +) -->
         <div class="hidden md:flex gap-2">
+            <!-- Bouton pour défiler vers la gauche -->
             <button onclick="scrollLeftBtn2()" class="nav-btn w-10 h-10 rounded-full flex items-center justify-center" aria-label="Précédent">
+                <!-- Icône flèche gauche SVG -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </button>
+
+            <!-- Bouton pour défiler vers la droite -->
             <button onclick="scrollRightBtn2()" class="nav-btn w-10 h-10 rounded-full flex items-center justify-center" aria-label="Suivant">
+                <!-- Icône flèche droite SVG -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
@@ -1509,15 +1552,23 @@
         </div>
     </div>
 
+    <!-- Conteneur du carrousel avec position relative pour positionner les boutons -->
     <div class="carousel-wrapper relative group">
-        
-        <button onclick="scrollLeftBtn2()" class="absolute -left-4 top-1/2 -translate-y-1/2 z-10 nav-btn w-12 h-12 rounded-full flex md:hidden items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+
+        <!-- Bouton de navigation gauche visible uniquement sur petits écrans (mobile) -->
+        <button onclick="scrollLeftBtn2()" 
+                class="absolute -left-4 top-1/2 -translate-y-1/2 z-10 nav-btn w-12 h-12 rounded-full flex md:hidden items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" 
+                aria-label="Précédent">
+            <!-- Icône flèche gauche SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
         </button>
 
-        <div id="carousel2" class="flex overflow-x-auto gap-4 md:gap-6 pb-8 no-scrollbar scroll-smooth snap-x snap-mandatory px-4">
+        <!-- Zone défilante horizontale du carrousel -->
+        <div id="carousel2" 
+             class="flex overflow-x-auto gap-4 md:gap-6 pb-8 no-scrollbar scroll-smooth snap-x snap-mandatory px-4">
+             <!-- Contenu du carrousel ici -->
             
             <script>
                 const apps2 = [
@@ -1716,49 +1767,90 @@
         <span class="text-[9px] text-gray-400 uppercase tracking-tight">Activez les sources inconnues sur votre tv ou smartphone !</span>
       </div>
        </div>
+    
+<!-- Le Script pour Carrousel2 Applications TV📺 & ANDROID📱 Premium 💎 -->
 <script>
+    // Récupère l'élément HTML du carrousel avec l'id 'carousel2'
     const carousel2 = document.getElementById('carousel2');
 
-    // Fonction pour faire défiler vers la droite
+    // Calcule la largeur d'une "case" (carte) dans le carrousel, incluant une marge de 16px
+    // Si une carte avec la classe 'flex-none' existe, on prend sa largeur + 16px
+    // Sinon, on utilise 80% de la largeur visible du carrousel comme largeur de case par défaut
+    const cardWidth = carousel2.querySelector('.flex-none') 
+                      ? carousel2.querySelector('.flex-none').offsetWidth + 16 
+                      : carousel2.offsetWidth * 0.8;
+
+    /**
+     * Fait défiler le carrousel vers la gauche (direction négative)
+     */
     function scrollLeftBtn2() {
-        const scrollAmount = carousel2.offsetWidth * 0.8;
+        // Calcule la nouvelle position horizontale cible après défilement vers la gauche
+        let newScrollLeft = carousel2.scrollLeft - cardWidth;
 
-        // Si on arrive au bout, on revient au début
-    if (carousel2.scrollLeft + carousel2.offsetWidth >= carousel2.scrollWidth - 10) {
-        carousel2.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-        carousel2.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        // Empêche de dépasser le début du carrousel (position minimale = 0)
+        if (newScrollLeft < 0) {
+            newScrollLeft = 0;
+        }
+
+        // Effectue le défilement fluide vers la nouvelle position calculée
+        carousel2.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
     }
-}
 
+    /**
+     * Fait défiler le carrousel vers la droite (direction positive)
+     */
     function scrollRightBtn2() {
-        const scrollAmount = carousel2.offsetWidth * 0.8;
-        carousel2.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        // Calcule la nouvelle position horizontale cible après défilement vers la droite
+        let newScrollLeft = carousel2.scrollLeft + cardWidth;
+
+        // Calcule la position maximale possible pour ne pas dépasser la fin du carrousel
+        const maxScrollLeft = carousel2.scrollWidth - carousel2.offsetWidth;
+
+        // Empêche de dépasser la fin du carrousel
+        if (newScrollLeft > maxScrollLeft) {
+            newScrollLeft = maxScrollLeft;
+        }
+
+        // Effectue le défilement fluide vers la nouvelle position calculée
+        carousel2.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
     }
 
-// Fonction pour démarrer le défilement automatique
-function startAutoScroll() {
-    autoScrollInterval = setInterval(scrollRightBtn2, 60000); // Défile toutes les 1 minute
-}
+    // Attache la fonction de défilement vers la gauche au clic sur le bouton avec l'id 'btnLeft'
+    document.getElementById('btnLeft').addEventListener('click', scrollLeftBtn2);
 
-// Fonction pour arrêter le défilement automatique
-function stopAutoScroll() {
-    clearInterval(autoScrollInterval);
-}
-
-// Lancement automatique au chargement
-startAutoScroll();
-
-// Gestion du survol pour le confort de l'utilisateur
-carousel2.addEventListener('mouseenter', stopAutoScroll);
-carousel2.addEventListener('mouseleave', startAutoScroll);
-
-// Support tactile : on arrête l'auto-scroll si l'utilisateur touche le carrousel
-carousel2.addEventListener('touchstart', stopAutoScroll);
-
+    // Attache la fonction de défilement vers la droite au clic sur le bouton avec l'id 'btnRight'
+    document.getElementById('btnRight').addEventListener('click', scrollRightBtn2);
 </script>
+    
+<!-- Le Script pour les boutons Flèche Droite & Gauche ( L'effet Animation ) Pour mes Applications TV📺 & ANDROID📱 Premium 💎 -->
+<script>
+  // Récupère les boutons
+  const btnLeft = document.getElementById('btnLeft');
+  const btnRight = document.getElementById('btnRight');
 
+  // Fonction utilitaire : attache gestionnaires pour garder l'effet pendant le maintien
+  function enablePressEffect(btn) {
+    if (!btn) return;
 
+    // Ajouter la classe quand on commence le clic / le touch
+    btn.addEventListener('mousedown', () => btn.classList.add('is-pressed'));
+    btn.addEventListener('touchstart', () => btn.classList.add('is-pressed'), {passive: true});
+
+    // Retirer la classe quand on relâche ou quand la souris sort
+    const remove = () => btn.classList.remove('is-pressed');
+    btn.addEventListener('mouseup', remove);
+    btn.addEventListener('mouseleave', remove);
+    btn.addEventListener('touchend', remove);
+    btn.addEventListener('touchcancel', remove);
+
+    // Au cas où on relâche en dehors de l'élément
+    window.addEventListener('mouseup', remove);
+  }
+
+  enablePressEffect(btnLeft);
+  enablePressEffect(btnRight);
+</script>
+    
 
     <!-- SECTION REVIEWS -->
     <section id="reviews" class="pb-12">
