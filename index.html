@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teleprime4K | Ultimate </title>
+    <title>Teleprime4K | IPTV N°1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!-- C'est ce lien qui "importe" les icônes Android TV
+         Apple TV, Smart TV, Firestic dans votre page. Sans lui, les icônes ne s'afficheront pas.-->
+
     <!-- À coller dans le <head> de ton fichier HTML (index.html, etc.) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+   
+     <!-- Font Awesome pour les icônes de contact -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
 <!-- Favicons (corrigés pour GitHub Pages + dossier /assets/icons/) -->
 <link rel="icon" type="image/png" sizes="96x96" href="./assets/icons/favicon-96x96.png" />
@@ -400,6 +409,70 @@
             height: 14px;
             fill: currentColor;
         }
+
+ 
+
+ 
+ /* ---  le Style 4K Films & Series et Autres--- */    
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Carousel Animation */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-250px * 7)); }
+        }
+        .slider {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+        .slide-track {
+            display: flex;
+            width: calc(250px * 14);
+            animation: scroll 40s linear infinite;
+        }
+        .slide-track:hover {
+            animation-play-state: paused;
+        }
+        .slide {
+            width: 250px;
+            padding: 0 10px;
+        }
+        .movie-card {
+            transition: transform 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+        .step-card {
+            background: var(--card-bg);
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+        /* Scroll reveal effect */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+
         
 /* STYLE DU BOUTON DE RENOUVELEMENT IPTV */
 .btn-premium {
@@ -540,13 +613,211 @@
             .badge { font-size: 9px; }
         }
 
+/* 1. STYLES DE BASE ET CONTENEUR */
+        .vpn-section-wrapper {
+            background-color: #060d19; /* Bleu nuit profond de l'image */
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .vpn-content-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            max-width: 1100px;
+            width: 100%;
+            gap: 40px;
+        }
+
+        /* 2. SECTION TEXTE (GAUCHE) */
+        .vpn-text-content {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .vpn-subtitle {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .vpn-main-description {
+            font-size: 2.2rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        /* 3. SECTION CARTE (DROITE) */
+        .vpn-map-visual {
+            flex: 1.5;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .world-map-svg {
+            width: 100%;
+            height: auto;
+            /* Lueur subtile autour de la carte */
+            filter: drop-shadow(0 0 20px rgba(72, 219, 251, 0.15));
+        }
+
+        /* 4. STYLE DES ÉPINGLES (PINS) */
+        .map-pin {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            transform: translate(-50%, -100%); /* Centre le bas de l'épingle sur le point */
+            z-index: 10;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .map-pin:hover {
+            transform: translate(-50%, -110%) scale(1.2);
+        }
+
+        /* Couleurs et Positions (basées sur image_c63551.jpg) */
+        .pin-north-america { top: 35%; left: 14%; fill: url(#grad-rose); }
+        .pin-south-america { top: 68%; left: 32%; fill: url(#grad-orange); }
+        .pin-europe-africa { top: 40%; left: 49%; fill: url(#grad-cyan); }
+        .pin-north-asia    { top: 22%; left: 72%; fill: url(#grad-purple); }
+        .pin-south-asia    { top: 75%; left: 91%; fill: url(#grad-blue); }
+
+        /* 5. RESPONSIVE (MOBILE) */
+        @media (max-width: 900px) {
+            .vpn-content-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .vpn-text-content {
+                max-width: 100%;
+            }
+            .vpn-main-description {
+                font-size: 1.8rem;
+            }
+        }
+
+
+ /* STYLES DU PIED DE PAGE (FOOTER) */
+        .footer-xtreme {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            color: #3b82f6; /* Bleu des titres */
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .footer-logo-area img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-area p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #cccccc;
+            margin: 0;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .footer-contact-item i {
+            font-size: 1.2rem;
+        }
+
+        .footer-contact-item .fa-envelope { color: #ffffff; }
+        .footer-contact-item .fa-whatsapp { color: #ffffff; }
+
+        .footer-contact-item a {
+            color: #ff3b3b; /* Couleur rouge pour l'email */
+            text-decoration: none;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .payment-methods i {
+            font-size: 2rem;
+            color: #ffffff;
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-
+                           
 </head>
 <body>
 
@@ -951,6 +1222,45 @@
   background-color: #eef2ff; /* variante colorée si tu veux */
 }
 
+                      
+/* Les Images Toute la télévision Tu aimes */
+.elementor-headline-dynamic-text {
+            position: relative;
+            display: inline-block;
+        }
+        /* Simulation de l'animation "underline" d'Elementor */
+        .elementor-headline-dynamic-text::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 3px;
+            background-color: #e11d48;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.6s ease-out;
+            animation: underline-grow 1.2s infinite alternate;
+        }
+        @keyframes underline-grow {
+            from { transform: scaleX(0); transform-origin: bottom left; }
+            to { transform: scaleX(1); transform-origin: bottom left; }
+        }
+        .swiper-slide img {
+            max-height: 46px;
+            width: auto;
+            object-fit: contain;
+            margin: 0 auto;
+        }
+        /* Style spécifique pour agrandir le Carousel 2 (2x plus grand) */
+        .mySwiper2 .swiper-slide img {
+    max-height: 300px;
+}
+        .elementor-button-animation-grow:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+                         
 </style>
 
  <!-- Interface Panier -->
@@ -1132,6 +1442,146 @@
             <!-- Vous pouvez ajouter d'autres cartes de sport ici -->
         </div>
     </section>
+</div>
+                                   
+     
+      <!-- Section Tout Television Tu aimes -->
+      <!-- Container Parent -->
+    <div class="elementor-element e-con-boxed p-10 flex flex-col items-center gap-10">
+        <div class="e-con-inner w-full max-w-6xl mx-auto text-center">
+            
+            <!-- Titre Animé -->
+            <div class="elementor-widget mb-8">
+                <h2 class="text-4xl md:text-5xl font-bold">
+                    <span class="opacity-80">Stream </span>
+                    <span class="elementor-headline-dynamic-wrapper">
+                        <span class="elementor-headline-dynamic-text text-red-500">Toute la télévision</span>
+                    </span>
+                    <span class="opacity-80"> Tu aimes</span>
+                </h2>
+            </div>
+
+            <!-- Carousel 1 (Logos) -->
+            <div class="swiper mySwiper1 mb-10">
+                <div class="swiper-wrapper">
+                    <!-- Les URLs ont été corrigées pour charger directement l'image -->
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item06-150x46-1.webp" alt="Brand 1"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item08-150x46-1.webp" alt="Brand 2"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item11.webp" alt="Brand 3"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item15-150x46-1.webp" alt="Brand 4"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item16-150x46-1.webp" alt="Brand 5"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/FOX.png.webp" alt="FOX 6"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item17-150x46-1.webp" alt="Brand 7"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item22-150x46-1.webp" alt="Brand 8"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item10-150x46-1.webp" alt="Brand 9"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item09-150x46-1.webp" alt="Brand 10"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item14-150x46-1.webp" alt="Brand 11"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item18-150x46-1.webp" alt="Brand 12"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item21-150x46-1-1.webp" alt="Brand 13"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item12.webp" alt="Brand 14"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/brand_item13-150x46-1.webp" alt="Brand 15"></div>
+                </div>
+            </div>
+
+            <!-- Carousel 2 FILM (Logos secondaires - Agrandis) -->
+            <div class="swiper mySwiper2 mb-12">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/efc10d_82f6ea18c2494be98c46c59b9e55cf71_mv2-1.webp" alt="Network 1"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/efc10d_58769540c3af46e4b1b8373d25053dce_mv2-1.webp" alt="Network 2"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/efc10d_d0631c9b9c3f4be9bd6caef12c4d0694_mv2-1.webp" alt="Network 3"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/efc10d_e83995fe1b33435a982de93f05c82c29_mv2-1.webp" alt="Network 4"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/efc10d_cf5918f2dcf64cf39fcefe135495cc43_mv2-1.webp" alt="Network 5"></div>
+                    <div class="swiper-slide"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/efc10d_c4763bc9523c4fc89ba4e9f22e5ce52d_mv2-1.webp" alt="Network 6"></div>
+                </div>
+            </div>
+
+            <!-- Bouton d'action -->
+            <div id="pricing" class="flex justify-center">
+                <a href="https://teleprime4k.github.io/Lien-de-paiement-/" class="elementor-button-animation-grow flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full shadow-lg">
+                    <svg aria-hidden="true" class="w-6 h-6 fill-current" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z"></path>
+                    </svg>
+                    <span>DEMANDE UN TEST</span>
+                </a>
+            </div>
+  </div>
+  </div>
+
+    <!-- Scripts pour les Carousels -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const commonConfig = {
+            loop: true,
+            autoplay: { delay: 3000 },
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 }, // Réduit légèrement pour laisser de la place aux grands logos
+                1024: { slidesPerView: 4 }, // Idem
+            },
+        };
+        new Swiper(".mySwiper1", {
+            ...commonConfig,
+            breakpoints: {
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 4 },
+                1024: { slidesPerView: 6 },
+            }
+        });
+        new Swiper(".mySwiper2", { ...commonConfig, autoplay: { delay: 3500 } });
+    </script>
+
+                                   
+                             
+        <!-- Section Donner Global Chaines,FILM et Series & Clasement IPTV n1-->
+        <!-- Stats Section -->
+    <section class="py-12 glass border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-around gap-8 text-center">
+            <div>
+                <div class="text-3xl font-bold text-amber-500">20K+</div>
+                <div class="text-gray-500 text-sm uppercase tracking-widest mt-1">Chaînes en direct</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-amber-500">60K+</div>
+                <div class="text-gray-500 text-sm uppercase tracking-widest mt-1">Films et séries</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-amber-500">99.9%</div>
+                <div class="text-gray-500 text-sm uppercase tracking-widest mt-1">Disponibilité</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-amber-500">24/7</div>
+                <div class="text-gray-500 text-sm uppercase tracking-widest mt-1">Support en direct</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 glass border-y border-white/5">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-block py-1 px-4 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-bold uppercase tracking-widest mb-6">
+                classé N°1 Fournisseur IPTV  2026
+            </span>
+
+<p class="max-w-2xl mx-auto text-gray-400 text-lg lg:text-xl mb-10 leading-relaxed"> 
+                Compatible avec tous les appareils
+            </p>
+
+  <!-- <p class="max-w-2xl mx-auto text-gray-400 text-lg lg:text-xl mb-10 leading-relaxed"> 
+                Accédez à plus de 20 000 chaînes en direct, plus de 60 000 VOD et des sports premium en qualité 4K époustouflante. Aucun contrat, aucuns frais cachés
+            </p>
+            -->
+      
+<!-- Icônes des Appareils -->
+    <div class="mt-16 flex flex-wrap justify-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="flex items-center gap-2"><i class="fab fa-android text-2xl"></i> Android TV</div>
+                <div class="flex items-center gap-2"><i class="fab fa-apple text-2xl"></i> Apple TV</div>
+                <div class="flex items-center gap-2"><i class="fas fa-tv text-2xl"></i> Smart TV</div>
+                <div class="flex items-center gap-2"><i class="fas fa-fire text-2xl"></i> Firestick</div>
+            </div>
+        </div>
+         </section>
+                            
+
 
     <!-- SECTION 2 : OFFRES PREMIUM (LES PACKS EXCLUS) -->
         <section id="packs">
@@ -1206,12 +1656,131 @@
                 </div>
             </div>
         </section>
+
+                                       
+        <!-- FILM & SERIES -->
+        <!-- Hero Section -->
+<header class="relative pt-20 pb-16 px-6 overflow-hidden">
+
+    <!-- Boutons d'action : Commencez maintenant et Essai gratuit -->
+    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+        <a href="#plans" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold transition btn-glow">Commencez dès maintenant</a>
+        <a href="https://teleprime4k.github.io/Lien-de-paiement-/" class="border border-gray-600 hover:border-white px-8 py-4 rounded-full font-bold transition">Essai gratuit</a>
+    </div>     
+</header>
+
+<!-- Movie Carousel Section -->
+
+<section class="py-20 glass" style="background-color: #050505; 
+                border-top: 1px solid rgba(255, 255, 255, 0.05); 
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+    <!-- Section avec padding vertical important -->
+    <!-- Fond très sombre #050505 -->
+    <!-- Effet verre dépoli via la classe 'glass' -->
+    <!-- Bordure fine blanche très transparente en haut et en bas -->
     
+
+    <div class="max-w-7xl mx-auto px-6 mb-12 text-center reveal">
+        <!-- Titre de la section -->
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4">4K Films & Series </h2>
+        <!-- Description -->
+        <p class="text-gray-400">Stream les saisons complète et les émissions en vedette avec une qualité 4K</p>
+    </div>
+
+    <!-- Slider avec animation de défilement -->
+    <div class="slider reveal" style="transition-delay: 100ms;">
+        <div class="slide-track">
+            <!-- Chaque slide contient une carte de film avec une image -->
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov3.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov17.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov6.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov9.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov14.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov13.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov7.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <!-- Boucle pour animation continue -->
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov3.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov17.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov6.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov9.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov14.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov13.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov7.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- How it Works Section -->
+<section class="py-24 px-6" id="plans">
+    <div class="max-w-7xl mx-auto">
+        <!-- Conteneur vide ? (peut-être à compléter) -->
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+        <!-- Étape 1 -->
+        <div class="step-card p-8 rounded-2xl border border-gray-800 text-center reveal">
+            <div class="w-24 h-24 mx-auto mb-6 bg-blue-600/10 rounded-full flex items-center justify-center">
+                <img src="https://xtremehdflix.com/wp-content/uploads/2024/06/1-1-2.webp" alt="Step 1" class="w-16 h-16 object-contain">
+            </div>
+            <h3 class="text-xl font-bold mb-4">1. Passez votre commande</h3>
+            <p class="text-gray-400">Choisissez votre forfait préféré pour la période :  12 mois. Un paiement sécurisé et facile.</p>
+        </div>
+
+        <!-- Étape 2 -->
+        <div class="step-card p-8 rounded-2xl border border-gray-800 text-center reveal" style="transition-delay: 100ms;">
+            <div class="w-24 h-24 mx-auto mb-6 bg-blue-600/10 rounded-full flex items-center justify-center">
+                <img src="https://xtremehdflix.com/wp-content/uploads/2024/06/2-1.webp" alt="Step 2" class="w-16 h-16 object-contain">
+            </div>
+            <h3 class="text-xl font-bold mb-4">2. Ouvrez votre compte</h3>
+            <p class="text-gray-400">Recevez instantanément vos identifiants. Contactez-nous par email ou Telegram pour une configuration ultra-rapide.</p>
+        </div>
+
+        <!-- Étape 3 -->
+        <div class="step-card p-8 rounded-2xl border border-gray-800 text-center reveal" style="transition-delay: 200ms;">
+            <div class="w-24 h-24 mx-auto mb-6 bg-blue-600/10 rounded-full flex items-center justify-center">
+                <img src="https://xtremehdflix.com/wp-content/uploads/2024/06/3-1.webp" alt="Step 3" class="w-16 h-16 object-contain">
+            </div>
+            <h3 class="text-xl font-bold mb-4">3. Profiter de la meilleure IPTV</h3>
+            <p class="text-gray-400">Accédez immédiatement à toutes les chaînes, sports en direct et séries grâce à notre support prioritaire.</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Logique pour révéler les éléments au scroll
+    const observerOptions = {
+        threshold: 0.1 // déclenchement quand 10% de l'élément est visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active'); // ajoute la classe pour l'animation
+            }
+        });
+    }, observerOptions);
+
+    // Observer tous les éléments avec la classe 'reveal'
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // Smooth scroll pour les ancres
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+                               
+                                     
     <!-- SECTION FILMS -->
-    <section id="films" class="max-w-7xl mx-auto relative">
+     <!--<section id="films" class="max-w-7xl mx-auto relative">
         
         <!-- En-tête stylé -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
+        <!-- <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12">
             <div class="space-y-2">
                 <div class="flex items-center gap-2">
                     <span class="w-6 md:w-8 h-[2px] bg-yellow-500"></span>
@@ -1225,7 +1794,7 @@
             </div>
             
             <!-- Navigation (Cachée sur petit mobile pour gagner de la place, tactile prioritaire) -->
-            <div class="hidden sm:flex gap-3">
+              <!--<div class="hidden sm:flex gap-3">
                 <button onclick="scrollCarousel(-1)" class="w-10 h-10 md:w-12 md:h-12 rounded-xl glass-card flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-colors group">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
@@ -1234,13 +1803,14 @@
                 </button>
             </div>
         </div>
+    
 
         <!-- Carousel Wrapper -->
-        <div class="carousel-wrapper relative">
+         <!--<div class="carousel-wrapper relative">
             <div id="carousel" class="flex overflow-x-auto gap-4 md:gap-8 pb-8 md:pb-12 no-scrollbar scroll-smooth snap-x snap-mandatory px-2">
                 
                 <!-- Item 1: Avatar -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-yellow-500 text-black">Nouveau</span>
@@ -1260,7 +1830,7 @@
                 </div>
 
                <!-- Item 2: Foot Sport -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
@@ -1277,7 +1847,7 @@
                 </div>
 
                  <!-- Item 3: Disnep + -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
@@ -1295,7 +1865,7 @@
 
 
                 <!-- Item 4: House of the Dragon -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-blue-500 text-white">Saison 2</span>
@@ -1312,7 +1882,7 @@
                 </div>
 
                 <!-- Item 5: Netflix, Paramound, HBO MAX + -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
@@ -1329,7 +1899,7 @@
                 </div>
 
                 <!-- Item 6: UEFA Champions League -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                <!-- <div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
@@ -1343,10 +1913,10 @@
                             <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">UEFA• Sports</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Item 7: Harry Potter -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
@@ -1360,10 +1930,10 @@
                             <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">Magie • Classique</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Item 8: Dora -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="img-container rounded-[1rem] md:rounded-[1.5rem] overflow-hidden aspect-[2/3]">
                             <img src="https://fr.web.img6.acsta.net/pictures/19/07/09/16/20/2730316.jpg" 
@@ -1374,10 +1944,10 @@
                             <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">Famille • Exploration</p>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <!-- Item 9: Adult -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="glass-card p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] group cursor-pointer relative">
                         <div class="absolute top-4 right-4 z-20">
                             <span class="badge bg-white/20 backdrop-blur-md text-white border border-white/20">4K HDR</span>
@@ -1391,10 +1961,10 @@
                             <p class="text-[9px] md:text-xs text-gray-500 mt-1 uppercase font-semibold tracking-wider">+18 • Sexe</p>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <!-- Item 10: DOM-TOM Premium Card -->
-                <div class="flex-none w-[160px] md:w-[260px] snap-start">
+                 <!--<div class="flex-none w-[160px] md:w-[260px] snap-start">
                     <div class="h-full border-2 border-dashed border-yellow-500/30 rounded-[1.5rem] md:rounded-[2rem] flex flex-col items-center justify-center p-6 md:p-8 text-center group cursor-pointer hover:bg-yellow-500/5 transition-all duration-500">
                         <div class="w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-2xl md:rounded-3xl flex items-center justify-center text-2xl md:text-4xl shadow-lg shadow-yellow-500/20 group-hover:rotate-12 transition-transform">
                             🏝️
@@ -1406,7 +1976,8 @@
 
             </div>
         </div>
-    </section>
+    </section>--> 
+
 
     <script>
         function scrollCarousel(direction) {
@@ -1517,6 +2088,7 @@
     }
 </script>
 </section>
+
 
  <!-- Section principale contenant Mes Applications TV📺 & ANDROID📱 Premium 💎 -->
 <main class="w-full max-w-6xl mx-auto mt-12">
@@ -1899,12 +2471,6 @@
         </div>
     </section>
 </main>
-
-    <!-- Copyright -->
-<footer class="mt-24 pb-12 text-center text-[10px] text-gray-600 uppercase tracking-[0.4em]">
-    &copy; 2026 Teleprime4K Digital Media 
-</footer>
-
 </div>
 
 <!-- Chat Simulator // JAI RENDU TOUT CE SCRIPT EN COMMANTAIRE // -->
@@ -2404,6 +2970,71 @@ s0.parentNode.insertBefore(s1,s0);
         }, 75000); // <--- C'est ici qu'on règle le délai d'ouverture (75000ms = 1 min 15s)
     });
 </script>
-    
+   
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script><!-- 
+    Chargement de la bibliothèque Swiper version 11 depuis le CDN jsDelivr.
+    Swiper est une bibliothèque JavaScript populaire pour créer des carrousels et sliders tactiles, 
+    responsive et performants. Ce script permet d'utiliser toutes les fonctionnalités de Swiper dans la page.
+-->
+
+
+<!-- PIED DE PAGE (FOOTER) UNIQUEMENT -->
+<footer class="footer-xtreme">
+    <div class="footer-container">
+        
+        <!-- Colonne Logo et Description -->
+        <div class="footer-column footer-logo-area">
+            <img src="https://i.imgur.com/CFBBHcV.png" alt="Xtreme HD FLIX Logo" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=XTREME+HD+FLIX'">
+            <p>Nous sommes un service Premium de chaînes IPTV, nous proposons à nos utilisateurs plus de 11068 chaînes TV en direct et +95000 VOD, ainsi qu'une technologie antigel et un support client convivial disponible 24h/24 et 7j/7.</p>
+        </div>
+
+        <!-- Colonne Besoin d'aide -->
+        <div class="footer-column">
+            <h3>Besoin d’aide !</h3>
+            <ul class="footer-links">
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Politique de remboursement</a></li>
+                <li><a href="#">Conditions d'utilisation</a></li>
+                <li><a href="#">Politique de confidentialité</a></li>
+            </ul>
+        </div>
+
+        <!-- Colonne Liens rapides -->
+        <div class="footer-column">
+            <h3>Liens rapides</h3>
+            <ul class="footer-links">
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Tarification</a></li>
+                <li><a href="#">Liste des chaînes</a></li>
+                <li><a href="#">Revendeur</a></li>
+            </ul>
+        </div>
+
+        <!-- Colonne Contactez-nous -->
+        <div class="footer-column">
+            <h3>Contactez-nous</h3>
+            <div class="footer-contact-item">
+                <i class="fa-regular fa-envelope"></i>
+                <a href="mailto:teleprime4k@gmail.com">teleprime4k@gmail.com</a>
+            </div>
+            <div class="footer-contact-item">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>+</span>
+            </div>
+            
+            <!-- Logos de paiement -->
+            <div class="payment-methods">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-amex"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+            </div>
+</footer>
+
+    <!-- Copyright -->
+<footer class="mt-24 pb-12 text-center text-[10px] text-gray-600 uppercase tracking-[0.4em]">
+    &copy; 2026 Teleprime4K Digital Media 
+</footer>
+
 </body>
 </html>
