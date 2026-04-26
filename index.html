@@ -713,6 +713,113 @@
             }
         }
 
+
+  /* Style principal du pied de page */
+        .footer-xtreme {
+            background-color: #000; /* Fond noir pur */
+            color: #fff;
+            padding-top: 50px;
+            border-top: 1px solid #333; /* Ligne de séparation subtile en haut */
+        }
+
+        /* Conteneur des 4 colonnes d'informations */
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            /* Création automatique de colonnes (responsive) */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* Styles des titres de colonnes (H3) */
+        .footer-column h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Petite ligne bleue décorative sous les titres */
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 50px;
+            height: 2px;
+            background-color: #3b82f6;
+        }
+
+        /* Style pour la zone du logo et du texte descriptif */
+        .footer-logo-area img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-area p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Liste des liens de navigation */
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: #fff; /* Blanchit au survol */
+        }
+
+        /* Icônes de contact (Email et WhatsApp) */
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #94a3b8;
+        }
+
+        .footer-contact-item i {
+            color: #3b82f6; /* Icônes en bleu */
+        }
+
+        .footer-contact-item a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Zone des logos de paiement */
+        .payment-methods {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            font-size: 1.5rem;
+            color: #94a3b8;
+        }
+
+        /* SECTION BAS DE PAGE (Copyright) */
+        /* C'est ici que l'on assure le centrage total */
+        .footer-bottom {
+            margin-top: 40px;
+            border-top: 1px solid #1e293b; /* Ligne de séparation horizontale */
+            width: 100%; /* Prend toute la largeur pour permettre le centrage du texte */
+        }
+
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -1160,115 +1267,32 @@
         .elementor-button-animation-grow:hover {
             transform: scale(1.05);
             transition: transform 0.3s ease;
+
         }
 
 
-         /* Style principal du pied de page */
-        .footer-xtreme {
-            background-color: #000; /* Fond noir pur */
-            color: #fff;
-            padding-top: 50px;
-            border-top: 1px solid #333; /* Ligne de séparation subtile en haut */
-        }
+         /* Style spécifique pour agrandir les 4K Films & Series (350px plus grand) */
+        .slider .slide img {
+    width: 215px;       /* fixe la largeur à 215px */
+    height: 350;       /* ajuste la hauteur automatiquement pour garder le ratio */
+    /* Ou si vous préférez une hauteur fixe : */
+    /* height: 350px; */
+    /* width: auto; */
+    object-fit: contain; /* pour que l'image soit bien contenue dans la zone */
+}
 
-        /* Conteneur des 4 colonnes d'informations */
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            /* Création automatique de colonnes (responsive) */
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            padding: 0 20px;
-        }
+.movie-card {
+    width: 215px;
+    height: 350px;
+    overflow: hidden; /* pour cacher les débordements */
+}
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ou contain selon l'effet désiré */
+}
 
-        /* Styles des titres de colonnes (H3) */
-        .footer-column h3 {
-            color: #fff;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        /* Petite ligne bleue décorative sous les titres */
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 50px;
-            height: 2px;
-            background-color: #3b82f6;
-        }
-
-        /* Style pour la zone du logo et du texte descriptif */
-        .footer-logo-area img {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-
-        .footer-logo-area p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* Liste des liens de navigation */
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .footer-links a:hover {
-            color: #fff; /* Blanchit au survol */
-        }
-
-        /* Icônes de contact (Email et WhatsApp) */
-        .footer-contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: #94a3b8;
-        }
-
-        .footer-contact-item i {
-            color: #3b82f6; /* Icônes en bleu */
-        }
-
-        .footer-contact-item a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        /* Zone des logos de paiement */
-        .payment-methods {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            font-size: 1.5rem;
-            color: #94a3b8;
-        }
-
-        /* SECTION BAS DE PAGE (Copyright) */
-        /* C'est ici que l'on assure le centrage total */
-        .footer-bottom {
-            margin-top: 40px;
-            border-top: 1px solid #1e293b; /* Ligne de séparation horizontale */
-            width: 100%; /* Prend toute la largeur pour permettre le centrage du texte */
-        }
-        
+    
 </style>
 
  <!-- Interface Panier -->
@@ -1677,8 +1701,8 @@
     </div>     
 </header>
 
-<!-- Movie Carousel Section -->
 
+<!-- 4K Films & Series Carousel Section -->
 <section class="py-20 glass" style="background-color: #050505; 
                 border-top: 1px solid rgba(255, 255, 255, 0.05); 
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
@@ -1695,7 +1719,7 @@
         <p class="text-gray-400">Stream les saisons complète et les émissions en vedette avec une qualité 4K</p>
     </div>
 
-    <!-- Slider avec animation de défilement -->
+    <!-- Slider avec animation de défilement --> 
     <div class="slider reveal" style="transition-delay: 100ms;">
         <div class="slide-track">
             <!-- Chaque slide contient une carte de film avec une image -->
@@ -1706,6 +1730,14 @@
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov14.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov13.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov7.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov10.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov4.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov21.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov1.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov23.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov2.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov15.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            
             <!-- Boucle pour animation continue -->
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov3.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov17.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
@@ -1714,6 +1746,13 @@
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov14.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov13.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
             <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov7.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov10.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov4.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov21.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov1.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov23.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov2.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
+            <div class="slide"><div class="movie-card"><img src="https://xtremehdflix.com/wp-content/uploads/2023/10/mov15.png.webp" class="rounded-xl shadow-lg" alt="Movie"></div></div>
         </div>
     </div>
 </section>
@@ -2986,7 +3025,7 @@ s0.parentNode.insertBefore(s1,s0);
 -->
 
 
-<!-- DEBUT DU PIED DE PAGE -->
+    <!-- DEBUT DU PIED DE PAGE -->
     <footer class="footer-xtreme">
         
         <!-- Zone des colonnes -->
