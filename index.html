@@ -2840,11 +2840,11 @@ s0.parentNode.insertBefore(s1,s0);
       if (selectedPaymentMethod !== 'lydia') {
         total += 200; // Ajout des 2€ de frais (en centimes)
         let label = "la transaction";
-        if (selectedPaymentMethod === 'carte') label = "Carte";
+        if (selectedPaymentMethod === 'carte') label = "Carte Bancaire";
         if (selectedPaymentMethod === 'applepay') label = "Apple Pay";
         if (selectedPaymentMethod === 'googlepay') label = "Google Pay";
 
-        cartMessage.textContent = `Frais avec ${label} : +2.00 €`;
+        cartMessage.textContent = ` ${label} : +2.00 €`;
         cartMessage.style.color = "#ffb8b8";
       } else {
         cartMessage.textContent = "🔥 Pas de frais avec Lydia ! 🔥";
