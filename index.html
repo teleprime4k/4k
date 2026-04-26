@@ -16,6 +16,11 @@
      <!-- Font Awesome pour les icônes de contact -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <!-- Chargement de Tailwind CSS pour le stylage rapide (centrage, espacement) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chargement des icônes Font Awesome (Enveloppe, WhatsApp, Cartes bancaires) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 
 <!-- Favicons (corrigés pour GitHub Pages + dossier /assets/icons/) -->
 <link rel="icon" type="image/png" sizes="96x96" href="./assets/icons/favicon-96x96.png" />
@@ -708,110 +713,6 @@
             }
         }
 
-
- /* STYLES DU PIED DE PAGE (FOOTER) */
-        .footer-xtreme {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            padding: 60px 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-            gap: 40px;
-        }
-
-        .footer-column h3 {
-            color: #3b82f6; /* Bleu des titres */
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-        }
-
-        .footer-logo-area img {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-
-        .footer-logo-area p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #cccccc;
-            margin: 0;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 15px;
-        }
-
-        .footer-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: #3b82f6;
-        }
-
-        .footer-contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        .footer-contact-item i {
-            font-size: 1.2rem;
-        }
-
-        .footer-contact-item .fa-envelope { color: #ffffff; }
-        .footer-contact-item .fa-whatsapp { color: #ffffff; }
-
-        .footer-contact-item a {
-            color: #ff3b3b; /* Couleur rouge pour l'email */
-            text-decoration: none;
-        }
-
-        .payment-methods {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            align-items: center;
-        }
-
-        .payment-methods i {
-            font-size: 2rem;
-            color: #ffffff;
-        }
-
-        /* RESPONSIVE MOBILE */
-        @media (max-width: 900px) {
-            .footer-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -1260,7 +1161,114 @@
             transform: scale(1.05);
             transition: transform 0.3s ease;
         }
-                         
+
+
+         /* Style principal du pied de page */
+        .footer-xtreme {
+            background-color: #000; /* Fond noir pur */
+            color: #fff;
+            padding-top: 50px;
+            border-top: 1px solid #333; /* Ligne de séparation subtile en haut */
+        }
+
+        /* Conteneur des 4 colonnes d'informations */
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            /* Création automatique de colonnes (responsive) */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* Styles des titres de colonnes (H3) */
+        .footer-column h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* Petite ligne bleue décorative sous les titres */
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 50px;
+            height: 2px;
+            background-color: #3b82f6;
+        }
+
+        /* Style pour la zone du logo et du texte descriptif */
+        .footer-logo-area img {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-area p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Liste des liens de navigation */
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: #fff; /* Blanchit au survol */
+        }
+
+        /* Icônes de contact (Email et WhatsApp) */
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #94a3b8;
+        }
+
+        .footer-contact-item i {
+            color: #3b82f6; /* Icônes en bleu */
+        }
+
+        .footer-contact-item a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Zone des logos de paiement */
+        .payment-methods {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            font-size: 1.5rem;
+            color: #94a3b8;
+        }
+
+        /* SECTION BAS DE PAGE (Copyright) */
+        /* C'est ici que l'on assure le centrage total */
+        .footer-bottom {
+            margin-top: 40px;
+            border-top: 1px solid #1e293b; /* Ligne de séparation horizontale */
+            width: 100%; /* Prend toute la largeur pour permettre le centrage du texte */
+        }
+        
 </style>
 
  <!-- Interface Panier -->
@@ -2984,7 +2992,7 @@ s0.parentNode.insertBefore(s1,s0);
         
         <!-- Colonne Logo et Description -->
         <div class="footer-column footer-logo-area">
-            <img src="https://i.imgur.com/CFBBHcV.png" alt="Xtreme HD FLIX Logo" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=XTREME+HD+FLIX'">
+            <img src="https://i.imgur.com/D4m3lyF.png" alt="Xtreme HD FLIX Logo" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=XTREME+HD+FLIX'">
             <p>Nous sommes un service Premium de chaînes IPTV, nous proposons à nos utilisateurs plus de 11068 chaînes TV en direct et +95000 VOD, ainsi qu'une technologie antigel et un support client convivial disponible 24h/24 et 7j/7.</p>
         </div>
 
