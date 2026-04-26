@@ -2986,63 +2986,77 @@ s0.parentNode.insertBefore(s1,s0);
 -->
 
 
-<!-- PIED DE PAGE (FOOTER) UNIQUEMENT -->
-<footer class="footer-xtreme">
-    <div class="footer-container">
+<!-- DEBUT DU PIED DE PAGE -->
+    <footer class="footer-xtreme">
         
-        <!-- Colonne Logo et Description -->
-        <div class="footer-column footer-logo-area">
-            <img src="https://i.imgur.com/D4m3lyF.png" alt="Xtreme HD FLIX Logo" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=XTREME+HD+FLIX'">
-            <p>Nous sommes un service Premium de chaînes IPTV, nous proposons à nos utilisateurs plus de 11068 chaînes TV en direct et +95000 VOD, ainsi qu'une technologie antigel et un support client convivial disponible 24h/24 et 7j/7.</p>
+        <!-- Zone des colonnes -->
+        <div class="footer-container">
+
+            <!-- 1. Colonne de présentation -->
+            <div class="footer-column footer-logo-area">
+                <img src="https://i.imgur.com/CFBBHcV.png" alt="Teleprime4K Logo" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=TELEPRIME4K'">
+                <p>Nous sommes un service Premium de chaînes IPTV, nous proposons à nos utilisateurs plus de 11068 chaînes TV en direct et +95000 VOD, ainsi qu'une technologie antigel et un support client convivial disponible 24h/24 et 7j/7.</p>
+            </div>
+
+            <!-- 2. Colonne d'assistance -->
+            <div class="footer-column">
+                <h3>Besoin d’aide !</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Politique de remboursement</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+
+            <!-- 3. Colonne de navigation rapide -->
+            <div class="footer-column">
+                <h3>Liens rapides</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Tarification</a></li>
+                    <li><a href="#">Liste des chaînes</a></li>
+                    <li><a href="#">Revendeur</a></li>
+                </ul>
+            </div>
+
+            <!-- 4. Colonne de contact et paiement -->
+            <div class="footer-column">
+                <h3>Contactez-nous</h3>
+                <div class="footer-contact-item">
+                    <i class="fa-regular fa-envelope"></i>
+                    <a href="mailto:teleprime4k@gmail.com">teleprime4k@gmail.com</a>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Support WhatsApp</span>
+                </div>
+                
+                <div class="payment-methods">
+                    <i class="fa-brands fa-cc-visa" title="Visa"></i>
+                    <i class="fa-brands fa-cc-amex" title="Amex"></i>
+                    <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                </div>
+            </div>
+
+        </div> <!-- Fin de la grille des colonnes -->
+        
+        <!-- SECTION DE COPYRIGHT : Placée en dehors du conteneur de colonnes pour être centrée -->
+        <div class="footer-bottom">
+            <!-- 
+                text-center : centre le texte horizontalement
+                text-[10px] : taille très petite et élégante
+                uppercase : transforme en majuscules
+                tracking-[0.4em] : espace les lettres pour un look "premium"
+                py-8 : ajoute de l'espace au-dessus et au-dessous 
+            -->
+            <p class="text-center text-[10px] text-gray-500 uppercase tracking-[0.4em] py-8 m-0">
+                &copy; 2026 Teleprime4K Digital Media
+            </p>
         </div>
 
-        <!-- Colonne Besoin d'aide -->
-        <div class="footer-column">
-            <h3>Besoin d’aide !</h3>
-            <ul class="footer-links">
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Politique de remboursement</a></li>
-                <li><a href="#">Conditions d'utilisation</a></li>
-                <li><a href="#">Politique de confidentialité</a></li>
-            </ul>
-        </div>
-
-        <!-- Colonne Liens rapides -->
-        <div class="footer-column">
-            <h3>Liens rapides</h3>
-            <ul class="footer-links">
-                <li><a href="#">Accueil</a></li>
-                <li><a href="#">Tarification</a></li>
-                <li><a href="#">Liste des chaînes</a></li>
-                <li><a href="#">Revendeur</a></li>
-            </ul>
-        </div>
-
-        <!-- Colonne Contactez-nous -->
-        <div class="footer-column">
-            <h3>Contactez-nous</h3>
-            <div class="footer-contact-item">
-                <i class="fa-regular fa-envelope"></i>
-                <a href="mailto:teleprime4k@gmail.com">teleprime4k@gmail.com</a>
-            </div>
-            <div class="footer-contact-item">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span>+</span>
-            </div>
-            
-            <!-- Logos de paiement -->
-            <div class="payment-methods">
-                <i class="fa-brands fa-cc-visa"></i>
-                <i class="fa-brands fa-cc-amex"></i>
-                <i class="fa-brands fa-cc-mastercard"></i>
-            </div>
-</footer>
-
-    <!-- Copyright -->
-<footer class="mt-24 pb-12 text-center text-[10px] text-gray-600 uppercase tracking-[0.4em]">
-    &copy; 2026 Teleprime4K Digital Media 
-</footer>
+    </footer>
 
 </body>
 </html>
