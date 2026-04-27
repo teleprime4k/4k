@@ -906,6 +906,17 @@
         <a href="#reviews" class="hover:text-yellow-500 transition">Avis</a>
     </nav>
 
+
+
+       <!--Mon Panier Confirmation envoi demande de paiement --> 
+
+<div id="confirmation-modal">
+    <div class="check-circle">✓</div>
+    <h2>Commande Reçue !</h2>
+    <p>Nous vous remercions sincèrement pour votre confiance. Votre demande est actuellement en cours de traitement. Vous recevrez très prochainement un e-mail contenant un lien de paiement définitif..</p>
+    <button id="btn-return-cart">Retour au panier</button>
+</div>
+
           <!--Mon Panier-->  
     <style>
 
@@ -1187,6 +1198,64 @@ h2.cart-title {
     margin-top: 15px;
     width: 100%;
     font-weight: bold;
+}
+/* Style de la Pop-up de Confirmation */
+#confirmation-modal {
+    display: none; /* Caché par défaut */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3b0a45; /* Le violet de ton image */
+    color: white;
+    padding: 35px 25px;
+    border-radius: 25px;
+    text-align: center;
+    z-index: 2000;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+}
+
+#confirmation-modal .check-circle {
+    background: rgba(255, 255, 255, 0.1);
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 35px;
+    color: #2ecc71; /* Vert de validation */
+    margin-bottom: 20px;
+}
+
+#confirmation-modal h2 {
+    margin: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#confirmation-modal p {
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+#confirmation-modal #btn-return-cart {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 15px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#confirmation-modal #btn-return-cart:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
         
@@ -3086,46 +3155,90 @@ s0.parentNode.insertBefore(s1,s0);
             };
         });
 
-        checkoutButton.onclick = async function() {
-            const email = document.getElementById('user-email').value;
-            if(!email || !email.includes('@')) {
-                alert("Veuillez entrer une adresse e-mail valide.");
-                return;
-            }
+        // Fonction pour afficher la pop-up
+    function showConfirmation() {
+        document.getElementById('confirmation-modal').style.display = 'block';
+        document.getElementById('cart-overlay-bg').style.display = 'block'; // On garde l'overlay noir derrière
+        document.getElementById('cart-details').classList.remove('active'); // On ferme le tiroir du panier
+    }
 
-            checkoutButton.disabled = true;
-            checkoutButton.textContent = "Validation...";
-
-            const totalFinal = checkoutButton.innerText.split('•')[1]?.trim() || "";
-            const itemsNames = cart.map(i => i.name).join(', ');
-
-            const formData = new FormData();
-            formData.append('Email Client', email);
-            formData.append('Méthode', selectedMethod);
-            formData.append('Articles', itemsNames);
-            formData.append('Total', totalFinal);
-
-            try {
-                const response = await fetch('https://formspree.io/f/xbdazkbd', {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
-
-                if (response.ok) {
-                    window.location.href = 'https://teleprime4k.github.io/Lien-de-paiement-/';
-                } else {
-                    throw new Error();
-                }
-            } catch (error) {
-                alert("Erreur réseau. Veuillez réessayer.");
-                checkoutButton.disabled = false;
-                updateDisplay();
-            }
-        };
-
+    // Fonction pour fermer la pop-up et vider le panier
+    document.getElementById('btn-return-cart').onclick = function() {
+        document.getElementById('confirmation-modal').style.display = 'none';
+        document.getElementById('cart-overlay-bg').style.display = 'none';
+        cart = []; // On vide le panier
         updateDisplay();
-    </script>
+    };
+
+        // --- MISE À JOUR DE LA FONCTION CHECKOUT ---
+    checkoutButton.onclick = async function() {
+        const email = document.getElementById('user-email').value;
+        
+        // 1. Vérification de l'email
+        if(!email || !email.includes('@')) {
+            alert("Veuillez entrer une adresse e-mail valide.");
+            return;
+        }
+
+        checkoutButton.disabled = true;
+        checkoutButton.textContent = "Validation...";
+
+        // 2. Calcul du montant total final pour l'envoi
+        let subtotal = 0;
+        cart.forEach(item => subtotal += item.price);
+        const totalCalcule = ((subtotal + currentFee) / 100).toFixed(2) + " €";
+
+        // 3. Préparation des noms d'articles
+        const itemsNames = cart.map(i => i.name).join(', ');
+
+        // 4. Construction du formulaire de données pour Formspree
+        const formData = new FormData();
+        formData.append('Email Client', email);
+        formData.append('Méthode de Paiement', selectedMethod);
+        formData.append('Articles commandés', itemsNames);
+        formData.append('Montant Total à payer', totalCalcule); // <--- AJOUT DU TOTAL ICI
+
+        try {
+            const response = await fetch('https://formspree.io/f/xbdazkbd', {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                // Affichage de la pop-up de succès
+                showConfirmation(); 
+                
+                // Réinitialisation du bouton
+                checkoutButton.disabled = false;
+                checkoutButton.innerHTML = "Envoyer ma demande de Paiement";
+            } else {
+                throw new Error();
+            }
+            
+        } catch (error) {
+            alert("Erreur lors de l'envoi. Vérifiez votre connexion.");
+            checkoutButton.disabled = false;
+            updateDisplay();
+        }
+    };
+
+    // Fonctions pour gérer l'affichage de la fenêtre
+    function showConfirmation() {
+        document.getElementById('confirmation-modal').style.display = 'block';
+        document.getElementById('cart-overlay-bg').style.display = 'block';
+        document.getElementById('cart-details').classList.remove('active');
+    }
+
+    document.getElementById('btn-return-cart').onclick = function() {
+        document.getElementById('confirmation-modal').style.display = 'none';
+        document.getElementById('cart-overlay-bg').style.display = 'none';
+        cart = []; // Vide le panier après commande réussie
+        updateDisplay();
+    };
+
+    updateDisplay();
+</script>
  
 <!-- Script du bouton de Renouvelement  -->
 <script>
