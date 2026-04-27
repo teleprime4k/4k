@@ -31,23 +31,32 @@
 <link rel="manifest" href="./assets/icons/site.webmanifest" />
 
     <style>
+        /* VARIABLES DE DESIGN : Permet de changer les couleurs partout dans le site en un seul endroit */
         :root {
             --gold: #FFD700;
             --snap-yellow: #FFFC00;
             --bg-dark: #050505;
+
+            --bg-deep-purple: #3b0034;
+            --card-purple: #4e0240;
+            --accent-green: #27ae60; /* Nouvelle variable pour les boutons S'abonner */
+            --accent-validate: #2ecc71; /* NOUVELLE COULEUR pour le bouton Envoyer ma demande */
+            --text-gray: #dfdfdf;
+            --scrollbar-thumb: #5e0a4d;
+            --scrollbar-hover: #7c8aff;
         }
-
+         /* STYLE GLOBAL DU CORPS DE LA PAGE */
           body {
-    background-color: var(--bg-dark);
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Empêche le défilement horizontal */
 
-    --alert-bg: rgba(255, 255, 255, 0.95);
+            --alert-bg: rgba(255, 255, 255, 0.95);
             --accent-color: #e63946; /* Rouge pour l'accentuation */
             --text-dark: #1d3557;   /* Bleu marine pour le titre */
             --text-body: #457b9d;   /* Bleu moyen pour le corps du texte */
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);          
 }
 
 .font-title { font-family: 'Syncopate', sans-serif; }
@@ -899,136 +908,287 @@
 
           <!--Mon Panier-->  
     <style>
-      
- #cart-icon {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      cursor: pointer;
-      font-size: 20px;
-      background: #f8f9fa;
-      padding: 10px 15px;
-      border-radius: 30px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      z-index: 1001;
-      user-select: none;
-    }
 
-    #cart-count {
-      background: #ff4757;
-      color: white;
-      border-radius: 50%;
-      padding: 2px 8px;
-      font-size: 14px;
-      font-weight: bold;
-      margin-left: 5px;
-    }
+     /* STYLE DE LA BARRE DE DÉFILEMENT PERSONNALISÉE (Pour Chrome, Safari, Edge) */
+.cart-content::-webkit-scrollbar {
+    width: 6px; /* Largeur de la barre de défilement */
+}
 
-    #cart-details {
-      position: fixed;
-      top: 80px;
-      right: 20px;
-      width: 320px;
-      max-height: 80vh;
-      overflow-y: auto;
-      background: rgb(78, 2, 64); /* Ton style violet */
-      color: white; /* Texte blanc pour la lisibilité */
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 20px;
-      display: none;
-      z-index: 1000;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    }
+.cart-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2); /* Fond de la piste de la barre de défilement, noir semi-transparent */
+    border-radius: 10px; /* Bords arrondis */
+}
 
-    #cart-details h3 {
-      margin-top: 0;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding-bottom: 10px;
-    }
+.cart-content::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb); /* Couleur du curseur de la barre de défilement (variable CSS) */
+    border-radius: 10px; /* Bords arrondis */
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Bordure blanche très légère et translucide */
+}
 
-    #cart-items {
-      list-style: none;
-      padding: 0;
-      margin: 15px 0;
-    }
+.cart-content::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-hover); /* Couleur du curseur au survol (variable CSS) */
+}
 
-    #cart-items li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 0.95rem;
-      background: rgba(255,255,255,0.05);
-      padding: 8px;
-      border-radius: 6px;
-    }
+/* Support pour Firefox */
+.cart-content {
+    scrollbar-width: thin; /* Barre de défilement fine */
+    scrollbar-color: var(--scrollbar-thumb) rgba(0, 0, 0, 0.2); /* Couleur du curseur et de la piste */
+}
 
-    .remove-item {
-      background: transparent;
-      border: none;
-      color: #ff4757;
-      cursor: pointer;
-      font-weight: bold;
-      padding: 0 5px;
-    }
+/* Icône Panier Flottante */
+#cart-icon {
+    position: fixed; /* Position fixe à l'écran */
+    top: 20px; /* 20 pixels du haut */
+    right: 20px; /* 20 pixels de la droite */
+    cursor: pointer; /* Curseur en forme de main au survol */
+    background: var(--card-purple); /* Fond violet (variable CSS) */
+    padding: 12px 20px; /* Espacement intérieur */
+    border-radius: 50px; /* Forme arrondie (cercle/ovale) */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Ombre portée */
+    z-index: 1001; /* Priorité d’affichage élevée */
+    border: 1px solid rgba(255,255,255,0.1); /* Bordure blanche translucide */
+    transition: transform 0.2s; /* Transition douce pour la transformation */
+}
+#cart-icon:hover {
+    transform: scale(1.05); /* Agrandissement léger au survol */
+}
+#cart-count {
+    background: #ff4757; /* Fond rouge vif */
+    color: white; /* Texte blanc */
+    border-radius: 50%; /* Cercle parfait */
+    padding: 2px 8px; /* Espacement intérieur */
+    font-size: 14px; /* Taille de police */
+    font-weight: bold; /* Texte en gras */
+    margin-left: 8px; /* Marge à gauche */
+}
 
-    #payment-section h4 {
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-      color: #dfdfdf;
-    }
+/* Panier Latéral (Style menu latéral) */
+#cart-details {
+    position: fixed; /* Position fixe */
+    top: 0;
+    right: -100%; /* Caché par défaut à droite (hors écran) */
+    width: 100%;
+    max-width: 400px; /* Largeur maximale fixe */
+    height: 100vh; /* Hauteur pleine fenêtre */
+    background: var(--bg-deep-purple); /* Fond violet foncé (variable CSS) */
+    z-index: 1000; /* Priorité d’affichage */
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5); /* Ombre portée à gauche */
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Transition fluide pour l’apparition */
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
 
-    #payment-section label {
-      display: block;
-      margin-bottom: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
+#cart-details.active {
+    right: 0; /* Affiché à l’écran */
+}
 
-    #checkout-button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 12px;
-      background-color: #6772e5;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: background 0.2s;
-    }
+.cart-header {
+    padding: 25px;
+    display: flex;
+    justify-content: space-between; /* Espacement entre éléments */
+    align-items: center; /* Alignement vertical centré */
+    border-bottom: 1px solid rgba(255,255,255,0.1); /* Ligne de séparation */
+}
 
-    #checkout-button:hover {
-      background-color: #5469d4;
-    }
+.close-cart {
+    cursor: pointer; /* Curseur main */
+    font-size: 30px; /* Taille de police grande */
+    line-height: 1;
+    color: var(--text-gray); /* Couleur gris (variable CSS) */
+}
 
-    #cart-message {
-      font-size: 0.85rem;
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 4px;
-      background: rgba(0,0,0,0.2);
-    }
+.cart-content {
+    flex: 1; /* Prend tout l’espace disponible */
+    padding: 25px;
+    overflow-y: auto; /* Défilement vertical si contenu trop grand */
+}
 
-    /* Style pour les boutons d'achat sur ta page */
-    .product-card {
-      border: 1px solid #ddd;
-      padding: 15px;
-      display: inline-block;
-      margin: 10px;
-      border-radius: 8px;
-    }
+h2.cart-title {
+    font-size: 24px;
+    margin: 0;
+    font-weight: bold;
+}
 
-    .add-to-cart {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+/* Liste des articles */
+#cart-items {
+    list-style: none; /* Pas de puces */
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+#cart-items li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(255,255,255,0.03); /* Fond très clair */
+    border-radius: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.remove-item {
+    color: #ff4757; /* Rouge vif */
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 22px;
+}
+
+/* Mode de paiement */
+.section-label {
+    background: rgba(255,255,255,0.05);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes égales */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.payment-option {
+    cursor: pointer;
+    text-align: center;
+    padding: 15px 5px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02);
+    transition: all 0.2s;
+}
+
+.payment-option.selected {
+    border-color: #ff0080; /* Bordure rose vif */
+    background: rgba(255,0,128,0.1); /* Fond rose clair */
+}
+
+.payment-option .emoji {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.payment-name {
+    font-size: 12px;
+    display: block;
+    font-weight: bold;
+}
+
+.payment-fee {
+    font-size: 10px;
+    color: #aaa;
+}
+
+/* Bannière Promo */
+#promo-banner {
+    background: rgba(46, 204, 113, 0.1); /* Fond vert clair */
+    color: #2ecc71; /* Texte vert */
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border: 1px dashed #2ecc71; /* Bordure en pointillés verts */
+}
+
+/* Input Email */
+.email-group {
+    margin-bottom: 20px;
+}
+.email-group label {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase; /* Texte en majuscules */
+}
+.email-group input {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 14px;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+/* Footer Panier */
+.cart-footer {
+    padding: 25px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.1);
+}
+
+/* STYLE DU BOUTON ENVOYER LA DEMANDE */
+#checkout-button {
+    width: 100%;
+    padding: 18px;
+    background: var(--accent-green); /* Modification ici pour utiliser la nouvelle couleur */
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(124, 138, 255, 0.2);
+    transition: background 0.1s; /* Transition douce de la couleur de fond */
+    line-height: 1.4;
+}
+#checkout-button:hover {
+    background: #6a78f0; /* Couleur de fond au survol */
+}
+
+.footer-note {
+    text-align: center;
+    font-size: 10px;
+    color: #666;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+/* Overlay Background */
+#cart-overlay-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); /* Fond noir semi-transparent */
+    display: none; /* Caché par défaut */
+    z-index: 999;
+    backdrop-filter: blur(3px); /* Flou d’arrière-plan */
+}
+
+/* Cartes Produits */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.product-card {
+    background: var(--card-purple);
+    padding: 25px;
+    border-radius: 20px;
+    width: 200px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.add-to-cart {
+    background: var(--accent-green);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+    font-weight: bold;
+}
+
         
 /* Conteneur de l'alerte */
         #alertMessage {
@@ -1296,27 +1456,63 @@
 </style>
 
  <!-- Interface Panier -->
-  <div id="cart-icon">
-    <span>🛒 Panier</span>
-    <span id="cart-count">0</span>
-  </div>
+    <div id="cart-icon">
+        <span>🛒 Mon Panier</span>
+        <span id="cart-count">0</span>
+    </div>
 
-  <div id="cart-details">
-    <h3>Mon Panier</h3>
-    <ul id="cart-items">
-      <!-- Les articles s'afficheront ici -->
-    </ul>
+    <div id="cart-overlay-bg"></div>
 
-    <div id="payment-section" style="display:none;">
-      <div class="payment-methods">
-        <label><input type="radio" name="payment-method" value="lydia" checked /> 📲 Lydia (0€ frais)</label>
-        <label><input type="radio" name="payment-method" value="carte" /> 💳 Carte bancaire (+2€ frais)</label>
-        <label><input type="radio" name="payment-method" value="applepay" /> 🍎 Apple Pay (+2€ frais)</label>
-        <label><input type="radio" name="payment-method" value="googlepay" /> 🤖 Google Pay (+2€ frais)</label>
-      </div>
-      
-      <div id="cart-message"></div>
-      <button id="checkout-button">Payer</button>
+    <div id="cart-details">
+        <div class="cart-header">
+            <h2 class="cart-title">Mon Panier</h2>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        
+        <div class="cart-content">
+            <ul id="cart-items"></ul>
+
+            <div id="payment-ui" style="display:none;">
+                <div class="section-label">Mode de paiement</div>
+
+                <div class="payment-grid">
+                    <div class="payment-option selected" data-value="lydia" data-fee="0">
+                        <span class="emoji">📲</span>
+                        <span class="payment-name">Lydia</span>
+                        <span class="payment-fee">Sans frais</span>
+                    </div>
+                    <div class="payment-option" data-value="carte" data-fee="200">
+                        <span class="emoji">💳</span>
+                        <span class="payment-name">Carte</span>
+                        <span class="payment-fee">+2.00 €</span>
+                    </div>
+                    <div class="payment-option" data-value="applepay" data-fee="200">
+                        <span class="emoji">🍎</span>
+                        <span class="payment-name">Apple Pay</span>
+                        <span class="payment-fee">+2.00 €</span>
+                    </div>
+                    <div class="payment-option" data-value="googlepay" data-fee="200">
+                        <span class="emoji">🤖</span>
+                        <span class="payment-name">Google Pay</span>
+                        <span class="payment-fee">+2.00 €</span>
+                    </div>
+                </div>
+
+                <div id="promo-banner">Lydia : Recommandé (Rapide & sans frais)</div>
+
+                <div class="email-group">
+                    <label>Votre adresse e-mail</label>
+                    <input type="email" id="user-email" placeholder="exemple@mail.com" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-footer" id="cart-footer-ui" style="display:none;">
+            <button id="checkout-button">Envoyer ma demande de Paiement</button>
+            <p class="footer-note">
+                Un lien de paiement définitif vous sera envoyé par e-mail !
+            </p>
+        </div>
     </div>
 </header>
 
@@ -2794,107 +2990,142 @@ s0.parentNode.insertBefore(s1,s0);
     
     <!-- Le Script Du Panier -->
 <script>
-    let cart = [];
-    let selectedPaymentMethod = 'lydia';
+        let cart = [];
+        let selectedMethod = 'lydia';
+        let currentFee = 0;
 
-    // Sélecteurs
-    const cartIcon = document.getElementById('cart-icon');
-    const cartDetails = document.getElementById('cart-details');
-    const cartItemsList = document.getElementById('cart-items');
-    const cartCount = document.getElementById('cart-count');
-    const paymentSection = document.getElementById('payment-section');
-    const checkoutButton = document.getElementById('checkout-button');
-    const cartMessage = document.getElementById('cart-message');
+        const cartIcon = document.getElementById('cart-icon');
+        const cartDetails = document.getElementById('cart-details');
+        const bgOverlay = document.getElementById('cart-overlay-bg');
+        const cartItemsList = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const paymentUi = document.getElementById('payment-ui');
+        const cartFooterUi = document.getElementById('cart-footer-ui');
+        const checkoutButton = document.getElementById('checkout-button');
+        const promoBanner = document.getElementById('promo-banner');
 
-    // Mise à jour de l'affichage
-    function updateDisplay() {
-      // 1. Compteur
-      cartCount.textContent = cart.length;
+        function toggleCart() {
+            const isActive = cartDetails.classList.contains('active');
+            if (isActive) {
+                cartDetails.classList.remove('active');
+                bgOverlay.style.display = 'none';
+            } else {
+                cartDetails.classList.add('active');
+                bgOverlay.style.display = 'block';
+            }
+        }
 
-      // 2. Liste des articles
-      cartItemsList.innerHTML = '';
-      if (cart.length === 0) {
-        cartItemsList.innerHTML = '<div class="empty-cart-msg">Votre panier est encore vide...</div>';
-        paymentSection.style.display = 'none';
-        return;
-      }
+        cartIcon.onclick = toggleCart;
+        bgOverlay.onclick = toggleCart;
 
-      paymentSection.style.display = 'block';
-      let subtotal = 0;
+        document.querySelectorAll('.payment-option').forEach(opt => {
+            opt.onclick = function() {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedMethod = this.dataset.value;
+                currentFee = parseInt(this.dataset.fee);
+                
+                if(selectedMethod === 'lydia') {
+                    promoBanner.innerHTML = "Lydia : Recommandé (Rapide & sans frais)";
+                    promoBanner.style.color = "#2ecc71";
+                    promoBanner.style.borderColor = "#2ecc71";
+                } else {
+                    promoBanner.innerHTML = "Frais de transaction appliqués : +2.00 €";
+                    promoBanner.style.color = "#ffb8b8";
+                    promoBanner.style.borderColor = "#ffb8b8";
+                }
+                updateDisplay();
+            };
+        });
 
-      cart.forEach((item, index) => {
-        subtotal += item.price;
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <span>${item.name}</span>
-          <div>
-            <span>${(item.price / 100).toFixed(2)}€</span>
-            <button class="remove-item" onclick="removeItem(${index})">×</button>
-          </div>
-        `;
-        cartItemsList.appendChild(li);
-      });
+        function updateDisplay() {
+            cartCount.textContent = cart.length;
+            cartItemsList.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsList.innerHTML = '<li style="background:none; justify-content:center; color:#888;">Votre panier est vide</li>';
+                paymentUi.style.display = 'none';
+                cartFooterUi.style.display = 'none';
+                return;
+            }
 
-      // 3. Calcul du total avec frais
-      let total = subtotal;
-      if (selectedPaymentMethod !== 'lydia') {
-        total += 200; // Ajout des 2€ de frais (en centimes)
-        let label = "la transaction";
-        if (selectedPaymentMethod === 'carte') label = "Carte Bancaire";
-        if (selectedPaymentMethod === 'applepay') label = "Apple Pay";
-        if (selectedPaymentMethod === 'googlepay') label = "Google Pay";
+            paymentUi.style.display = 'block';
+            cartFooterUi.style.display = 'block';
+            let subtotal = 0;
 
-        cartMessage.textContent = ` ${label} : +2.00 €`;
-        cartMessage.style.color = "#ffb8b8";
-      } else {
-        cartMessage.textContent = "🔥 Pas de frais avec Lydia ! 🔥";
-        cartMessage.style.color = "#2ecc71";
-      }
+            cart.forEach((item, index) => {
+                subtotal += item.price;
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div>
+                        <span style="display:block; font-weight:bold;">${item.name}</span>
+                        <span style="font-size:12px; color:#aaa;">Quantité: 1</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <span style="font-weight:bold;">${(item.price / 100).toFixed(2)}€</span>
+                        <button class="remove-item" onclick="removeItem(${index})">&times;</button>
+                    </div>
+                `;
+                cartItemsList.appendChild(li);
+            });
 
-      checkoutButton.textContent = `Payer ${(total / 100).toFixed(2)} €`;
-    }
+            const total = (subtotal + currentFee) / 100;
+            checkoutButton.innerHTML = `Envoyer ma demande de Paiement • ${total.toFixed(2)} €`;
+        }
 
-    // Ajouter un produit
-    document.querySelectorAll('.add-to-cart').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const name = btn.getAttribute('data-name');
-        const price = parseInt(btn.getAttribute('data-price'));
-        cart.push({ name, price });
+        window.removeItem = (index) => {
+            cart.splice(index, 1);
+            updateDisplay();
+        };
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.onclick = () => {
+                cart.push({ name: btn.dataset.name, price: parseInt(btn.dataset.price) });
+                updateDisplay();
+                if(!cartDetails.classList.contains('active')) toggleCart();
+            };
+        });
+
+        checkoutButton.onclick = async function() {
+            const email = document.getElementById('user-email').value;
+            if(!email || !email.includes('@')) {
+                alert("Veuillez entrer une adresse e-mail valide.");
+                return;
+            }
+
+            checkoutButton.disabled = true;
+            checkoutButton.textContent = "Validation...";
+
+            const totalFinal = checkoutButton.innerText.split('•')[1]?.trim() || "";
+            const itemsNames = cart.map(i => i.name).join(', ');
+
+            const formData = new FormData();
+            formData.append('Email Client', email);
+            formData.append('Méthode', selectedMethod);
+            formData.append('Articles', itemsNames);
+            formData.append('Total', totalFinal);
+
+            try {
+                const response = await fetch('https://formspree.io/f/xbdazkbd', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    window.location.href = 'https://teleprime4k.github.io/Lien-de-paiement-/';
+                } else {
+                    throw new Error();
+                }
+            } catch (error) {
+                alert("Erreur réseau. Veuillez réessayer.");
+                checkoutButton.disabled = false;
+                updateDisplay();
+            }
+        };
+
         updateDisplay();
-        cartDetails.style.display = 'block';
-      });
-    });
-
-    // Supprimer un produit
-    window.removeItem = (index) => {
-      cart.splice(index, 1);
-      updateDisplay();
-    };
-
-    // Ouvrir/Fermer le panier
-    cartIcon.addEventListener('click', () => {
-      cartDetails.style.display = (cartDetails.style.display === 'block') ? 'none' : 'block';
-    });
-
-    // Changement de méthode de paiement
-    document.querySelectorAll('input[name="payment-method"]').forEach(input => {
-      input.addEventListener('change', (e) => {
-        selectedPaymentMethod = e.target.value;
-        updateDisplay();
-      });
-    });
-
-    // Bouton Payer
-    checkoutButton.addEventListener('click', () => {
-      if (cart.length > 0) {
-        // Redirection vers ton lien Demande le lien de paiement
-        window.location.href = 'https://teleprime4k.github.io/Lien-de-paiement-/';   // ici Demande le lien de paiement
-      }
-    });
-
-    // Init
-    updateDisplay();
-  </script>
+    </script>
  
 <!-- Script du bouton de Renouvelement  -->
 <script>
