@@ -146,28 +146,7 @@
     border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
-/* Style pour DOM-TOM avec image de fond */
-    #domtom {
-      position: relative;
-      background-image: url('https://tse3.mm.bing.net/th/id/OIP.vvcbhUxrAGPaRp5IqiSwTAHaIp?rs=1&pid=ImgDetMain&o=7&rm=3');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: white;
-      overflow: hidden;
-    }
-    #domtom::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: inherit;
-      z-index: 0;
-    }
-    #domtom > * {
-      position: relative;
-      z-index: 1;
-    }
+
 
 .sport-card {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -535,6 +514,50 @@
         @keyframes shimmer {
             0% { transform: translateX(-150%) rotate(45deg); }
             100% { transform: translateX(150%) rotate(45deg); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .shimmer-overlay {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: shimmer 3s infinite;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+
+
+ /* Effet de brillance qui passe par-dessus l'image ( Bouton de Renouvellement */
+        .shimmer-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transform: skewX(-20deg);
+            animation: shine 4s infinite;
+            z-index: 20;
+        }
+
+        @keyframes shine {
+            0% { left: -150%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
         }
 
 /* Badge sur Grille APK */
@@ -1521,6 +1544,8 @@ h2.cart-title {
     object-fit: cover; /* ou contain selon l'effet désiré */
 }
 
+
+
     
 </style>
 
@@ -1898,7 +1923,7 @@ h2.cart-title {
                     </div>
                     <div class="mb-8">
                         <h3 class="font-title text-lg font-bold mb-2">PACK SOLO</h3>
-                        <p class="text-sm text-gray-400">Donnez-vous les moyens de vos ambitions avec un accès complet et illimité à toutes les chaînes de télévision du monde entier. Ne manquez aucun contenu et vivez une expérience sans frontières pour seulement</p>
+                        <p class="text-sm text-gray-400">L'essentiel pour progresser seul et sans limites.</p>
                     </div>
                     <div class="flex items-baseline gap-1 mb-8">
                         <span class="text-4xl font-bold">80€</span>
@@ -1935,7 +1960,7 @@ h2.cart-title {
                     </div>
                     <div class="mb-8">
                         <h3 class="font-title text-lg font-bold mb-2">PACK TRIO</h3>
-                        <p class="text-sm text-gray-400">Triplez le plaisir, décuplez la puissance ! Profitez de 3 codes d'accès pour vivre et partager une expérience hors du commun à plusieurs.</p> 
+                        <p class="text-sm text-gray-400">Deux fois plus de puissance pour partager l'expérience, 3 CODES !</p> 
                     </div>
                     <div class="flex flex-col mb-8">
                         <span class="text-gray-500 line-through text-sm">240€</span>
@@ -2304,23 +2329,48 @@ h2.cart-title {
 
 
     <!-- Bouton Unique Renouvelement Abonnement  -->
- <a 
-    id="mainButton"
-    href="https://teleprime4k.github.io/Formulaire-de-renouvellement/"
-    class="btn-premium shimmer relative px-12 py-6 rounded-2xl text-white font-bold text-2xl flex items-center space-x-4"
-    target="_blank"
-    rel="noopener noreferrer"
-    role="button"
-    aria-label="Renouveler votre abonnement IPTV"
->
-    <div class="bg-white/20 p-2 rounded-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-    </div>
-    <span class="tracking-wide flex-grow text-center">ici✨Renouvellement✨</span>
-</a>
+<!-- LE BOUTON IMAGE PLEIN FORMAT -->
 
+<!-- Conteneur qui force la largeur totale -->
+    <div class="w-full flex flex-col items-center">
+        
+        <a 
+            id="mainButton"
+            href="https://teleprime4k.github.io/Formulaire-de-renouvellement/"
+            class="btn-container relative w-full h-28 rounded-2xl overflow-hidden custom-shadow flex items-center justify-center group"
+            target="_blank"
+            rel="noopener noreferrer"
+            role="button"
+            aria-label="Renouveler votre abonnement"
+        >
+            <!-- 1. L'IMAGE DE FOND -->
+            <img 
+                src="https://cdn8.futura-sciences.com/a1280/images/qr/Celine/dragon%20l%C3%A9gende%20%20Elena%20Schweitzer%2C%20Adobe%20Stock.jpeg" 
+                alt="Fond thématique" 
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                onerror="this.src='https://via.placeholder.com/1200x400/333/fff?text=Fond+Indisponible'"
+            >
+
+            <!-- 2. COUCHE DE CONTRASTE -->
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
+
+            <!-- 3. EFFET DE BRILLANCE (Shimmer) -->
+            <div class="shimmer-overlay absolute inset-0 pointer-events-none"></div>
+
+            <!-- 4. LE TEXTE -->
+            <div class="relative z-30 flex items-center space-x-3">
+                <span class="text-white font-black text-2xl md:text-4xl tracking-tight text-center drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] px-4">
+                    ici ✨Renouvellement✨
+                </span>
+            </div>
+            
+            <!-- Bordure fine interne -->
+            <div class="absolute inset-0 border border-white/20 rounded-2xl z-40 pointer-events-none"></div>
+        </a>
+
+        <p class="mt-6 text-gray-400 text-sm italic">
+            Aperçu plein écran avec l'image Universal Studios
+        </p>
 </div>
 
 <!-- Toast notification -->
