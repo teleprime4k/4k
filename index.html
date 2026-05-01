@@ -146,7 +146,18 @@
     border: 1px solid rgba(255, 215, 0, 0.1);
 }
 
-
+/* --- Carte Live Sports  --- */
+.custom-bg {
+    background-color: #071F2F;
+}
+/* --- Section Offres Exclusives   --- */
+.packs-bg {
+    background-color: #0F6A7A ; /* teinte de bleu-vert foncé  */
+}
+/* --- Section Chaines FILM et Series & Clasement IPTV n1   --- */
+.jus-bg {
+    background: linear-gradient(180deg, #0B0120 0%, #140033 40%, #240046 70%, #3C096C 100%);
+}
 
 .sport-card {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1616,76 +1627,72 @@ h2.cart-title {
 </div>
     
  <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll)  -->
-  <div class="main-card" style="font-family: sans-serif;">
+  <div class="main-card" style="
+    font-family: sans-serif; 
+    background-image: url('https://cdn.lesnumeriques.com/optim/news/24/240882/df350060-ligue-1-prix-abonnements-programmes-tout-savoir-sur-la-plateforme-de-la-lfp_png__1200_678__7-68-1997-1190.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    position: relative; 
+    z-index: 1; 
+    padding: 15px; 
+    border-radius: 20px; 
+    overflow: hidden;">
+
+    <div style="
+        position: absolute; 
+        top: 0; left: 0; right: 0; bottom: 0; 
+        background: rgba(0, 0, 0, 0.7); 
+        z-index: -1;">
+    </div>
         
-        <!-- En-tête : Titre à gauche, Journée et Boutons à droite -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <!-- Titre du widget -->
-            <div>
-                <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
-                    Classement L1 <span style="color: #eab308">25/26</span>
-                </h3>
-            </div>
-
-            <!-- Bloc de droite : Infos journée et contrôle du scroll -->
-            <div style="display: flex; align-items: center;">
-                <div style="font-size: 9px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
-                    Journée 24
-                </div>
-                <div class="scroll-controls">
-                    <!-- Bouton flèche vers le haut -->
-                    <button class="scroll-btn" onclick="scrollRanking(-60)" title="Haut">
-                        <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
-                    </button>
-                    <!-- Bouton flèche vers le bas -->
-                    <button class="scroll-btn" onclick="scrollRanking(60)" title="Bas">
-                        <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                    </button>
-                </div>
-            </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+            <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
+                Classement L1 <span style="color: #eab308">25/26</span>
+            </h3>
         </div>
 
-        <!-- Conteneur de la table avec ID pour le contrôle JavaScript -->
-        <div class="ranking-container" id="rankingScroll" tabindex="0">
-            <table class="table-ranking">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Équipe</th>
-                        <th style="text-align:center">PTS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Lignes du tableau avec classes de qualification -->
-                    <tr class="qualif-champions"><td class="rank-number">1</td><td class="team-name">Paris Saint-Germain</td><td class="points-col">57</td></tr>
-                    <tr class="qualif-champions"><td class="rank-number">2</td><td class="team-name">RC Lens</td><td class="points-col">56</td></tr>
-                    <tr class="qualif-champions"><td class="rank-number">3</td><td class="team-name">Olympique de Marseille</td><td class="points-col">49</td></tr>
-                    <tr class="qualif-champions"><td class="rank-number">4</td><td class="team-name">Olympique Lyonnais</td><td class="points-col">47</td></tr>
-                    <tr class="qualif-europa"><td class="rank-number">5</td><td class="team-name">LOSC Lille</td><td class="points-col">44</td></tr>
-                    <tr class="qualif-europa"><td class="rank-number">6</td><td class="team-name">AS Monaco</td><td class="points-col">44</td></tr>
-                    <tr><td class="rank-number">7</td><td class="team-name">Stade Rennais</td><td class="points-col">43</td></tr>
-                    <tr><td class="rank-number">8</td><td class="team-name">RC Strasbourg</td><td class="points-col">37</td></tr>
-                    <tr><td class="rank-number">9</td><td class="team-name">FC Lorient</td><td class="points-col">37</td></tr>
-                    <tr><td class="rank-number">10</td><td class="team-name">Stade Brestois 29</td><td class="points-col">36</td></tr>
-                    <tr><td class="rank-number">11</td><td class="team-name">Toulouse FC</td><td class="points-col">34</td></tr>
-                    <tr><td class="rank-number">12</td><td class="team-name">Angers SCO</td><td class="points-col">32</td></tr>
-                    <tr><td class="rank-number">13</td><td class="team-name">Paris FC</td><td class="points-col">28</td></tr>
-                    <tr><td class="rank-number">14</td><td class="team-name">Le Havre AC</td><td class="points-col">27</td></tr>
-                    <tr><td class="rank-number">15</td><td class="team-name">OGC Nice</td><td class="points-col">27</td></tr>
-                    <tr class="relegation"><td class="rank-number">16</td><td class="team-name">AJ Auxerre</td><td class="points-col">19</td></tr>
-                    <tr class="relegation"><td class="rank-number">17</td><td class="team-name">FC Nantes</td><td class="points-col">17</td></tr>
-                    <tr class="relegation"><td class="rank-number">18</td><td class="team-name">FC Metz</td><td class="points-col">13</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Légende explicative des couleurs -->
-        <div style="margin-top: 1rem; display: flex; gap: 15px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-            <span style="font-size: 8px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">● LDC</span>
-            <span style="font-size: 8px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">● UEL</span>
-            <span style="font-size: 8px; color: #ef4444; font-weight: bold; text-transform: uppercase;">● REL</span>
+        <div style="display: flex; align-items: center;">
+            <div style="font-size: 9px; color: #9ca3af; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+                Journée 24
+            </div>
+            <div class="scroll-controls">
+                <button class="scroll-btn" onclick="scrollRanking(-60)" title="Haut">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:white;"><path d="M7 14l5-5 5 5z"/></svg>
+                </button>
+                <button class="scroll-btn" onclick="scrollRanking(60)" title="Bas">
+                    <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:white;"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+            </div>
         </div>
     </div>
+
+    <div class="ranking-container" id="rankingScroll" tabindex="0" style="background: transparent;">
+        <table class="table-ranking" style="width: 100%; border-collapse: collapse; color: white;">
+            <thead>
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <th style="font-size: 10px; padding: 8px; text-align: left;">#</th>
+                    <th style="font-size: 10px; padding: 8px; text-align: left;">Équipe</th>
+                    <th style="font-size: 10px; padding: 8px; text-align: center;">PTS</th>
+                </tr>
+            </thead>
+            <tbody style="font-size: 11px;">
+                <tr class="qualif-champions"><td class="rank-number">1</td><td class="team-name">Paris Saint-Germain</td><td class="points-col">57</td></tr>
+                <tr class="qualif-champions"><td class="rank-number">2</td><td class="team-name">RC Lens</td><td class="points-col">56</td></tr>
+                <tr class="qualif-champions"><td class="rank-number">3</td><td class="team-name">Olympique de Marseille</td><td class="points-col">49</td></tr>
+                <tr class="qualif-champions"><td class="rank-number">4</td><td class="team-name">Olympique Lyonnais</td><td class="points-col">47</td></tr>
+                <tr class="qualif-europa"><td class="rank-number">5</td><td class="team-name">LOSC Lille</td><td class="points-col">44</td></tr>
+                <tr class="relegation"><td class="rank-number">18</td><td class="team-name">FC Metz</td><td class="points-col">13</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 1rem; display: flex; gap: 15px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+        <span style="font-size: 8px; color: #3b82f6; font-weight: bold; text-transform: uppercase;">● LDC</span>
+        <span style="font-size: 8px; color: #fbbf24; font-weight: bold; text-transform: uppercase;">● UEL</span>
+        <span style="font-size: 8px; color: #ef4444; font-weight: bold; text-transform: uppercase;">● REL</span>
+    </div>
+</div>
 
     <!-- Script de gestion du défilement Pour CINÉMA SÉRIES & SPORTS +18 Adults -->
     <script>
@@ -1706,14 +1713,14 @@ h2.cart-title {
     </script>
 
     <!-- SECTION SPORTS -->
-    <section id="sports">
+   <section id="sports">
         <div class="flex items-center gap-4 mb-8">
             <h2 class="font-title text-xl font-bold uppercase tracking-tighter text-white">Live <span class="text-yellow-500">Sports</span></h2>
             <div class="h-[1px] flex-grow bg-white/10"></div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500">
+            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500 custom-bg"> <!-- ici La couleur de la carte " custom-bg"  Noire -->
                 <div class="flex justify-between items-start mb-4">
                     <span class="bg-blue-600 text-[10px] px-2 py-1 rounded font-bold uppercase">Ligue 1+</span>
                     <span class="text-gray-500 text-[10px] font-bold">Terminé</span>
@@ -1727,7 +1734,7 @@ h2.cart-title {
                 <button class="w-full mt-4 bg-white/5 hover:bg-white/10 py-2 rounded-xl text-xs font-bold transition">HONTE, BIEN LES VACANCES A MARBELLA</button>
             </div>
 
-            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600">
+            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600 custom-bg"> <!-- ici La couleur de la carte " custom-bg" Noire  -->
                 <div class="flex justify-between items-start mb-4">
                     <span class="bg-indigo-700 text-[10px] px-2 py-1 rounded font-bold uppercase">UEFA CL</span>
                     <span class="text-gray-500 text-[10px] font-bold">Terminé</span>
@@ -1856,7 +1863,7 @@ h2.cart-title {
                              
         <!-- Section Donner Global Chaines,FILM et Series & Clasement IPTV n1-->
         <!-- Stats Section -->
-    <section class="py-12 glass border-y border-white/5">
+    <section class="py-12 glass border-y border-white/5 jus-bg"> <!-- ici La couleur  " .jus-bg"  -->
         <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-around gap-8 text-center">
             <div>
                 <div class="text-3xl font-bold text-amber-500">20K+</div>
@@ -1877,7 +1884,7 @@ h2.cart-title {
         </div>
     </section>
 
-    <section class="py-12 glass border-y border-white/5">
+    <section class="py-12 glass border-y border-white/5 jus-bg"> <!-- ici La couleur  " .jus-bg"  -->
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span class="inline-block py-1 px-4 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-bold uppercase tracking-widest mb-6">
@@ -1904,87 +1911,98 @@ h2.cart-title {
          </section>
                             
 
+<!-- SECTION 2 : OFFRES PREMIUM (LES PACKS EXCLUS) -->
+    <section id="packs" class="relative py-20 px-6 overflow-hidden bg-cover bg-center bg-no-repeat" 
+         style="background-image: url(https://i.imgur.com/oldmU2v.png);">
+    
+    <div class="absolute inset-0 bg-black/70 -z-10"></div>
 
-    <!-- SECTION 2 : OFFRES PREMIUM (LES PACKS EXCLUS) -->
-        <section id="packs">
-            <div class="flex items-center gap-4 mb-8">
-                <h2 class="font-title text-xl font-bold uppercase tracking-tighter text-white">Offres <span class="text-yellow-500">Exclusives</span></h2>
-                <div class="h-[1px] flex-grow bg-white/10"></div>
+    <div class="relative z-10 max-w-7xl mx-auto">
+        <div class="flex items-center gap-4 mb-12">
+            <h2 class="font-title text-xl font-bold uppercase tracking-tighter text-white">
+                Offres <span class="text-yellow-500">Exclusives</span>
+            </h2>
+            <div class="h-[1px] flex-grow bg-white/10"></div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="sport-card glass rounded-3xl p-8 border-t-2 border-yellow-500/30 relative overflow-hidden backdrop-blur-md bg-white/5">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="p-3 bg-yellow-500/10 rounded-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <span class="text-yellow-500 text-[10px] font-bold tracking-widest uppercase">Individuel</span>
+                </div>
+                <div class="mb-8">
+                    <h3 class="font-title text-lg font-bold mb-2 text-white">PACK SOLO</h3>
+                    <p class="text-sm text-gray-400">Donnez-vous les moyens de vos ambitions avec un accès complet et illimité à toutes les chaînes de télévision du monde entier. Ne manquez aucun contenu et vivez une expérience sans frontières pour seulement</p>
+                </div>
+                <div class="flex items-baseline gap-1 mb-8">
+                    <span class="text-4xl font-bold text-white">80€</span>
+                    <span class="text-gray-500 text-sm">/ an</span>
+                </div>
+                <button class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 add-to-cart" 
+                        data-name="PACK SOLO🧑🏽‍🦰" 
+                        data-price="8000">
+                    S'ABONNER MAINTENANT
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- PACK SOLO -->
-                <div class="sport-card glass rounded-3xl p-8 border-t-2 border-yellow-500/30">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="p-3 bg-yellow-500/10 rounded-2xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        </div>
-                        <span class="text-yellow-500 text-[10px] font-bold tracking-widest uppercase">Individuel</span>
+            <div class="sport-card glass rounded-3xl p-8 border-t-2 border-purple-500/30 relative overflow-hidden backdrop-blur-md bg-white/5">
+                <div class="absolute top-4 right-[-35px] bg-green-500 text-black text-[9px] font-black py-1 px-10 rotate-45 uppercase shadow-xl">
+                    Best Deal
+                </div>
+                
+                <div class="flex justify-between items-start mb-6">
+                    <div class="p-3 bg-purple-500/10 rounded-2xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M9 21v-2a4 4 0 0 0-4-4H3a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="6" cy="7" r="4"></circle>
+                            <path d="M24 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M18 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
                     </div>
-                    <div class="mb-8">
-                        <h3 class="font-title text-lg font-bold mb-2">PACK SOLO</h3>
-                        <p class="text-sm text-gray-400">Donnez-vous les moyens de vos ambitions avec un accès complet et illimité à toutes les chaînes de télévision du monde entier. Ne manquez aucun contenu et vivez une expérience sans frontières pour seulement.</p>
-                    </div>
-                    <div class="flex items-baseline gap-1 mb-8">
-                        <span class="text-4xl font-bold">80€</span>
+                    <span class="text-green-400 text-[10px] font-bold tracking-widest uppercase">Économie 40€</span>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="font-title text-lg font-bold mb-2 text-white">PACK TRIO</h3>
+                    <p class="text-sm text-gray-400">Triplez le plaisir, décuplez la puissance ! Profitez de 3 codes d'accès pour vivre et partager une expérience hors du commun à plusieurs</p>
+                </div>
+
+                <div class="flex flex-col mb-8">
+                    <span class="text-gray-500 line-through text-sm">240€</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-5xl font-bold text-white">200€</span>
                         <span class="text-gray-500 text-sm">/ an</span>
                     </div>
-                    <button 
-                    class="w-full bg-yellow-500 text-black py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 add-to-cart" 
-                    data-name="PACK SOLO🧑🏽‍🦰" 
-                    data-price="8000">
-                    S'ABONNER MAINTENANT
-                   </button>
                 </div>
 
-                <!-- PACK TRIO -->
-                <div class="sport-card glass rounded-3xl p-8 border-t-2 border-purple-500/30 relative overflow-hidden">
-                    <div class="absolute top-4 right-[-35px] bg-green-500 text-black text-[9px] font-black py-1 px-10 rotate-45 uppercase">
-                        Best Deal
-                    </div>
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="p-3 bg-purple-500/10 rounded-2xl">
-                            
-                            <!-- Icône Trio mise à jour -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                        <path d="M9 21v-2a4 4 0 0 0-4-4H3a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="6" cy="7" r="4"></circle>
-                        <path d="M24 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M18 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                            
-                        </div>
-                        <span class="text-green-400 text-[10px] font-bold tracking-widest uppercase">Économie 40€</span>
-                    </div>
-                    <div class="mb-8">
-                        <h3 class="font-title text-lg font-bold mb-2">PACK TRIO</h3>
-                        <p class="text-sm text-gray-400">Triplez le plaisir, décuplez la puissance !  Profitez de 3 codes d'accès pour vivre et partager une expérience hors du commun à plusieurs</p> 
-                    </div>
-                    <div class="flex flex-col mb-8">
-                        <span class="text-gray-500 line-through text-sm">240€</span>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-5xl font-bold text-white">200€</span>
-                            <span class="text-gray-500 text-sm">/ an</span>
-                        </div>
-                    </div>
-                    <button 
-                    class="w-full bg-purple-600 text-white py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 shadow-lg shadow-purple-500/20 add-to-cart" 
-                    data-name="PACK TRIO🧔🏽👦🏻👩🏻‍🦳" 
-                    data-price="20000">
+                <button class="w-full bg-purple-600 text-white py-4 rounded-2xl font-bold hover:scale-105 transition-transform duration-300 shadow-lg shadow-purple-500/20 add-to-cart" 
+                        data-name="PACK TRIO🧔🏽👦🏻👩🏻‍🦳" 
+                        data-price="20000">
                     PROFITER DE L'OFFRE
-                   </button>
-                </div>
+                </button>
             </div>
-        </section>
+
+        </div>
+    </div>
+</section>
 
                                        
         <!-- FILM & SERIES -->
         <!-- Hero Section -->
 <header class="relative pt-20 pb-16 px-6 overflow-hidden">
+    <img src="https://images.ctfassets.net/u73tyf0fa8v1/2W0iaZ79jmuDWDWuB4GvWE/f659a08e0839e13661327392e93a228e/3000x1800_KeyArt_DragonDawn_81.jpg?w=3840&q=75" alt="Background" class="absolute inset-0 w-full h-full object-cover -z-10">
+    
+    <div class="absolute inset-0 bg-black/40 -z-10"></div>
 
-    <!-- Boutons d'action : Commencez maintenant et Essai gratuit -->
     <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
         <a href="#plans" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold transition btn-glow">Commencez dès maintenant</a>
         <a href="https://teleprime4k.github.io/Demande-d-Essai-Gratuit/" class="border border-gray-600 hover:border-white px-8 py-4 rounded-full font-bold transition">Essai gratuit</a>
@@ -2369,7 +2387,7 @@ h2.cart-title {
         </a>
 
         <p class="mt-6 text-gray-400 text-sm italic">
-            Aperçu plein écran avec l'image Universal Studios
+            <!-- ici je peux ecrire une texte -->
         </p>
 </div>
 
@@ -2502,7 +2520,7 @@ h2.cart-title {
         <div id="carousel2" 
              class="flex overflow-x-auto gap-4 md:gap-6 pb-8 no-scrollbar scroll-smooth snap-x snap-mandatory px-4">
              <!-- Contenu du carrousel ici -->
-            
+          
             <script>
                 const apps2 = [
                      { 
