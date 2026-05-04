@@ -862,6 +862,33 @@
             border-top: 1px solid #1e293b; /* Ligne de séparation horizontale */
             width: 100%; /* Prend toute la largeur pour permettre le centrage du texte */
         }
+        
+        /* LES RACOURSI QUI CE TROUVE TOUT EN HAUT DE LA MAGE WEB */
+        /* Effet de verre (Glassmorphism) */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Animation de soulignement fluide */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #f59e0b; /* Jaune ambre */
+            transform-origin: bottom right;
+            transition: transform 0.3s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
 
 </style>
 
@@ -921,9 +948,9 @@
 </script>
     
     <!--L'ANIMATION GOAL BUT DA LA PAGE WEB-->
-<div id="goalAlert" class="goal-alert font-title flex items-center gap-3">
+<!-- <div id="goalAlert" class="goal-alert font-title flex items-center gap-3">
     <span class="text-2xl">⚽</span> BUT !!! <span id="goalInfo" class="text-sm">LIGUE 1+</span>
-</div>
+</div>-->
 
 <div class="min-h-screen p-4 md:p-8">
     
@@ -932,13 +959,30 @@
         TELEPRIME<span class="text-yellow-500">4K</span>
     </div>
         
+        
       <!-- LES RACOURSI QUI CE TROUVE TOUT EN HAUT DE LA MAGE WEB-->  
-    <nav class="flex space-x-6 text-[10px] font-title uppercase tracking-widest text-gray-400">
-        <a href="#sports" class="hover:text-yellow-500 transition">Sports</a>
-        <a href="#movies" class="hover:text-yellow-500 transition">Cinéma</a>
-        <a href="#apps" class="hover:text-yellow-500 transition">Apps</a>
-        <a href="#reviews" class="hover:text-yellow-500 transition">Avis</a>
+    <header class="absolute top-0 left-0 w-full z-50 p-6">
+         
+    <nav class="max-w-2xl mx-auto">
+        <div class="glass-nav flex items-center justify-around md:justify-center md:space-x-12 px-8 py-4 rounded-full shadow-lg">
+            
+            <a href="#sports" class="nav-link relative text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
+                Sports
+            </a>
+            <a href="#movies" class="nav-link relative text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
+                Cinéma
+            </a>
+            <a href="#apps" class="nav-link relative text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
+                Apps
+            </a>
+            <a href="#reviews" class="nav-link relative text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
+                Avis
+            </a>
+
+        </div>
     </nav>
+</header>
+        
 
 
 
