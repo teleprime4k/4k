@@ -1027,7 +1027,6 @@
 /* Icône Panier Flottante */
 /* Style de base (Ordinateurs) */
 #cart-icon {
-    display: none; /* CACHÉ PAR DÉFAUT PARTOUT */
     position: fixed;
     top: 20px;
     right: 20px;
@@ -1052,6 +1051,7 @@
 /* --- ADAPTATION MOBILE --- */
 @media (max-width: 768px) {
     #cart-icon {
+        display: none !important; /* Totalement masqué par défaut */
         top: 15px;      /* On le remonte un peu */
         right: 15px;    /* On le décale vers le bord */
         padding: 8px 12px; /* On réduit la taille interne */
