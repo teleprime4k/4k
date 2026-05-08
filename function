@@ -1027,6 +1027,7 @@
 /* Icône Panier Flottante */
 /* Style de base (Ordinateurs) */
 #cart-icon {
+    display: none; /* CACHÉ PAR DÉFAUT PARTOUT */
     position: fixed;
     top: 20px;
     right: 20px;
@@ -3212,13 +3213,20 @@ s0.parentNode.insertBefore(s1,s0);
         if (isMobile) {
             // Sur mobile : on cache si le panier est vide, on montre s'il y a des articles
             if (cart.length > 0) {
-                cartIcon.style.display = 'flex';
+            // ALORS : On force l'affichage de l'icône du panier
+            // 'display' : la propriété à changer
+            // 'flex' : la valeur (affiche l'élément et aligne son contenu)
+            // 'important' : priorité absolue (écrase les règles du fichier CSS)
+                cartIcon.style.setProperty('display', 'flex', 'important');
             } else {
-                cartIcon.style.display = 'none';
+            // SINON : On fait disparaître complètement l'icône du panier
+            // 'none' : retire l'élément de l'affichage (invisible et ne prend pas de place)
+            // 'important' : garantit que le panier reste caché quoi qu'il arrive
+                cartIcon.style.setProperty('display', 'none', 'important');
             }
         } else {
             // Sur ordinateur : toujours visible (ou selon ta préférence)
-            cartIcon.style.display = 'flex';
+            cartIcon.style.setProperty('display', 'flex', 'important');
         }
     }
 
