@@ -1025,21 +1025,38 @@
 }
 
 /* Icône Panier Flottante */
+/* Style de base (Ordinateurs) */
 #cart-icon {
-    position: fixed; /* Position fixe à l'écran */
-    top: 20px; /* 20 pixels du haut */
-    right: 20px; /* 20 pixels de la droite */
-    cursor: pointer; /* Curseur en forme de main au survol */
-    background: var(--card-purple); /* Fond violet (variable CSS) */
-    padding: 12px 20px; /* Espacement intérieur */
-    border-radius: 50px; /* Forme arrondie (cercle/ovale) */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Ombre portée */
-    z-index: 1001; /* Priorité d’affichage élevée */
-    border: 1px solid rgba(255,255,255,0.1); /* Bordure blanche translucide */
-    transition: transform 0.2s; /* Transition douce pour la transformation */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background: var(--card-purple);
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    z-index: 1001;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-#cart-icon:hover {
-    transform: scale(1.05); /* Agrandissement léger au survol */
+
+/* Cacher le panier quand il est vide (sera géré par JS) */
+#cart-icon.hidden {
+    display: none;
+}
+
+/* --- ADAPTATION MOBILE --- */
+@media (max-width: 768px) {
+    #cart-icon {
+        top: 15px;      /* On le remonte un peu */
+        right: 15px;    /* On le décale vers le bord */
+        padding: 8px 12px; /* On réduit la taille interne */
+        font-size: 0.8rem; /* On réduit la taille du texte/icône */
+        opacity: 0.9;   /* Légère transparence pour ne pas trop masquer le fond */
+    }
 }
 #cart-count {
     background: #ff4757; /* Fond rouge vif */
@@ -3175,171 +3192,125 @@ s0.parentNode.insertBefore(s1,s0);
     
     <!-- Le Script Du Panier -->
 <script>
-        let cart = [];
-        let selectedMethod = 'lydia';
-        let currentFee = 0;
+    let cart = [];
+    let selectedMethod = 'lydia';
+    let currentFee = 0;
 
-        const cartIcon = document.getElementById('cart-icon');
-        const cartDetails = document.getElementById('cart-details');
-        const bgOverlay = document.getElementById('cart-overlay-bg');
-        const cartItemsList = document.getElementById('cart-items');
-        const cartCount = document.getElementById('cart-count');
-        const paymentUi = document.getElementById('payment-ui');
-        const cartFooterUi = document.getElementById('cart-footer-ui');
-        const checkoutButton = document.getElementById('checkout-button');
-        const promoBanner = document.getElementById('promo-banner');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartDetails = document.getElementById('cart-details');
+    const bgOverlay = document.getElementById('cart-overlay-bg');
+    const cartItemsList = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const paymentUi = document.getElementById('payment-ui');
+    const cartFooterUi = document.getElementById('cart-footer-ui');
+    const checkoutButton = document.getElementById('checkout-button');
+    const promoBanner = document.getElementById('promo-banner');
 
-        function toggleCart() {
-            const isActive = cartDetails.classList.contains('active');
-            if (isActive) {
-                cartDetails.classList.remove('active');
-                bgOverlay.style.display = 'none';
+    // --- NOUVELLE FONCTION DE VISIBILITÉ ---
+    function updateCartIconVisibility() {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            // Sur mobile : on cache si le panier est vide, on montre s'il y a des articles
+            if (cart.length > 0) {
+                cartIcon.style.display = 'flex';
             } else {
-                cartDetails.classList.add('active');
-                bgOverlay.style.display = 'block';
+                cartIcon.style.display = 'none';
             }
+        } else {
+            // Sur ordinateur : toujours visible (ou selon ta préférence)
+            cartIcon.style.display = 'flex';
         }
-
-        cartIcon.onclick = toggleCart;
-        bgOverlay.onclick = toggleCart;
-
-        document.querySelectorAll('.payment-option').forEach(opt => {
-            opt.onclick = function() {
-                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedMethod = this.dataset.value;
-                currentFee = parseInt(this.dataset.fee);
-                
-                if(selectedMethod === 'lydia') {
-                    promoBanner.innerHTML = "Lydia : Recommandé (Rapide & sans frais)";
-                    promoBanner.style.color = "#2ecc71";
-                    promoBanner.style.borderColor = "#2ecc71";
-                } else {
-                    promoBanner.innerHTML = "Frais de transaction appliqués : +2.00 €";
-                    promoBanner.style.color = "#ffb8b8";
-                    promoBanner.style.borderColor = "#ffb8b8";
-                }
-                updateDisplay();
-            };
-        });
-
-        function updateDisplay() {
-            cartCount.textContent = cart.length;
-            cartItemsList.innerHTML = '';
-            
-            if (cart.length === 0) {
-                cartItemsList.innerHTML = '<li style="background:none; justify-content:center; color:#888;">Votre panier est vide</li>';
-                paymentUi.style.display = 'none';
-                cartFooterUi.style.display = 'none';
-                return;
-            }
-
-            paymentUi.style.display = 'block';
-            cartFooterUi.style.display = 'block';
-            let subtotal = 0;
-
-            cart.forEach((item, index) => {
-                subtotal += item.price;
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div>
-                        <span style="display:block; font-weight:bold;">${item.name}</span>
-                        <span style="font-size:12px; color:#aaa;">Quantité: 1</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        <span style="font-weight:bold;">${(item.price / 100).toFixed(2)}€</span>
-                        <button class="remove-item" onclick="removeItem(${index})">&times;</button>
-                    </div>
-                `;
-                cartItemsList.appendChild(li);
-            });
-
-            const total = (subtotal + currentFee) / 100;
-            checkoutButton.innerHTML = `Envoyer ma demande de Paiement • ${total.toFixed(2)} €`;
-        }
-
-        window.removeItem = (index) => {
-            cart.splice(index, 1);
-            updateDisplay();
-        };
-
-        document.querySelectorAll('.add-to-cart').forEach(btn => {
-            btn.onclick = () => {
-                cart.push({ name: btn.dataset.name, price: parseInt(btn.dataset.price) });
-                updateDisplay();
-                if(!cartDetails.classList.contains('active')) toggleCart();
-            };
-        });
-
-        // Fonction pour afficher la pop-up
-    function showConfirmation() {
-        document.getElementById('confirmation-modal').style.display = 'block';
-        document.getElementById('cart-overlay-bg').style.display = 'block'; // On garde l'overlay noir derrière
-        document.getElementById('cart-details').classList.remove('active'); // On ferme le tiroir du panier
     }
 
-    // Fonction pour fermer la pop-up et vider le panier
-    document.getElementById('btn-return-cart').onclick = function() {
-        document.getElementById('confirmation-modal').style.display = 'none';
-        document.getElementById('cart-overlay-bg').style.display = 'none';
-        cart = []; // On vide le panier
-        updateDisplay();
-    };
+    function toggleCart() {
+        const isActive = cartDetails.classList.contains('active');
+        if (isActive) {
+            cartDetails.classList.remove('active');
+            bgOverlay.style.display = 'none';
+        } else {
+            cartDetails.classList.add('active');
+            bgOverlay.style.display = 'block';
+        }
+    }
 
-        // --- MISE À JOUR DE LA FONCTION CHECKOUT ---
-    checkoutButton.onclick = async function() {
-        const email = document.getElementById('user-email').value;
+    cartIcon.onclick = toggleCart;
+    bgOverlay.onclick = toggleCart;
+
+    document.querySelectorAll('.payment-option').forEach(opt => {
+        opt.onclick = function() {
+            document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+            selectedMethod = this.dataset.value;
+            currentFee = parseInt(this.dataset.fee);
+            
+            if(selectedMethod === 'lydia') {
+                promoBanner.innerHTML = "Lydia : Recommandé (Rapide & sans frais)";
+                promoBanner.style.color = "#2ecc71";
+                promoBanner.style.borderColor = "#2ecc71";
+            } else {
+                promoBanner.innerHTML = "Frais de transaction appliqués : +2.00 €";
+                promoBanner.style.color = "#ffb8b8";
+                promoBanner.style.borderColor = "#ffb8b8";
+            }
+            updateDisplay();
+        };
+    });
+
+    function updateDisplay() {
+        cartCount.textContent = cart.length;
+        cartItemsList.innerHTML = '';
         
-        // 1. Vérification de l'email
-        if(!email || !email.includes('@')) {
-            alert("Veuillez entrer une adresse e-mail valide.");
+        // Gérer la visibilité de l'icône flottante
+        updateCartIconVisibility();
+
+        if (cart.length === 0) {
+            cartItemsList.innerHTML = '<li style="background:none; justify-content:center; color:#888;">Votre panier est vide</li>';
+            paymentUi.style.display = 'none';
+            cartFooterUi.style.display = 'none';
             return;
         }
 
-        checkoutButton.disabled = true;
-        checkoutButton.textContent = "Validation...";
-
-        // 2. Calcul du montant total final pour l'envoi
+        paymentUi.style.display = 'block';
+        cartFooterUi.style.display = 'block';
         let subtotal = 0;
-        cart.forEach(item => subtotal += item.price);
-        const totalCalcule = ((subtotal + currentFee) / 100).toFixed(2) + " €";
 
-        // 3. Préparation des noms d'articles
-        const itemsNames = cart.map(i => i.name).join(', ');
+        cart.forEach((item, index) => {
+            subtotal += item.price;
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div>
+                    <span style="display:block; font-weight:bold;">${item.name}</span>
+                    <span style="font-size:12px; color:#aaa;">Quantité: 1</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:15px;">
+                    <span style="font-weight:bold;">${(item.price / 100).toFixed(2)}€</span>
+                    <button class="remove-item" onclick="removeItem(${index})">&times;</button>
+                </div>
+            `;
+            cartItemsList.appendChild(li);
+        });
 
-        // 4. Construction du formulaire de données pour Formspree
-        const formData = new FormData();
-        formData.append('Email Client', email);
-        formData.append('Méthode de Paiement', selectedMethod);
-        formData.append('Articles commandés', itemsNames);
-        formData.append('Montant Total à payer', totalCalcule); // <--- AJOUT DU TOTAL ICI
+        const total = (subtotal + currentFee) / 100;
+        checkoutButton.innerHTML = `Envoyer ma demande de Paiement • ${total.toFixed(2)} €`;
+    }
 
-        try {
-            const response = await fetch('https://formspree.io/f/xbdazkbd', {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
-            if (response.ok) {
-                // Affichage de la pop-up de succès
-                showConfirmation(); 
-                
-                // Réinitialisation du bouton
-                checkoutButton.disabled = false;
-                checkoutButton.innerHTML = "Envoyer ma demande de Paiement";
-            } else {
-                throw new Error();
-            }
-            
-        } catch (error) {
-            alert("Erreur lors de l'envoi. Vérifiez votre connexion.");
-            checkoutButton.disabled = false;
-            updateDisplay();
-        }
+    window.removeItem = (index) => {
+        cart.splice(index, 1);
+        updateDisplay();
     };
 
-    // Fonctions pour gérer l'affichage de la fenêtre
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.onclick = () => {
+            cart.push({ name: btn.dataset.name, price: parseInt(btn.dataset.price) });
+            updateDisplay();
+            // Optionnel : On n'ouvre pas forcément le panier sur mobile à l'ajout 
+            // pour ne pas cacher les autres éléments tout de suite
+            if(window.innerWidth > 768 && !cartDetails.classList.contains('active')) {
+                toggleCart();
+            }
+        };
+    });
+
     function showConfirmation() {
         document.getElementById('confirmation-modal').style.display = 'block';
         document.getElementById('cart-overlay-bg').style.display = 'block';
@@ -3349,10 +3320,56 @@ s0.parentNode.insertBefore(s1,s0);
     document.getElementById('btn-return-cart').onclick = function() {
         document.getElementById('confirmation-modal').style.display = 'none';
         document.getElementById('cart-overlay-bg').style.display = 'none';
-        cart = []; // Vide le panier après commande réussie
+        cart = []; 
         updateDisplay();
     };
 
+    checkoutButton.onclick = async function() {
+        const email = document.getElementById('user-email').value;
+        if(!email || !email.includes('@')) {
+            alert("Veuillez entrer une adresse e-mail valide.");
+            return;
+        }
+
+        checkoutButton.disabled = true;
+        checkoutButton.textContent = "Validation...";
+
+        let subtotal = 0;
+        cart.forEach(item => subtotal += item.price);
+        const totalCalcule = ((subtotal + currentFee) / 100).toFixed(2) + " €";
+        const itemsNames = cart.map(i => i.name).join(', ');
+
+        const formData = new FormData();
+        formData.append('Email Client', email);
+        formData.append('Méthode de Paiement', selectedMethod);
+        formData.append('Articles commandés', itemsNames);
+        formData.append('Montant Total à payer', totalCalcule);
+
+        try {
+            const response = await fetch('https://formspree.io/f/xbdazkbd', {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                showConfirmation(); 
+                checkoutButton.disabled = false;
+                checkoutButton.innerHTML = "Envoyer ma demande de Paiement";
+            } else {
+                throw new Error();
+            }
+        } catch (error) {
+            alert("Erreur lors de l'envoi. Vérifiez votre connexion.");
+            checkoutButton.disabled = false;
+            updateDisplay();
+        }
+    };
+
+    // Gérer le changement de taille d'écran en direct
+    window.addEventListener('resize', updateCartIconVisibility);
+
+    // Initialisation
     updateDisplay();
 </script>
  
