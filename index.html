@@ -3432,7 +3432,7 @@ s0.parentNode.insertBefore(s1,s0);
         }
     </script>
 
-    <!-- Message d'alerte -->
+   <!-- Message d'alerte -->
 <!-- Structure de l'alerte -->
  <div id="alertMessage" onclick="closeAlert()"> 
     <div class="alert-icon">⚠️</div>
@@ -3442,7 +3442,7 @@ s0.parentNode.insertBefore(s1,s0);
     </div>
     <div class="progress-bar" id="progressBar"></div>
 </div>
-
+    
 <script>
     function closeAlert() {
         const alert = document.getElementById('alertMessage');
@@ -3459,8 +3459,8 @@ s0.parentNode.insertBefore(s1,s0);
         const alert = document.getElementById('alertMessage');
         const progressBar = document.getElementById('progressBar');
         
-        // --- RÉGLAGE : 30000ms = 30 SECONDE ---
-        const duration = 30000; 
+        // --- RÉGLAGE : 10000ms = 10 SECONDE ---
+        const duration = 10000; 
 
         const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
         let visitData = localStorage.getItem('visitData');
