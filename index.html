@@ -1997,7 +1997,7 @@ function renderTeamCard(match, containerId, teamId) {
         : `<span>${homeTeam}</span> <span class="text-yellow-500 mx-3 text-sm">vs</span> <span>${awayTeam}</span>`;
 
     const badgeColor = teamId === '516' ? 'bg-blue-600' : 'bg-indigo-700';
-    const buttonText = isLive ? "REGARDER LE DIRECT" : (isFinished ? "RÉSUMÉ DU MATCH" : "BILLETERIE");
+    const buttonText = isLive ? "REGARDER LE DIRECT" : (isFinished ? "MATCH TERMINÉ" : "BILLETERIE");
 
     container.innerHTML = `
         <div class="flex justify-between items-start mb-4">
