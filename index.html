@@ -1619,7 +1619,7 @@ h2.cart-title {
     object-fit: cover; /* ou contain selon l'effet désiré */
 }
 
-/* le live en cours poins rouge  */
+/*  Le bouton point Live direct  */
 @keyframes pulse-red {
         0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
         70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
@@ -1908,34 +1908,34 @@ document.addEventListener('DOMContentLoaded', loadLigue1);
         }
     </script>
 
-    <!-- SECTION SPORTS -->
-   <section id="sports">
-        <div class="flex items-center gap-4 mb-8">
-            <h2 class="font-title text-xl font-bold uppercase tracking-tighter text-white">Live <span class="text-yellow-500">Sports</span></h2>
-            <div class="h-[1px] flex-grow bg-white/10"></div>
+    <!-- SECTION LIVE SPORTS -->
+    <section id="sports" class="py-8">
+    <div class="flex items-center gap-4 mb-8">
+        <h2 class="font-title text-xl font-bold uppercase tracking-tighter text-white">
+            Live <span class="text-yellow-500">Sports</span>
+        </h2>
+        <div class="h-[1px] flex-grow bg-white/10"></div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div id="card-om" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500 custom-bg">
+            <p class="text-gray-400 text-xs text-center">Chargement match OM...</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    
-    <div id="card-om" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500 custom-bg">
-        <p class="text-gray-400 text-xs text-center">Chargement match OM...</p>
+        <div id="card-real" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600" 
+             style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.atalayar.com/asset/thumbnail,1280,720,center,center/media/atalayar/images/2025/01/30/2025013016450362453.jpg'); background-size: cover; background-position: center;"> 
+            <p class="text-gray-400 text-xs text-center">Chargement match Real...</p>
+        </div>
     </div>
-
-    <div id="card-real" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600" 
-         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.atalayar.com/asset/thumbnail,1280,720,center,center/media/atalayar/images/2025/01/30/2025013016450362453.jpg'); background-size: cover; background-position: center;"> 
-        <p class="text-gray-400 text-xs text-center">Chargement match Real...</p>
-    </div>
-
-</div>
+</section>
 
 <script>
 /**
- * Charge les données d'une équipe spécifique via l'API
+ * Charge les données d'une équipe via l'API
  */
 async function loadTeamMatch(teamId, containerId) {
     const API_KEY = 'bbad060698e64091893a5077b1b6e7a6';
     const PROXY = 'https://corsproxy.io/?';
-    // On récupère les derniers matchs (le paramètre limit=5 permet d'avoir du choix entre passé et futur)
     const URL_API = `https://api.football-data.org/v4/teams/${teamId}/matches?limit=5`;
 
     try {
@@ -1947,10 +1947,7 @@ async function loadTeamMatch(teamId, containerId) {
         
         const data = await response.json();
         
-        // Logique pour trouver le match le plus pertinent :
-        // 1. Un match en cours (LIVE) ?
-        // 2. Sinon, le prochain match (SCHEDULED) ?
-        // 3. Sinon, le dernier match terminé (FINISHED).
+        // Priorité : Match en cours > Prochain match > Dernier match fini
         let match = data.matches.find(m => m.status === 'IN_PLAY' || m.status === 'PAUSED') 
                  || data.matches.find(m => m.status === 'SCHEDULED' || m.status === 'TIMED')
                  || data.matches[data.matches.length - 1];
@@ -1959,26 +1956,24 @@ async function loadTeamMatch(teamId, containerId) {
 
     } catch (error) {
         console.error("Erreur sur l'ID " + teamId + " :", error);
-        document.getElementById(containerId).innerHTML = "<p class='text-red-500 text-xs'>Erreur API</p>";
+        const container = document.getElementById(containerId);
+        if(container) container.innerHTML = "<p class='text-red-500 text-xs'>Service indisponible</p>";
     }
 }
 
 /**
- * Génère le HTML à l'intérieur d'une carte
+ * Génère le rendu visuel de la carte
  */
 function renderTeamCard(match, containerId, teamId) {
     const container = document.getElementById(containerId);
     if (!container || !match) return;
 
-    // Détection des états du match
     const isLive = match.status === 'IN_PLAY' || match.status === 'PAUSED';
     const isFinished = match.status === 'FINISHED';
     
-    // Noms des équipes (TLA = code 3 lettres comme 'OM' ou 'RMA')
     const homeTeam = match.homeTeam.tla || match.homeTeam.shortName.substring(0,3).toUpperCase();
     const awayTeam = match.awayTeam.tla || match.awayTeam.shortName.substring(0,3).toUpperCase();
 
-    // Gestion du statut visuel
     let statusLabel = "";
     if (isLive) {
         statusLabel = `<span class="flex items-center text-red-500 font-bold"><span class="live-dot"></span> LIVE</span>`;
@@ -1990,7 +1985,6 @@ function renderTeamCard(match, containerId, teamId) {
                      d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     }
 
-    // Affichage Score vs Date
     const scoreDisplay = (isLive || isFinished)
         ? `<span>${homeTeam}</span> <span class="mx-2">${match.score.fullTime.homeTeam}</span> <span class="text-yellow-500">-</span> <span class="mx-2">${match.score.fullTime.awayTeam}</span> <span>${awayTeam}</span>`
         : `<span>${homeTeam}</span> <span class="text-yellow-500 mx-3 text-sm">vs</span> <span>${awayTeam}</span>`;
@@ -2020,40 +2014,18 @@ function renderTeamCard(match, containerId, teamId) {
     `;
 }
 
-// Lancement automatique au chargement du DOM
+// Initialisation et rafraîchissement
+function initSports() {
+    loadTeamMatch('516', 'card-om');
+    loadTeamMatch('86', 'card-real');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    loadTeamMatch('516', 'card-om');    // Olympique de Marseille
-    loadTeamMatch('86', 'card-real');   // Real Madrid
+    initSports();
+    // Rafraîchit les scores toutes les 60 secondes
+    setInterval(initSports, 60000);
 });
 </script>
-<!--  
-            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-orange-500">
-                <div class="flex justify-between items-start mb-4">
-                    <span class="bg-orange-600 text-[10px] px-2 py-1 rounded font-bold uppercase">NBA TV</span>
-                    <span class="live-indicator text-red-500 text-[10px] font-bold">● LIVE</span>
-                </div>
-                <div class="text-center py-4">
-                    <p class="text-xs text-gray-500 mb-2 font-title">Saison Régulière</p>
-                    <p class="font-bold text-sm uppercase">Lakers @ Celtics</p>
-                </div>
-                <button class="w-full mt-4 bg-orange-500/20 py-2 rounded-xl text-xs font-bold transition">REGARDER</button>
-            </div>
-
-            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-red-600">
-                <div class="flex justify-between items-start mb-4">
-                    <span class="bg-red-700 text-[10px] px-2 py-1 rounded font-bold uppercase">F1 TV</span>
-                    <span class="text-gray-500 text-[10px] font-bold">DIRECT</span>
-                </div>
-                <div class="text-center py-4">
-                    <p class="text-xs text-gray-500 mb-2 font-title">Grand Prix Monaco</p>
-                    <p class="font-bold text-sm uppercase">Essais Libres</p>
-                </div>
-                <button class="w-full mt-4 bg-red-600/20 py-2 rounded-xl text-xs font-bold transition">DIFFUSION</button>
-            </div>
-            <!-- Vous pouvez ajouter d'autres cartes de sport ici -->
-        </div>
-    </section>
-</div>
                                    
      
       <!-- Section Tout Television Tu aimes -->
