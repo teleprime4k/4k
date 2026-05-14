@@ -1619,8 +1619,25 @@ h2.cart-title {
     object-fit: cover; /* ou contain selon l'effet désiré */
 }
 
-
-
+/* le live en cours poins rouge  */
+@keyframes pulse-red {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .live-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #ef4444;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+        animation: pulse-red 2s infinite;
+    }
+    /* Classe de secours si custom-bg n'est pas définie */
+    .custom-bg {
+        background-color: #000;
+    }
     
 </style>
 
@@ -1899,34 +1916,116 @@ document.addEventListener('DOMContentLoaded', loadLigue1);
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500 custom-bg"> <!-- ici La couleur de la carte " custom-bg"  Noire -->
-                <div class="flex justify-between items-start mb-4">
-                    <span class="bg-blue-600 text-[10px] px-2 py-1 rounded font-bold uppercase">Ligue 1+</span>
-                    <span class="text-gray-500 text-[10px] font-bold">Terminé</span>
-                </div>
-                <div class="text-center py-4">
-                    <p class="text-xs text-gray-500 mb-2 font-title">Ligue 1 </p>
-                    <div class="flex justify-around items-center font-bold text-lg">
-                        <span>LOR</span>2<span class="text-yellow-500"> - </span>0<span>MAR</span>
-                    </div>
-                </div>
-                <button class="w-full mt-4 bg-white/5 hover:bg-white/10 py-2 rounded-xl text-xs font-bold transition">HONTE, BIEN LES VACANCES A MARBELLA</button>
-            </div>
+    
+    <div id="card-om" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500 custom-bg">
+        <p class="text-gray-400 text-xs text-center">Chargement match OM...</p>
+    </div>
 
-            <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600" 
-                 style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.atalayar.com/asset/thumbnail,1280,720,center,center/media/atalayar/images/2025/01/30/2025013016450362453.jpg'); background-size: cover; background-position: center;"> 
-    
-    <div class="flex justify-between items-start mb-4">
-        <span class="bg-indigo-700 text-[10px] px-2 py-1 rounded font-bold uppercase">UEFA CL</span>
-        <span class="text-gray-500 text-[10px] font-bold">Terminé</span>
+    <div id="card-real" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600" 
+         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.atalayar.com/asset/thumbnail,1280,720,center,center/media/atalayar/images/2025/01/30/2025013016450362453.jpg'); background-size: cover; background-position: center;"> 
+        <p class="text-gray-400 text-xs text-center">Chargement match Real...</p>
     </div>
+
+</div>
+
+<script>
+/**
+ * Charge les données d'une équipe spécifique via l'API
+ */
+async function loadTeamMatch(teamId, containerId) {
+    const API_KEY = 'bbad060698e64091893a5077b1b6e7a6';
+    const PROXY = 'https://corsproxy.io/?';
+    // On récupère les derniers matchs (le paramètre limit=5 permet d'avoir du choix entre passé et futur)
+    const URL_API = `https://api.football-data.org/v4/teams/${teamId}/matches?limit=5`;
+
+    try {
+        const response = await fetch(PROXY + encodeURIComponent(URL_API), {
+            headers: { 'X-Auth-Token': API_KEY }
+        });
+        
+        if (!response.ok) throw new Error("Erreur réseau");
+        
+        const data = await response.json();
+        
+        // Logique pour trouver le match le plus pertinent :
+        // 1. Un match en cours (LIVE) ?
+        // 2. Sinon, le prochain match (SCHEDULED) ?
+        // 3. Sinon, le dernier match terminé (FINISHED).
+        let match = data.matches.find(m => m.status === 'IN_PLAY' || m.status === 'PAUSED') 
+                 || data.matches.find(m => m.status === 'SCHEDULED' || m.status === 'TIMED')
+                 || data.matches[data.matches.length - 1];
+
+        renderTeamCard(match, containerId, teamId);
+
+    } catch (error) {
+        console.error("Erreur sur l'ID " + teamId + " :", error);
+        document.getElementById(containerId).innerHTML = "<p class='text-red-500 text-xs'>Erreur API</p>";
+    }
+}
+
+/**
+ * Génère le HTML à l'intérieur d'une carte
+ */
+function renderTeamCard(match, containerId, teamId) {
+    const container = document.getElementById(containerId);
+    if (!container || !match) return;
+
+    // Détection des états du match
+    const isLive = match.status === 'IN_PLAY' || match.status === 'PAUSED';
+    const isFinished = match.status === 'FINISHED';
     
-    <div class="text-center py-4 text-gray-400">
-        <p class="text-xs mb-2 font-title">Quarts de finale UEFA</p>
-        <p class="font-bold text-sm uppercase text-white">Bayern Munich vs Real Madrid</p>
-    </div>
-    
-    <button class="w-full mt-4 bg-indigo-600/20 py-2 rounded-xl text-xs font-bold transition text-white">TERMINÉ</button>
+    // Noms des équipes (TLA = code 3 lettres comme 'OM' ou 'RMA')
+    const homeTeam = match.homeTeam.tla || match.homeTeam.shortName.substring(0,3).toUpperCase();
+    const awayTeam = match.awayTeam.tla || match.awayTeam.shortName.substring(0,3).toUpperCase();
+
+    // Gestion du statut visuel
+    let statusLabel = "";
+    if (isLive) {
+        statusLabel = `<span class="flex items-center text-red-500 font-bold"><span class="live-dot"></span> LIVE</span>`;
+    } else if (isFinished) {
+        statusLabel = "Terminé";
+    } else {
+        const d = new Date(match.utcDate);
+        statusLabel = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) + ' ' + 
+                     d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Affichage Score vs Date
+    const scoreDisplay = (isLive || isFinished)
+        ? `<span>${homeTeam}</span> <span class="mx-2">${match.score.fullTime.homeTeam}</span> <span class="text-yellow-500">-</span> <span class="mx-2">${match.score.fullTime.awayTeam}</span> <span>${awayTeam}</span>`
+        : `<span>${homeTeam}</span> <span class="text-yellow-500 mx-3 text-sm">vs</span> <span>${awayTeam}</span>`;
+
+    const badgeColor = teamId === '516' ? 'bg-blue-600' : 'bg-indigo-700';
+    const buttonText = isLive ? "REGARDER LE DIRECT" : (isFinished ? "RÉSUMÉ DU MATCH" : "BILLETERIE");
+
+    container.innerHTML = `
+        <div class="flex justify-between items-start mb-4">
+            <span class="${badgeColor} text-[10px] px-2 py-1 rounded font-bold uppercase">${match.competition.name}</span>
+            <span class="text-gray-400 text-[10px] font-bold uppercase">${statusLabel}</span>
+        </div>
+        
+        <div class="text-center py-4">
+            <p class="text-[10px] text-gray-500 mb-2 font-title uppercase tracking-widest">
+                ${isLive ? 'Score en direct' : (isFinished ? 'Résultat final' : 'Prochaine rencontre')}
+            </p>
+            <div class="flex justify-around items-center font-bold text-lg text-white">
+                ${scoreDisplay}
+            </div>
+            ${isLive ? `<p class="text-[9px] text-red-500 mt-2 font-bold animate-pulse uppercase">Match en cours...</p>` : ''}
+        </div>
+        
+        <button class="w-full mt-4 bg-white/5 hover:bg-white/10 py-2 rounded-xl text-xs font-bold transition text-white uppercase tracking-tighter">
+            ${buttonText}
+        </button>
+    `;
+}
+
+// Lancement automatique au chargement du DOM
+document.addEventListener('DOMContentLoaded', () => {
+    loadTeamMatch('516', 'card-om');    // Olympique de Marseille
+    loadTeamMatch('86', 'card-real');   // Real Madrid
+});
+</script>
 <!--  
             <div class="sport-card glass rounded-3xl p-6 border-l-4 border-l-orange-500">
                 <div class="flex justify-between items-start mb-4">
