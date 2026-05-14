@@ -1976,6 +1976,7 @@ function renderTeamCard(match, containerId, teamId) {
     const homeTeam = match.homeTeam.tla || match.homeTeam.shortName.substring(0,3).toUpperCase();
     const awayTeam = match.awayTeam.tla || match.awayTeam.shortName.substring(0,3).toUpperCase();
 
+    // Gestion du label de statut
     let statusLabel = "";
     if (isLive) {
         statusLabel = `<span class="flex items-center text-red-500 font-bold"><span class="live-dot"></span> LIVE</span>`;
@@ -1984,11 +1985,15 @@ function renderTeamCard(match, containerId, teamId) {
     } else {
         const d = new Date(match.utcDate);
         statusLabel = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) + ' ' + 
-                     d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                      d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     }
 
+    // CORRECTION ICI : Accès aux scores (home/away au lieu de homeTeam/awayTeam)
+    const scoreHome = match.score.fullTime.home ?? 0;
+    const scoreAway = match.score.fullTime.away ?? 0;
+
     const scoreDisplay = (isLive || isFinished)
-        ? `<span>${homeTeam}</span> <span class="mx-2">${match.score.fullTime.homeTeam}</span> <span class="text-yellow-500">-</span> <span class="mx-2">${match.score.fullTime.awayTeam}</span> <span>${awayTeam}</span>`
+        ? `<span>${homeTeam}</span> <span class="mx-2">${scoreHome}</span> <span class="text-yellow-500">-</span> <span class="mx-2">${scoreAway}</span> <span>${awayTeam}</span>`
         : `<span>${homeTeam}</span> <span class="text-yellow-500 mx-3 text-sm">vs</span> <span>${awayTeam}</span>`;
 
     const badgeColor = teamId === '516' ? 'bg-blue-600' : 'bg-indigo-700';
@@ -2015,11 +2020,12 @@ function renderTeamCard(match, containerId, teamId) {
         </button>
     `;
 }
+    
 
 // Initialisation et rafraîchissement
 function initSports() {
-    loadTeamMatch('516', 'card-om');
-    loadTeamMatch('86', 'card-real');
+    loadTeamMatch('516', 'card-om'); // ID Marseille
+    loadTeamMatch('86', 'card-real'); // ID Real Madrid
 }
 
 document.addEventListener('DOMContentLoaded', () => {
