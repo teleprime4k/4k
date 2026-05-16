@@ -1768,13 +1768,11 @@ h2.cart-title {
 
 <script>
 /**
- * Fonction principale asynchrone pour charger les données de la Ligue 1
+ * Fonction principale asynchrone pour charger les données de la Ligue 1 via Cloudflare
  */
 async function loadLigue1() {
-    // Configuration des accès API et Proxy
-    const API_KEY = 'bbad060698e64091893a5077b1b6e7a6';
-    const PROXY = 'https://corsproxy.io/?'; // Utilisation d'un proxy pour éviter de blocage navigateur (CORS)
-    const URL_API = 'https://api.football-data.org/v4/competitions/FL1/standings';
+    // Configuration de l'accès à ton Worker sécurisé
+    const URL_WORKER = 'https://late-art-b42a.teleprime4k.workers.dev/?standings=FL1';
     
     // Identifiants pour le stockage local (localStorage)
     const CACHE_KEY = 'ligue1_data';
@@ -1788,7 +1786,7 @@ async function loadLigue1() {
     const lastModified = localStorage.getItem(ETAG_KEY);
 
     /** * STRATÉGIE DE CACHE NIVEAU 1 : Le temps écoulé
-     * Si les données ont moins d'une minute, on ne sollicite pas l'API.
+     * Si les données ont moins d'une minute, on ne sollicite pas le Worker.
      */
     if (cachedData && lastRequestTime && (now - lastRequestTime < 60 * 1000)) {
         renderRanking(JSON.parse(cachedData));
@@ -1796,27 +1794,25 @@ async function loadLigue1() {
     }
 
     try {
-        // Préparation des en-têtes de la requête
-        const headers = { 'X-Auth-Token': API_KEY };
+        const headers = {};
         
-        // Si on a un ETag/Last-Modified en cache, on demande au serveur s'il y a du nouveau
+        // Si on a une date de modification en cache, on la transmet au Worker
         if (lastModified) {
             headers['If-Modified-Since'] = lastModified;
         }
 
-        const response = await fetch(PROXY + encodeURIComponent(URL_API), { headers });
+        const response = await fetch(URL_WORKER, { headers });
 
         /**
          * STRATÉGIE DE CACHE NIVEAU 2 : Validation serveur
-         * Le code 304 signifie que les données n'ont pas changé sur le serveur.
+         * Le code 304 signifie que rien n'a changé.
          */
         if (response.status === 304) {
-            localStorage.setItem(TIME_KEY, now.toString()); // On rafraîchit juste le timer
+            localStorage.setItem(TIME_KEY, now.toString()); // On rafraîchit le timer
             renderRanking(JSON.parse(cachedData));
             return;
         }
 
-        // Vérification si la requête a réussi (status 200-299)
         if (!response.ok) throw new Error("Erreur lors de la récupération");
 
         const data = await response.json();
@@ -1824,10 +1820,10 @@ async function loadLigue1() {
         /**
          * SAUVEGARDE ET MISE À JOUR
          */
-        localStorage.setItem(CACHE_KEY, JSON.stringify(data)); // Stockage des données brutes
-        localStorage.setItem(TIME_KEY, now.toString());       // Stockage du moment de l'appel
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data)); 
+        localStorage.setItem(TIME_KEY, now.toString());       
         
-        // Stockage de la date de modification fournie par le serveur pour le prochain appel
+        // Stockage de la date de modification renvoyée par le Worker
         const serverLastMod = response.headers.get('Last-Modified');
         if (serverLastMod) localStorage.setItem(ETAG_KEY, serverLastMod);
 
@@ -1836,7 +1832,6 @@ async function loadLigue1() {
     } catch (error) {
         /**
          * GESTION D'ERREUR (FALLBACK)
-         * Si l'API est hors ligne ou limite atteinte, on affiche quand même ce qu'on a en cache.
          */
         console.error("Erreur API :", error);
         if (cachedData) renderRanking(JSON.parse(cachedData));
@@ -1849,24 +1844,20 @@ async function loadLigue1() {
 function renderRanking(data) {
     const standings = data.standings[0].table;
     
-    // Mise à jour de l'en-tête de la journée
     const matchdayEl = document.getElementById('current-matchday');
     if (matchdayEl) matchdayEl.innerText = 'Journée ' + data.season.currentMatchday;
 
     const tbody = document.getElementById('api-ranking-body');
     if (!tbody) return;
     
-    tbody.innerHTML = ''; // Nettoyage du tableau avant insertion
+    tbody.innerHTML = ''; 
 
-    // Parcours de chaque équipe du classement
     standings.forEach(item => {
-        // Logique métier : Attribution d'une couleur selon la position
         let indicatorColor = 'transparent';
-        if (item.position <= 4) indicatorColor = '#3b82f6';      // Ligue des Champions (Bleu)
-        else if (item.position <= 6) indicatorColor = '#fbbf24'; // Europe (Jaune)
-        else if (item.position >= 16) indicatorColor = '#ef4444'; // Relégation (Rouge)
+        if (item.position <= 4) indicatorColor = '#3b82f6';      
+        else if (item.position <= 6) indicatorColor = '#fbbf24'; 
+        else if (item.position >= 16) indicatorColor = '#ef4444'; 
 
-        // Génération de la ligne du tableau via Template Literals
         tbody.innerHTML += `
             <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                 <td style="padding: 10px 8px; font-weight: bold; border-left: 3px solid ${indicatorColor};">
@@ -1887,9 +1878,10 @@ function renderRanking(data) {
     });
 }
 
-// Lancement automatique du script une fois que la page est chargée
+// Lancement automatique du script
 document.addEventListener('DOMContentLoaded', loadLigue1);
 </script>
+    
     <!-- Script de gestion du défilement Pour CINÉMA SÉRIES & SPORTS +18 Adults -->
     <script>
         /**
@@ -1919,10 +1911,9 @@ document.addEventListener('DOMContentLoaded', loadLigue1);
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div id="card-om" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-blue-500 custom-bg"
-     style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1F3tkc.img?w=768&h=512&m=6'); background-size: cover; background-position: center;">
-    <p class="text-gray-400 text-xs text-center">Chargement match OM...</p>
-</div>
-
+             style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1F3tkc.img?w=768&h=512&m=6'); background-size: cover; background-position: center;">
+            <p class="text-gray-400 text-xs text-center">Chargement match OM...</p>
+        </div>
 
         <div id="card-real" class="sport-card glass rounded-3xl p-6 border-l-4 border-l-indigo-600" 
              style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://w0.peakpx.com/wallpaper/158/628/HD-wallpaper-real-madrid-logo-blue-background.jpg'); background-size: cover; background-position: center;"> 
@@ -1933,26 +1924,54 @@ document.addEventListener('DOMContentLoaded', loadLigue1);
 
 <script>
 /**
- * Charge les données d'une équipe via l'API
+ * Charge les données d'une équipe via le Worker Cloudflare sécurisé
  */
 async function loadTeamMatch(teamId, containerId) {
-    const API_KEY = 'bbad060698e64091893a5077b1b6e7a6';
-    const PROXY = 'https://corsproxy.io/?';
-    const URL_API = `https://api.football-data.org/v4/teams/${teamId}/matches?limit=5`;
+    // Appel sécurisé de ton Worker (La clé API est masquée là-bas)
+    const URL_WORKER = `https://late-art-b42a.teleprime4k.workers.dev/?teamId=${teamId}`;
 
     try {
-        const response = await fetch(PROXY + encodeURIComponent(URL_API), {
-            headers: { 'X-Auth-Token': API_KEY }
-        });
+        const response = await fetch(URL_WORKER);
         
         if (!response.ok) throw new Error("Erreur réseau");
         
         const data = await response.json();
+        const matches = data.matches;
         
-        // Priorité : Match en cours > Prochain match > Dernier match fini
-        let match = data.matches.find(m => m.status === 'IN_PLAY' || m.status === 'PAUSED') 
-                 || data.matches.find(m => m.status === 'SCHEDULED' || m.status === 'TIMED')
-                 || data.matches[data.matches.length - 1];
+        let match = null;
+
+        // 1. Priorité absolue : Match en direct (En cours ou mi-temps)
+        match = matches.find(m => m.status === 'IN_PLAY' || m.status === 'PAUSED');
+
+        // 2. Si aucun direct, on regarde si le dernier match fini a moins de 7 heures
+        if (!match) {
+            const finishedMatches = matches.filter(m => m.status === 'FINISHED');
+            if (finishedMatches.length > 0) {
+                const lastFinished = finishedMatches[finishedMatches.length - 1];
+                
+                // On estime la fin du match à : heure de début + 105 minutes (90min + mi-temps)
+                const matchStartDate = new Date(lastFinished.utcDate);
+                const matchEndDate = new Date(matchStartDate.getTime() + (105 * 60 * 1000)); 
+                
+                const now = new Date();
+                const hoursSinceEnd = (now - matchEndDate) / (1000 * 60 * 60);
+
+                // Si le match s'est terminé il y a moins de 7h, on le sélectionne
+                if (hoursSinceEnd >= 0 && hoursSinceEnd <= 7) {
+                    match = lastFinished;
+                }
+            }
+        }
+
+        // 3. Si aucun direct et que le match fini a dépassé les 7h, on cherche la prochaine rencontre
+        if (!match) {
+            match = matches.find(m => m.status === 'SCHEDULED' || m.status === 'TIMED');
+        }
+
+        // 4. Sécurité : Si aucun match ne coche ces critères, on prend le dernier reçu
+        if (!match) {
+            match = matches[matches.length - 1];
+        }
 
         renderTeamCard(match, containerId, teamId);
 
@@ -1988,7 +2007,6 @@ function renderTeamCard(match, containerId, teamId) {
                       d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     }
 
-    // CORRECTION ICI : Accès aux scores (home/away au lieu de homeTeam/awayTeam)
     const scoreHome = match.score.fullTime.home ?? 0;
     const scoreAway = match.score.fullTime.away ?? 0;
 
@@ -2021,7 +2039,6 @@ function renderTeamCard(match, containerId, teamId) {
     `;
 }
     
-
 // Initialisation et rafraîchissement
 function initSports() {
     loadTeamMatch('516', 'card-om'); // ID Marseille
