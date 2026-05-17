@@ -3327,57 +3327,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
 </script>
 
-
-    <!--Script du Tableau du classement LIGUE 1+ -->
-<script>
-  async function fetchAndUpdateClassement() {
-    const apiToken = 'GTqNiDRlu1ZFen48zZa5T5GA8YtUYOrP29uDIVhyIhB884UhJw4ddREe1OD2'; // Remplacez par votre clé API Sportmonks
-    const seasonId = '25651';     // Remplacez par l'ID de la saison (exemple : 12345)
-
-    const url = `https://soccer.sportmonks.com/api/v2.0/standings/season/${25651}?api_token=${GTqNiDRlu1ZFen48zZa5T5GA8YtUYOrP29uDIVhyIhB884UhJw4ddREe1OD2}`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Erreur réseau');
-
-      const data = await response.json();
-
-      // Le tableau des équipes dans le classement
-      const standings = data.data[0].standings; // selon la structure API Sportmonks
-
-      const tbody = document.getElementById('classementBody');
-      if (!tbody) return;
-
-      tbody.innerHTML = ''; // vider l'ancien contenu
-
-      standings.forEach((team, index) => {
-        // Définir la classe CSS selon la position (exemple simplifié)
-        let qualifClass = '';
-        if (index < 2) qualifClass = 'qualif-champions';
-        else if (index < 4) qualifClass = 'qualif-europa';
-        else if (index >= standings.length - 3) qualifClass = 'relegation';
-
-        const tr = document.createElement('tr');
-        tr.className = qualifClass;
-        tr.innerHTML = `
-          <td class="rank-number">${team.position}</td>
-          <td class="team-name">${team.team_name}</td>
-          <td class="points-col">${team.points}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    } catch (error) {
-      console.error('Erreur mise à jour classement :', error);
-    }
-  }
-
-  // Appel initial
-  fetchAndUpdateClassement();
-
-  // Mise à jour toutes les 5 minutes (300000 ms)
-  setInterval(fetchAndUpdateClassement, 300000);
-</script>
-
     
      <!--Debut Syteme de Chat Crisp.chat Script-->
 <script 
