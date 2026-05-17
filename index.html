@@ -3504,7 +3504,7 @@ s0.parentNode.insertBefore(s1,s0);
                     <span style="font-size:12px; color:#aaa;">Quantité: 1</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:15px;">
-                    <span style="font-weight:bold;">${(item.price / 100).toFixed(2)}€</span>
+                    <span style="font-weight:bold;">${(item.price / 100).toFixed(1)}€</span>
                     <button class="remove-item" onclick="removeItem(${index})">&times;</button>
                 </div>
             `;
@@ -3512,7 +3512,7 @@ s0.parentNode.insertBefore(s1,s0);
         });
 
         const total = (subtotal + currentFee) / 100;
-        checkoutButton.innerHTML = `Envoyer ma demande de Paiement • ${total.toFixed(2)} €`;
+        checkoutButton.innerHTML = `Envoyer ma demande de Paiement • ${total.toFixed(1)} €`;
     }
 
     window.removeItem = (index) => {
@@ -3557,7 +3557,7 @@ s0.parentNode.insertBefore(s1,s0);
 
         let subtotal = 0;
         cart.forEach(item => subtotal += item.price);
-        const totalCalcule = ((subtotal + currentFee) / 100).toFixed(2) + " €";
+        const totalCalcule = ((subtotal + currentFee) / 100).toFixed(1) + " €";
         const itemsNames = cart.map(i => i.name).join(', ');
 
         const formData = new FormData();
