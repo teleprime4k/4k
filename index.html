@@ -2057,8 +2057,17 @@ function renderRanking(data) {
     });
 }
 
-// Lancement automatique du script
-document.addEventListener('DOMContentLoaded', loadLigue1);
+// Chargement initial puis actualisation automatique toutes les 15 minutes.
+document.addEventListener('DOMContentLoaded', () => {
+    loadLigue1();
+    setInterval(loadLigue1, 15 * 60 * 1000);
+});
+
+// Actualise aussi le classement lorsque le visiteur revient sur l’onglet
+// après l’avoir laissé en arrière-plan.
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) loadLigue1();
+});
 </script>
     
     <!-- Script de gestion du défilement Pour CINÉMA SÉRIES & SPORTS +18 Adults -->
