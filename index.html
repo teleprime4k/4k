@@ -1885,7 +1885,7 @@ h2.cart-title {
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
             <h3 style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: white; margin: 0;">
-                Classement L1 <span style="color: #eab308">25/26</span>
+                Classement L1 <span id="ranking-season" style="color: #eab308">--/--</span>
             </h3>
         </div>
 
@@ -1946,9 +1946,9 @@ async function loadLigue1() {
     const lastModified = localStorage.getItem(ETAG_KEY);
 
     /** * STRATÉGIE DE CACHE NIVEAU 1 : Le temps écoulé
-     * Si les données ont moins d'une minute, on ne sollicite pas le Worker.
+     * Si les données ont moins de 15 minutes, on ne sollicite pas le Worker.
      */
-    if (cachedData && lastRequestTime && (now - lastRequestTime < 60 * 1000)) {
+    if (cachedData && lastRequestTime && (now - lastRequestTime < 15 * 60 * 1000)) {
         renderRanking(JSON.parse(cachedData));
         return;
     }
@@ -1994,7 +1994,12 @@ async function loadLigue1() {
          * GESTION D'ERREUR (FALLBACK)
          */
         console.error("Erreur API :", error);
-        if (cachedData) renderRanking(JSON.parse(cachedData));
+        if (cachedData) {
+            renderRanking(JSON.parse(cachedData));
+        } else {
+            const tbody = document.getElementById('api-ranking-body');
+            if (tbody) tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:#f87171;">Classement temporairement indisponible</td></tr>';
+        }
     }
 }
 
@@ -2002,10 +2007,24 @@ async function loadLigue1() {
  * Fonction de rendu pour générer le tableau HTML
  */
 function renderRanking(data) {
-    const standings = data.standings[0].table;
+    const standings = data?.standings?.[0]?.table;
+    if (!Array.isArray(standings)) {
+        throw new Error('Données du classement invalides');
+    }
+
+    const seasonEl = document.getElementById('ranking-season');
+    if (seasonEl && data.season?.startDate && data.season?.endDate) {
+        const startYear = new Date(data.season.startDate).getUTCFullYear().toString().slice(-2);
+        const endYear = new Date(data.season.endDate).getUTCFullYear().toString().slice(-2);
+        seasonEl.textContent = `${startYear}/${endYear}`;
+    }
     
     const matchdayEl = document.getElementById('current-matchday');
-    if (matchdayEl) matchdayEl.innerText = 'Journée ' + data.season.currentMatchday;
+    if (matchdayEl) {
+        matchdayEl.innerText = data.season?.currentMatchday
+            ? 'Journée ' + data.season.currentMatchday
+            : 'Saison en cours';
+    }
 
     const tbody = document.getElementById('api-ranking-body');
     if (!tbody) return;
