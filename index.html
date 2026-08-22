@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teleprime4K | IPTV N°1</title>
+    <title>Teleprime4K | Divertissement, sport et applications TV</title>
+    <meta name="description" content="Découvrez l’univers Teleprime4K : sport, cinéma, applications TV, offres premium et avis de la communauté.">
+    <meta name="theme-color" content="#071f2f">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="Teleprime4K | Ultimate Entertainment Hub">
+    <meta property="og:description" content="Sport, cinéma, applications TV et offres premium réunis dans une expérience 4K.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -13,21 +22,12 @@
     <!-- À coller dans le <head> de ton fichier HTML (index.html, etc.) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
    
-     <!-- Font Awesome pour les icônes de contact -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Chargement de Tailwind CSS pour le stylage rapide (centrage, espacement) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chargement des icônes Font Awesome (Enveloppe, WhatsApp, Cartes bancaires) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-
 <!-- Favicons (corrigés pour GitHub Pages + dossier /assets/icons/) -->
 <link rel="icon" type="image/png" sizes="96x96" href="./assets/icons/favicon-96x96.png" />
 <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg" />
 <link rel="shortcut icon" href="./assets/icons/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="MyWebSite" />
+<meta name="apple-mobile-web-app-title" content="Teleprime4K" />
 <link rel="manifest" href="./assets/icons/site.webmanifest" />
 
     <style>
@@ -892,12 +892,170 @@
 
 </style>
 
+<!-- Couche de modernisation globale Teleprime4K -->
+<style>
+    :root {
+        --tp-bg: #061823;
+        --tp-surface: rgba(8, 35, 49, 0.78);
+        --tp-surface-strong: #0a2a39;
+        --tp-border: rgba(255, 255, 255, 0.10);
+        --tp-gold: #facc15;
+        --tp-blue: #38bdf8;
+        --tp-radius: 22px;
+        --tp-shadow: 0 20px 55px rgba(0, 0, 0, 0.28);
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+        background:
+            radial-gradient(circle at 15% 0%, rgba(14, 116, 144, .24), transparent 34rem),
+            radial-gradient(circle at 90% 28%, rgba(91, 33, 182, .18), transparent 30rem),
+            linear-gradient(180deg, #061823 0%, #082b39 42%, #061823 100%);
+        min-height: 100vh;
+        line-height: 1.6;
+        text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        opacity: .22;
+        background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+
+    .skip-link {
+        position: fixed;
+        left: 16px;
+        top: -80px;
+        z-index: 99999;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: var(--tp-gold);
+        color: #111827;
+        font-weight: 800;
+        transition: top .2s ease;
+    }
+    .skip-link:focus { top: 16px; }
+
+    :focus-visible {
+        outline: 3px solid var(--tp-gold);
+        outline-offset: 3px;
+        border-radius: 8px;
+    }
+
+    .glass, .glass-card, .glass-square, .main-card {
+        border-color: var(--tp-border) !important;
+        box-shadow: var(--tp-shadow);
+    }
+
+    .glass-nav {
+        background: rgba(4, 20, 30, .82);
+        border: 1px solid rgba(255,255,255,.12);
+        backdrop-filter: blur(18px) saturate(150%);
+        box-shadow: 0 12px 35px rgba(0,0,0,.3);
+    }
+
+    .nav-link { white-space: nowrap; }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -7px;
+        height: 2px;
+        border-radius: 99px;
+        background: var(--tp-gold);
+        transform: scaleX(0);
+        transition: transform .25s ease;
+    }
+    .nav-link:hover::after, .nav-link[aria-current="true"]::after { transform: scaleX(1); }
+    .nav-link[aria-current="true"] { color: white; }
+
+    section, main[id], header[id] { position: relative; }
+    section > h2, section h2 { text-wrap: balance; }
+    img { max-width: 100%; }
+    iframe { color-scheme: dark; }
+
+    .sport-card, .glass-square, .pricing-card, .movie-card {
+        will-change: transform;
+        transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+    .sport-card:hover, .glass-square:hover, .pricing-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 45px rgba(0,0,0,.34);
+    }
+
+    button, a, .payment-option { touch-action: manipulation; }
+    button:disabled { filter: grayscale(.2); }
+
+    #backToTop {
+        position: fixed;
+        right: 18px;
+        bottom: 20px;
+        z-index: 990;
+        width: 46px;
+        height: 46px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(250,204,21,.35);
+        border-radius: 50%;
+        background: rgba(4,20,30,.9);
+        color: var(--tp-gold);
+        box-shadow: 0 12px 30px rgba(0,0,0,.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: .25s ease;
+    }
+    #backToTop.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    .footer-xtreme { border-top: 1px solid rgba(255,255,255,.1); }
+    .footer-links a { transition: color .2s ease, transform .2s ease; display: inline-block; }
+    .footer-links a:hover { color: var(--tp-gold); transform: translateX(3px); }
+
+    @media (max-width: 767px) {
+        html { scroll-padding-top: 88px; }
+        body { font-size: 15px; }
+        .min-h-screen { padding-inline: 12px !important; }
+        .glass-nav {
+            width: calc(100vw - 20px);
+            overflow-x: auto;
+            justify-content: flex-start !important;
+            gap: 22px;
+            padding: 13px 18px !important;
+            scrollbar-width: none;
+        }
+        .glass-nav::-webkit-scrollbar { display: none; }
+        .nav-link { flex: 0 0 auto; font-size: 10px !important; }
+        .font-title { line-height: 1.35; }
+        #reviewsContainer { max-height: 520px; padding-right: 2px !important; }
+        .footer-container { gap: 30px; }
+        #backToTop { bottom: 76px; right: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .01ms !important;
+        }
+    }
+</style>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
                            
 </head>
-<body>
+<body id="top">
+<a class="skip-link" href="#sports">Aller au contenu principal</a>
 
    <!--  l'effet Gooey (liquide/gluant) que je vois sur ma bulle Snapchat-->
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display:none;">
@@ -956,7 +1114,7 @@
 
 <div class="min-h-screen p-4 md:p-8">
     
-    <header class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-12 mt-16 gap-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-12 mt-16 gap-6">
     <div class="text-3xl font-title font-bold tracking-tighter text-white">
         TELEPRIME<span class="text-yellow-500">4K</span>
     </div>
@@ -967,7 +1125,9 @@
          
     <nav class="max-w-2xl mx-auto">
         <div class="glass-nav flex items-center justify-around md:justify-center md:space-x-12 px-8 py-4 rounded-full shadow-lg">
-            
+            <a href="#top" class="nav-link relative text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
+                Accueil
+            </a>
             <a href="#sports" class="nav-link relative text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors">
                 Sports
             </a>
@@ -992,8 +1152,8 @@
 
 <div id="confirmation-modal">
     <div class="check-circle">✓</div>
-    <h2>Commande Reçue !</h2>
-    <p>Nous vous remercions sincèrement pour votre confiance. Votre demande est actuellement en cours de traitement. Vous recevrez très prochainement un e-mail contenant un lien de paiement définitif..</p>
+    <h2>Commande reçue !</h2>
+    <p>Merci pour votre confiance. Votre demande est en cours de traitement. Vous recevrez prochainement par e-mail votre lien de paiement définitif.</p>
     <button id="btn-return-cart">Retour au panier</button>
 </div>
 
@@ -1601,7 +1761,7 @@ h2.cart-title {
          /* Style spécifique pour agrandir les 4K Films & Series (350px plus grand) */
         .slider .slide img {
     width: 215px;       /* fixe la largeur à 215px */
-    height: 350;       /* ajuste la hauteur automatiquement pour garder le ratio */
+    height: 350px;     /* hauteur fixe avec unité valide */
     /* Ou si vous préférez une hauteur fixe : */
     /* height: 350px; */
     /* width: auto; */
@@ -1642,17 +1802,17 @@ h2.cart-title {
 </style>
 
  <!-- Interface Panier -->
-    <div id="cart-icon">
+    <button id="cart-icon" type="button" aria-label="Ouvrir le panier" aria-controls="cart-details" aria-expanded="false">
         <span>🛒 Mon Panier</span>
-        <span id="cart-count">0</span>
-    </div>
+        <span id="cart-count" aria-live="polite">0</span>
+    </button>
 
     <div id="cart-overlay-bg"></div>
 
     <div id="cart-details">
         <div class="cart-header">
             <h2 class="cart-title">Mon Panier</h2>
-            <span class="close-cart" onclick="toggleCart()">&times;</span>
+            <button type="button" class="close-cart" onclick="toggleCart()" aria-label="Fermer le panier">&times;</button>
         </div>
         
         <div class="cart-content">
@@ -1700,11 +1860,11 @@ h2.cart-title {
             </p>
         </div>
     </div>
-</header>
+</div>
 
  <!-- C'est ici que le globe va apparaître -->
 <div style="width: 100%; height: 300px; border-radius: 15px; overflow: hidden; border: 1px solid #1e293b; margin: 20px auto;">
-    <iframe src="https://teleprime4k.github.io/-Connectivit-r-seau-mondiale/" width="100%" height="100%" style="border:none;"></iframe>
+    <iframe src="https://teleprime4k.github.io/-Connectivit-r-seau-mondiale/" title="Carte de connectivité du réseau Teleprime4K" loading="lazy" width="100%" height="100%" style="border:none;"></iframe>
 </div>
     
  <!-- CLASSEMENT LIGUE 1 (Version compacte avec scroll)  -->
@@ -2277,7 +2437,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                        
         <!-- FILM & SERIES -->
         <!-- Hero Section -->
-<header id="movies" class="relative pt-20 pb-16 px-6 overflow-hidden">
+<header id="movies-hero" class="relative pt-20 pb-16 px-6 overflow-hidden">
     <img src="https://images.ctfassets.net/u73tyf0fa8v1/2W0iaZ79jmuDWDWuB4GvWE/f659a08e0839e13661327392e93a228e/3000x1800_KeyArt_DragonDawn_81.jpg?w=3840&q=75" alt="Background" class="absolute inset-0 w-full h-full object-cover -z-10">
     
     <div class="absolute inset-0 bg-black/40 -z-10"></div>
@@ -2807,8 +2967,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         category: "Users", 
                         // EXEMPLE AVEC UNE IMAGE :
                         icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
-                        badge: "Ce n'est pas notre Application⚠️Fonctionne avec L'abonnement King Prime🥇 & Gold Vibe🥈", 
+                        badge: "Application externe ⚠️ Compatible avec King Prime 🥇 et Gold Vibe 🥈", 
                         badgeColor: "#10b981", // Bleu
+                        activationNotice: "⚠️ Activation obligatoire après installation",
                         downloadLink: "https://iboproapp.com/ibopro.apk",
                         delay: "0.1s" 
                      },
@@ -2827,8 +2988,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         category: "Users", 
                         // EXEMPLE AVEC UNE IMAGE :
                         icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
-                        badge: "Ce n'est pas notre Application⚠️Fonctionne avec L'abonnement King Prime🥇 & Gold Vibe🥈", 
+                        badge: "Application externe ⚠️ Compatible avec King Prime 🥇 et Gold Vibe 🥈", 
                         badgeColor: "#FF0000", // Rouge
+                        activationNotice: "⚠️ Activation obligatoire après installation",
                         downloadLink: "http://go.aftvnews.com/272483",
                         delay: "0.1s" 
                      },
@@ -2856,7 +3018,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         category: "Users", 
                         // EXEMPLE AVEC UNE IMAGE :
                         icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z",
-                        badge: "Fonctione avec VPN ! King Prime🥇", 
+                        badge: "Fonctionne avec un VPN · King Prime 🥇", 
                         badgeColor: "#3b82f6", // Bleu
                         downloadLink: "http://go.aftvnews.com/8415512",
                         delay: "0.3s" 
@@ -3011,6 +3173,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="text-[9px] font-bold uppercase tracking-wider" style="color: ${app.badgeColor};">${app.category}</span>
                         </div>
 
+                        ${app.activationNotice ? `
+                            <div class="w-full mb-3 px-2 py-2 rounded-xl border border-amber-400/60 bg-amber-500/15 text-amber-300 text-[9px] md:text-[10px] font-extrabold leading-tight uppercase shadow-sm">
+                                ${app.activationNotice}
+                            </div>
+                        ` : ''}
+
                         <a href="${app.downloadLink}" target="_blank" class="btn-install block w-full py-2.5 rounded-xl text-[10px] font-extrabold uppercase tracking-tighter shadow-sm hover:brightness-110 transition-all text-white no-underline">
                             Télécharger
                         </a>
@@ -3119,10 +3287,46 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="h-[1px] flex-grow bg-white/10"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="glass p-6 rounded-3xl h-fit border border-yellow-500/20">
+            <div class="space-y-5 h-fit">
+                <div class="glass p-6 rounded-3xl border border-blue-500/20">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-2">Avis de la communauté</p>
+                            <div class="flex items-end gap-3">
+                                <span id="reviewsAverage" class="text-4xl font-bold text-white leading-none">0,0</span>
+                                <div>
+                                    <div id="reviewsAverageStars" class="text-yellow-400 tracking-wider text-lg">☆☆☆☆☆</div>
+                                    <p id="reviewsCount" class="text-[10px] text-gray-400 mt-1">Aucun avis</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg" aria-label="Avis clients">
+                            <span class="text-2xl font-black" style="color:#4285f4">G</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass p-6 rounded-3xl border border-yellow-500/20">
                 <h3 class="font-title text-xs mb-4 text-gray-400 uppercase tracking-widest">Laissez votre avis</h3>
                 <div class="space-y-4">
-                    <input type="text" id="reviewUser" placeholder="Votre pseudonyme" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition text-white">
+                    <div id="googleSignedOut" class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-4 text-center">
+                        <p class="text-xs text-white font-bold mb-1">Connexion obligatoire</p>
+                        <p class="text-[10px] text-gray-400 mb-3">Connectez-vous avec Google pour publier un avis vérifié.</p>
+                        <button type="button" onclick="signInWithGoogle()" class="w-full bg-white hover:bg-gray-100 text-gray-800 py-3 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2">
+                            <span class="text-lg font-black" style="color:#4285f4">G</span>
+                            Continuer avec Google
+                        </button>
+                    </div>
+                    <div id="googleSignedIn" class="hidden rounded-2xl border border-green-500/30 bg-green-500/10 p-3">
+                        <div class="flex items-center gap-3">
+                            <img id="googleUserPhoto" src="" alt="Photo du compte Google" class="w-10 h-10 rounded-full object-cover bg-slate-800">
+                            <div class="min-w-0 flex-1">
+                                <p id="googleUserName" class="text-xs text-white font-bold truncate"></p>
+                                <p class="text-[9px] text-green-400 font-bold uppercase">✓ Compte Google vérifié</p>
+                            </div>
+                            <button type="button" onclick="signOutGoogle()" class="text-[9px] text-gray-400 hover:text-white">Déconnexion</button>
+                        </div>
+                    </div>
                     <div class="flex items-center gap-2">
                         <span class="text-xs text-gray-400 font-title uppercase">Note :</span>
                         <div id="starRating" class="flex gap-1">
@@ -3133,17 +3337,24 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button onclick="setRating(5)" class="star text-gray-600 text-xl transition hover:scale-110">★</button>
                         </div>
                     </div>
-                    <textarea id="reviewText" placeholder="Votre expérience..." rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition text-white"></textarea>
-                    <button onclick="submitReview()" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all">
-                        Publier
+                    <textarea id="reviewText" disabled placeholder="Connectez-vous avec Google pour écrire votre avis..." rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-yellow-500 transition text-white disabled:opacity-40 disabled:cursor-not-allowed"></textarea>
+                    <button id="publishReviewButton" onclick="submitReview()" disabled class="w-full bg-yellow-500 hover:bg-yellow-400 text-black py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                        Publier mon avis vérifié
                     </button>
+                </div>
                 </div>
             </div>
             <div class="lg:col-span-2">
-                
+                   <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                       <p class="text-xs text-gray-400">Les expériences partagées par nos clients</p>
+                       <select id="reviewsSort" onchange="renderReviews()" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white focus:outline-none focus:border-blue-500">
+                           <option value="recent">Les plus récents</option>
+                           <option value="best">Meilleures notes</option>
+                           <option value="lowest">Notes les plus basses</option>
+                       </select>
+                   </div>
                    <div id="reviewsContainer" class="space-y-4 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
-                       
-                    <!-- Les avis seront chargés ici dynamiquement par JavaScript -->
+                    <div class="glass p-6 rounded-2xl text-center text-xs text-gray-400">Chargement des avis...</div>
                     </div>
                 </div>
             </div>
@@ -3209,6 +3420,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   let db;
+  let currentGoogleUser = null;
 
   window.addEventListener('DOMContentLoaded', () => {
     if (typeof firebase === 'undefined') {
@@ -3223,6 +3435,11 @@ document.addEventListener('DOMContentLoaded', () => {
     db = firebase.firestore();
     console.log("Firebase initialisé — Firestore prêt.");
 
+    firebase.auth().onAuthStateChanged(user => {
+      currentGoogleUser = user;
+      updateGoogleReviewForm(user);
+    });
+
     if (typeof loadReviews === 'function') {
       loadReviews();
     }
@@ -3230,8 +3447,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-            // --- SYSTEME D'AVIS ---
+            // --- SYSTEME D'AVIS STYLE GOOGLE ---
         let currentRating = 0;
+        let communityReviews = [];
+
+        function updateGoogleReviewForm(user) {
+            const signedOut = document.getElementById('googleSignedOut');
+            const signedIn = document.getElementById('googleSignedIn');
+            const textarea = document.getElementById('reviewText');
+            const publishButton = document.getElementById('publishReviewButton');
+            if (!signedOut || !signedIn || !textarea || !publishButton) return;
+
+            if (user) {
+                signedOut.classList.add('hidden');
+                signedIn.classList.remove('hidden');
+                document.getElementById('googleUserName').textContent = user.displayName || 'Utilisateur Google';
+                document.getElementById('googleUserPhoto').src = user.photoURL || 'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg';
+                textarea.disabled = false;
+                textarea.placeholder = 'Partagez votre expérience...';
+                publishButton.disabled = false;
+            } else {
+                signedOut.classList.remove('hidden');
+                signedIn.classList.add('hidden');
+                textarea.disabled = true;
+                textarea.placeholder = 'Connectez-vous avec Google pour écrire votre avis...';
+                publishButton.disabled = true;
+                setRating(0);
+            }
+        }
+
+        async function signInWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({ prompt: 'select_account' });
+                await firebase.auth().signInWithPopup(provider);
+            } catch (error) {
+                console.error('Erreur de connexion Google :', error);
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    alert("La connexion Google a échoué. Vérifiez que Google est activé dans Firebase Authentication.");
+                }
+            }
+        }
+
+        async function signOutGoogle() {
+            await firebase.auth().signOut();
+        }
 
         function setRating(n) {
             currentRating = n;
@@ -3240,48 +3500,151 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Fonction pour afficher un avis dans le DOM
-        function displayReview(reviewData) {
+        function reviewDate(timestamp) {
+            if (!timestamp) return "À l'instant";
+            const date = typeof timestamp.toDate === 'function' ? timestamp.toDate() : new Date(timestamp);
+            if (Number.isNaN(date.getTime())) return "Date indisponible";
+            return new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+        }
+
+        function updateReviewsSummary() {
+            const count = communityReviews.length;
+            const average = count ? communityReviews.reduce((total, review) => total + Number(review.rating || 0), 0) / count : 0;
+            document.getElementById('reviewsAverage').textContent = average.toFixed(1).replace('.', ',');
+            document.getElementById('reviewsAverageStars').textContent = "★".repeat(Math.round(average)) + "☆".repeat(5 - Math.round(average));
+            document.getElementById('reviewsCount').textContent = count === 0 ? "Aucun avis" : `${count} avis client${count > 1 ? 's' : ''}`;
+        }
+
+        function createReviewCard(reviewData) {
+            const reviewDiv = document.createElement('article');
+            reviewDiv.className = "glass p-5 rounded-2xl border border-white/10 hover:border-blue-500/30 transition-colors";
+
+            const header = document.createElement('div');
+            header.className = "flex items-start justify-between gap-3 mb-4";
+
+            const identity = document.createElement('div');
+            identity.className = "flex items-center gap-3 min-w-0";
+
+            const avatar = document.createElement('div');
+            avatar.className = "w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg";
+            if (reviewData.photoURL && reviewData.googleVerified) {
+                const avatarImage = document.createElement('img');
+                avatarImage.src = reviewData.photoURL;
+                avatarImage.alt = '';
+                avatarImage.referrerPolicy = 'no-referrer';
+                avatarImage.className = 'w-full h-full rounded-full object-cover';
+                avatar.appendChild(avatarImage);
+            } else {
+                avatar.textContent = (reviewData.user || '?').charAt(0).toUpperCase();
+            }
+
+            const identityText = document.createElement('div');
+            const user = document.createElement('p');
+            user.className = "font-bold text-sm text-white truncate";
+            user.textContent = reviewData.user || 'Client';
+            const date = document.createElement('p');
+            date.className = "text-[10px] text-gray-500 mt-1";
+            date.textContent = reviewDate(reviewData.timestamp);
+            identityText.append(user);
+            if (reviewData.googleVerified === true) {
+                const verified = document.createElement('p');
+                verified.className = 'text-[9px] text-green-400 font-bold mt-0.5';
+                verified.textContent = '✓ Compte Google vérifié';
+                identityText.appendChild(verified);
+            } else {
+                const historical = document.createElement('p');
+                historical.className = 'text-[9px] text-amber-400 font-bold mt-0.5';
+                historical.textContent = '◷ Avis historique';
+                historical.title = 'Avis publié avant la mise en place de la vérification Google';
+                identityText.appendChild(historical);
+            }
+            identityText.appendChild(date);
+            identity.append(avatar, identityText);
+
+            const stars = document.createElement('div');
+            stars.className = "text-yellow-400 text-sm tracking-wider shrink-0";
+            const rating = Math.max(0, Math.min(5, Number(reviewData.rating) || 0));
+            stars.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
+            stars.setAttribute('aria-label', `${rating} étoiles sur 5`);
+            header.append(identity, stars);
+
+            const message = document.createElement('p');
+            message.className = "text-gray-300 text-xs leading-relaxed whitespace-pre-wrap break-words";
+            message.textContent = reviewData.text || '';
+
+            const footer = document.createElement('div');
+            footer.className = "mt-4 pt-3 border-t border-white/5 flex items-center justify-between";
+            const source = document.createElement('span');
+            source.className = "text-[9px] text-blue-400 font-bold uppercase tracking-wider";
+            source.textContent = "Avis communauté Teleprime4K";
+            const useful = document.createElement('button');
+            useful.type = 'button';
+            useful.className = "text-[10px] text-gray-400 hover:text-white transition-colors";
+            useful.textContent = "♡ Utile";
+            useful.onclick = () => {
+                useful.textContent = useful.textContent.startsWith('♡') ? '♥ Utile' : '♡ Utile';
+                useful.classList.toggle('text-blue-400');
+            };
+            footer.append(source, useful);
+
+            reviewDiv.append(header, message, footer);
+            return reviewDiv;
+        }
+
+        function renderReviews() {
             const reviewsContainer = document.getElementById('reviewsContainer');
-            const stars = "★".repeat(reviewData.rating) + "☆".repeat(5 - reviewData.rating);
-            const reviewDiv = document.createElement('div');
-            reviewDiv.className = "glass p-5 rounded-2xl border-l-4 border-yellow-500 mb-4"; // 'animate-in slide-in-from-top duration-300' peut être ajouté si tu veux l'animation uniquement pour les nouveaux avis postés
-            reviewDiv.innerHTML = `
-                <div class="flex justify-between mb-2">
-                    <span class="font-bold text-sm text-white">${reviewData.user}</span>
-                    <div class="text-yellow-500 text-xs">${stars}</div>
-                </div>
-                <p class="text-gray-400 text-xs">${reviewData.text}</p>`;
-            reviewsContainer.prepend(reviewDiv); // Ajoute le nouvel avis en haut
+            if (!reviewsContainer) return;
+            reviewsContainer.innerHTML = '';
+            const sort = document.getElementById('reviewsSort')?.value || 'recent';
+            const sortedReviews = [...communityReviews].sort((a, b) => {
+                if (sort === 'best') return Number(b.rating) - Number(a.rating);
+                if (sort === 'lowest') return Number(a.rating) - Number(b.rating);
+                const timeA = a.timestamp?.toMillis ? a.timestamp.toMillis() : new Date(a.timestamp || 0).getTime();
+                const timeB = b.timestamp?.toMillis ? b.timestamp.toMillis() : new Date(b.timestamp || 0).getTime();
+                return timeB - timeA;
+            });
+
+            if (!sortedReviews.length) {
+                reviewsContainer.innerHTML = '<div class="glass p-8 rounded-2xl text-center text-xs text-gray-400">Soyez le premier à partager votre expérience.</div>';
+            } else {
+                sortedReviews.forEach(review => reviewsContainer.appendChild(createReviewCard(review)));
+            }
+            updateReviewsSummary();
         }
 
         // Fonction pour soumettre un avis à Firestore
         async function submitReview() {
-            const user = document.getElementById('reviewUser').value.trim();
             const text = document.getElementById('reviewText').value.trim();
 
-            if (!user || !text || currentRating === 0) {
-                alert("Veuillez remplir tous les champs et donner une note.");
+            if (!currentGoogleUser) {
+                alert("Vous devez vous connecter avec Google pour publier un avis vérifié.");
+                return;
+            }
+
+            if (!text || currentRating === 0) {
+                alert("Veuillez écrire votre avis et donner une note.");
                 return;
             }
 
             try {
-                // Ajoute l'avis à la collection 'reviews' dans Firestore
-                await db.collection("reviews").add({
-                    user: user,
+                const reviewData = {
+                    user: currentGoogleUser.displayName || 'Utilisateur Google',
                     text: text,
                     rating: currentRating,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp() // Pour trier par date
-                });
+                    uid: currentGoogleUser.uid,
+                    photoURL: currentGoogleUser.photoURL || '',
+                    googleVerified: true,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
 
-                // Affiche l'avis immédiatement dans l'interface
-                displayReview({ user, text, rating: currentRating });
+                // L'identifiant Google devient l'identifiant du document : un seul avis par compte.
+                await db.collection("reviews").doc(currentGoogleUser.uid).set(reviewData);
+                await loadReviews();
 
                 // Réinitialise le formulaire
-                document.getElementById('reviewUser').value = "";
                 document.getElementById('reviewText').value = "";
                 setRating(0); // Réinitialise les étoiles
-                alert("Votre avis a été publié !");
+                alert("Votre avis Google vérifié a été publié !");
 
             } catch (error) {
                 console.error("Erreur lors de l'envoi de l'avis à Firestore: ", error);
@@ -3292,17 +3655,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fonction pour charger les avis depuis Firestore au chargement de la page
         async function loadReviews() {
             const reviewsContainer = document.getElementById('reviewsContainer');
-            reviewsContainer.innerHTML = ''; // Vide le conteneur des avis statiques
+            reviewsContainer.innerHTML = '<div class="glass p-6 rounded-2xl text-center text-xs text-gray-400">Chargement des avis...</div>';
 
             try {
-                // Récupère les avis, triés par date (du plus ancier au plus récent)
-                const snapshot = await db.collection("reviews").orderBy("timestamp", "asc").get();
-
-                snapshot.forEach(doc => {
-                    displayReview(doc.data());
-                });
+                const snapshot = await db.collection("reviews").orderBy("timestamp", "desc").get();
+                communityReviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderReviews();
             } catch (error) {
                 console.error("Erreur lors du chargement des avis depuis Firestore: ", error);
+                reviewsContainer.innerHTML = '<div class="glass p-6 rounded-2xl text-center text-xs text-red-300">Impossible de charger les avis pour le moment.</div>';
             }
         }
 
@@ -3417,9 +3778,11 @@ s0.parentNode.insertBefore(s1,s0);
         if (isActive) {
             cartDetails.classList.remove('active');
             bgOverlay.style.display = 'none';
+            cartIcon.setAttribute('aria-expanded', 'false');
         } else {
             cartDetails.classList.add('active');
             bgOverlay.style.display = 'block';
+            cartIcon.setAttribute('aria-expanded', 'true');
         }
     }
 
@@ -3691,6 +4054,67 @@ s0.parentNode.insertBefore(s1,s0);
     responsive et performants. Ce script permet d'utiliser toutes les fonctionnalités de Swiper dans la page.
 -->
 
+<button id="backToTop" type="button" aria-label="Retour en haut de la page" title="Retour en haut">↑</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Optimisation des médias et sécurisation des liens externes.
+    document.querySelectorAll('img').forEach((image, index) => {
+        if (!image.hasAttribute('decoding')) image.decoding = 'async';
+        if (!image.hasAttribute('loading') && index > 1) image.loading = 'lazy';
+    });
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+        link.rel = 'noopener noreferrer';
+    });
+    document.querySelectorAll('button:not([type])').forEach(button => button.type = 'button');
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.setAttribute('role', 'button');
+        option.tabIndex = 0;
+        option.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                option.click();
+            }
+        });
+    });
+
+    // Navigation active selon la section visible.
+    const navLinks = [...document.querySelectorAll('.nav-link[href^="#"]')];
+    const observedSections = navLinks
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+            const visible = entries
+                .filter(entry => entry.isIntersecting)
+                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (!visible) return;
+            navLinks.forEach(link => {
+                const active = link.getAttribute('href') === `#${visible.target.id}`;
+                if (active) link.setAttribute('aria-current', 'true');
+                else link.removeAttribute('aria-current');
+            });
+        }, { rootMargin: '-25% 0px -60% 0px', threshold: [0.01, 0.25] });
+        observedSections.forEach(section => observer.observe(section));
+    }
+
+    // Bouton de retour en haut discret.
+    const backToTop = document.getElementById('backToTop');
+    const updateBackToTop = () => backToTop?.classList.toggle('visible', window.scrollY > 700);
+    window.addEventListener('scroll', updateBackToTop, { passive: true });
+    updateBackToTop();
+    backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Ferme le panier avec la touche Échap pour une meilleure accessibilité.
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            const cartDetails = document.getElementById('cart-details');
+            if (cartDetails?.classList.contains('active') && typeof toggleCart === 'function') toggleCart();
+        }
+    });
+});
+</script>
+
 
     <!-- DEBUT DU PIED DE PAGE -->
     <footer class="footer-xtreme">
@@ -3700,16 +4124,16 @@ s0.parentNode.insertBefore(s1,s0);
 
             <!-- 1. Colonne de présentation -->
             <div class="footer-column footer-logo-area">
-                <img src="https://i.imgur.com/CFBBHcV.png" alt="Teleprime4K Logo" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=TELEPRIME4K'">
+                <img src="https://i.imgur.com/CFBBHcV.png" alt="Logo Teleprime4K" onerror="this.src='https://via.placeholder.com/200x60/000000/FFFFFF?text=TELEPRIME4K'">
                 <p>Nous sommes un service Premium de chaînes IPTV, nous proposons à nos utilisateurs plus de 11068 chaînes TV en direct et +95000 VOD, ainsi qu'une technologie antigel et un support client convivial disponible 24h/24 et 7j/7.</p>
             </div>
 
             <!-- 2. Colonne d'assistance -->
             <div class="footer-column">
-                <h3>Besoin d’aide !</h3>
+                <h3>Besoin d’aide ?</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a href="mailto:teleprime4k@gmail.com">Contact</a></li>
+                    <li><a href="#reviews">Avis clients</a></li>
                     <li><a href="#">Politique de remboursement</a></li>
                     <li><a href="#">Conditions d'utilisation</a></li>
                     <li><a href="#">Politique de confidentialité</a></li>
@@ -3720,10 +4144,10 @@ s0.parentNode.insertBefore(s1,s0);
             <div class="footer-column">
                 <h3>Liens rapides</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Tarification</a></li>
-                    <li><a href="#">Liste des chaînes</a></li>
-                    <li><a href="#">Revendeur</a></li>
+                    <li><a href="#top">Accueil</a></li>
+                    <li><a href="#packs">Tarification</a></li>
+                    <li><a href="#sports">Sports</a></li>
+                    <li><a href="#apps">Applications</a></li>
                 </ul>
             </div>
 
