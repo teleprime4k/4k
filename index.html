@@ -3252,7 +3252,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalCards=[];
     function snapshotOriginalCards(){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
-        [...carousel.children].forEach((el,i)=>{ if(el.matches('.glass-square')) originalCards.push({id:'builtin_'+(i+1),html:el.outerHTML}); });
+        if(originalCards.length) return;
+        [...carousel.children].filter(el=>el.matches('.glass-square')).forEach((el,i)=>{
+            const id='builtin_'+(i+1);
+            el.dataset.tp4kOriginalId=id;
+            originalCards.push({id,node:el});
+        });
     }
     function applyFields(card,app){
         if(!card)return;
@@ -3313,24 +3318,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderConfig(data){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
-        if(!Array.isArray(data?.apps)) return; // Tant que le schéma V3 n'existe pas, le HTML d'origine reste affiché.
-        carousel.querySelectorAll('.glass-square').forEach(el=>el.remove());
-        const apps=data.apps
-            .filter(a=>a&&a.active!==false&&a.name&&valid(a.downloadLink))
-            .sort((a,b)=>(+a.order||0)-(+b.order||0));
-        apps.forEach(a=>{
-            if(a.builtin&&String(a.id||'').startsWith('builtin_')){
-                const base=originalCards.find(x=>x.id===a.id);
-                if(base){
-                    const wrap=document.createElement('div');
-                    wrap.innerHTML=base.html;
-                    const card=wrap.firstElementChild;
-                    applyFields(card,a);
-                    carousel.appendChild(card);
-                    return;
-                }
+        if(!Array.isArray(data?.apps)) return;
+
+        const apps=data.apps.slice().sort((a,b)=>(+a.order||0)-(+b.order||0));
+        const configuredIds=new Set(apps.map(a=>String(a.id||'')));
+
+        // Supprime uniquement les cartes ajoutées dynamiquement lors du rendu précédent.
+        carousel.querySelectorAll('[data-tp4k-dynamic="true"]').forEach(el=>el.remove());
+
+        // Les cartes HTML d'origine ne sont JAMAIS recréées :
+        // on conserve donc exactement leurs images, SVG, classes et structure.
+        originalCards.forEach(entry=>{
+            const cfg=apps.find(a=>String(a.id||'')===entry.id);
+            const card=entry.node;
+            if(!cfg){
+                card.style.display='none'; // supprimée depuis le panneau
+                return;
             }
-            carousel.insertAdjacentHTML('beforeend',newCard(a));
+            if(cfg.active===false){
+                card.style.display='none';
+                return;
+            }
+            card.style.display='';
+            applyFields(card,cfg);
+        });
+
+        // Réordonne les cartes selon la configuration, en déplaçant les nœuds originaux eux-mêmes.
+        apps.forEach(app=>{
+            if(!app || app.active===false || !app.name || !valid(app.downloadLink)) return;
+            const id=String(app.id||'');
+            if(app.builtin && id.startsWith('builtin_')){
+                const original=originalCards.find(x=>x.id===id);
+                if(original) carousel.appendChild(original.node);
+                return;
+            }
+            const holder=document.createElement('div');
+            holder.innerHTML=newCard(app);
+            const card=holder.firstElementChild;
+            if(card){
+                card.dataset.tp4kDynamic='true';
+                carousel.appendChild(card);
+            }
+        });
+
+        // Une carte originale absente de la configuration est considérée supprimée/masquée.
+        originalCards.forEach(entry=>{
+            if(!configuredIds.has(entry.id)) entry.node.style.display='none';
         });
     }
 
