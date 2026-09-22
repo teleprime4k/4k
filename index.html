@@ -3234,6 +3234,16 @@ document.addEventListener('DOMContentLoaded', () => {
 </main>
 
 <!-- Configuration dynamique complète des applications Teleprime4K, pilotée depuis Sésame -->
+<style id="tp4k-realtime-loading-style">
+/* Anti-flash : conserve la place du carrousel mais masque les cartes
+   jusqu'à la première réponse de configuration Sésame. */
+#carousel2.tp4k-config-loading > .glass-square {
+    visibility: hidden !important;
+}
+#carousel2.tp4k-config-ready > .glass-square {
+    visibility: visible;
+}
+</style>
 <script>
 (function () {
     const sesameConfig={apiKey:"AIzaSyBs4p7kaG0d6GMuMRiThl1W7_ZTncLCBCo",authDomain:"sesameouvretoi-13.firebaseapp.com",projectId:"sesameouvretoi-13"};
@@ -3247,14 +3257,44 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyFields(card,app){
         if(!card)return;
         card.dataset.tp4kManaged=app.id||'';
-        const h=card.querySelector('h3'); if(h)h.textContent=app.name||'Application';
-        const category=h?.parentElement?.querySelector('span'); if(category)category.textContent=app.category||'Application';
-        const badge=card.querySelector('.badge-nouveau'); if(badge){badge.textContent=app.badge||'';badge.style.background=app.badgeColor||'#3b82f6';badge.style.display=app.badge?'':'none';}
-        const link=card.querySelector('a.btn-install,a[href]'); if(link&&valid(app.downloadLink))link.href=app.downloadLink;
-        const notice=[...card.querySelectorAll('div')].find(x=>/version|activation/i.test(x.textContent||'')&&x.children.length===0);
-        if(notice&&app.activationNotice!==undefined) notice.textContent=app.activationNotice||'';
+
+        // Les textes configurables peuvent être modifiés depuis Sésame.
+        const h=card.querySelector('h3');
+        if(h && app.name) h.textContent=app.name;
+
+        const category=h?.parentElement?.querySelector('span');
+        if(category && app.category) category.textContent=app.category;
+
+        const badge=card.querySelector('.badge-nouveau');
+        if(badge){
+            if(app.badge !== undefined) {
+                badge.textContent=app.badge||'';
+                badge.style.display=app.badge?'':'none';
+            }
+            if(app.badgeColor) badge.style.background=app.badgeColor;
+        }
+
+        const link=card.querySelector('a.btn-install,a[href]');
+        if(link && valid(app.downloadLink)) link.href=app.downloadLink;
+
+        // IMPORTANT : si aucune nouvelle URL image/logo n'est fournie,
+        // on ne touche jamais à l'icône originale contenue dans le HTML.
         if(valid(app.icon)){
-            const box=card.querySelector('.icon-box'); if(box)box.innerHTML=`<img src="${esc(app.icon)}" class="w-full h-full object-cover rounded-2xl" alt="${esc(app.name||'Application')}">`;
+            const box=card.querySelector('.icon-box');
+            if(box){
+                box.innerHTML=`<img src="${esc(app.icon)}" class="w-full h-full object-cover rounded-2xl" alt="${esc(app.name||'Application')}" onerror="this.remove()">`;
+            }
+        }
+
+        // Conserve la notice/version originale si le panneau n'en fournit pas une nouvelle.
+        if(app.activationNotice){
+            const candidates=[...card.querySelectorAll('div')];
+            const notice=candidates.find(x =>
+                x.children.length===0 &&
+                (/version|activation|vpn/i.test(x.textContent||'') ||
+                 x.classList.contains('bg-amber-500/15'))
+            );
+            if(notice) notice.textContent=app.activationNotice;
         }
     }
     function newCard(app){
@@ -3262,6 +3302,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon=valid(app.icon)?`<img src="${esc(app.icon)}" class="w-full h-full object-cover rounded-2xl" alt="${esc(app.name)}">`:`<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
         return `<div class="flex-shrink-0 w-36 md:w-44 glass-square rounded-[2rem] p-5 flex flex-col items-center justify-between text-center group snap-center animate-card" data-tp4k-managed="${esc(app.id||'')}"><span class="badge-nouveau uppercase" style="background:${color};${app.badge?'':'display:none'}">${esc(app.badge||'')}</span><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-black/20 group-hover:scale-110 transition-transform mb-4" style="background:linear-gradient(135deg,${color},#0f172a)">${icon}</div><div class="mb-4"><h3 class="font-bold text-[12px] md:text-[14px] leading-tight text-white mb-1">${esc(app.name||'Application')}</h3><span class="text-[9px] font-bold uppercase tracking-wider" style="color:${color}">${esc(app.category||'Application')}</span></div>${app.activationNotice?`<div class="w-full mb-3 px-2 py-2 rounded-xl border border-amber-400/60 bg-amber-500/15 text-amber-300 text-[9px] md:text-[10px] font-extrabold leading-tight uppercase">${esc(app.activationNotice)}</div>`:''}<a href="${esc(app.downloadLink)}" target="_blank" rel="noopener noreferrer" class="btn-install block w-full py-2.5 rounded-xl text-[10px] font-extrabold uppercase tracking-tighter shadow-sm hover:brightness-110 transition-all text-white no-underline">Télécharger</a></div>`;
     }
+    let tp4kFirstConfigResolved=false;
+    function revealTeleprime4K(){
+        const carousel=document.getElementById('carousel2');
+        if(!carousel)return;
+        tp4kFirstConfigResolved=true;
+        carousel.classList.remove('tp4k-config-loading');
+        carousel.classList.add('tp4k-config-ready');
+    }
+
     function renderConfig(data){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
         if(!Array.isArray(data?.apps)) return; // Tant que le schéma V3 n'existe pas, le HTML d'origine reste affiché.
@@ -3287,6 +3336,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startRealtimeTeleprime4K(){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
+        carousel.classList.add('tp4k-config-loading');
+        carousel.classList.remove('tp4k-config-ready');
         snapshotOriginalCards();
         try{
             if(typeof firebase==='undefined'||!firebase.firestore)return;
@@ -3302,16 +3353,21 @@ document.addEventListener('DOMContentLoaded', () => {
             // est appliquée automatiquement sur les pages 4K déjà ouvertes.
             window.teleprime4KConfigUnsubscribe = ref.onSnapshot(
                 snap=>{
-                    if(!snap.exists) return;
-                    renderConfig(snap.data()||{});
+                    if(snap.exists) renderConfig(snap.data()||{});
+                    revealTeleprime4K();
                 },
                 error=>{
                     console.warn('Écoute temps réel Sésame indisponible : contenu 4K actuel conservé.',error);
+                    revealTeleprime4K();
                 }
             );
         }catch(e){
             console.warn('Configuration Sésame indisponible : cartes HTML d’origine conservées.',e);
+            revealTeleprime4K();
         }
+
+        // Sécurité : ne jamais laisser la section invisible si Firebase tarde trop.
+        setTimeout(()=>{ if(!tp4kFirstConfigResolved) revealTeleprime4K(); }, 2500);
     }
 
     if(document.readyState==='loading')
