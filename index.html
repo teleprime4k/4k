@@ -3526,11 +3526,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    db = firebase.firestore();
+    let reviewsFirebaseApp;
+try {
+    reviewsFirebaseApp = firebase.app('teleprime4k-reviews');
+} catch (_) {
+    reviewsFirebaseApp = firebase.initializeApp(firebaseConfig, 'teleprime4k-reviews');
+}
+db = reviewsFirebaseApp.firestore();
     console.log("Firebase initialisé — Firestore prêt.");
 
     firebase.auth().onAuthStateChanged(user => {
