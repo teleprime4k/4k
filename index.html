@@ -3262,27 +3262,62 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon=valid(app.icon)?`<img src="${esc(app.icon)}" class="w-full h-full object-cover rounded-2xl" alt="${esc(app.name)}">`:`<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
         return `<div class="flex-shrink-0 w-36 md:w-44 glass-square rounded-[2rem] p-5 flex flex-col items-center justify-between text-center group snap-center animate-card" data-tp4k-managed="${esc(app.id||'')}"><span class="badge-nouveau uppercase" style="background:${color};${app.badge?'':'display:none'}">${esc(app.badge||'')}</span><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-black/20 group-hover:scale-110 transition-transform mb-4" style="background:linear-gradient(135deg,${color},#0f172a)">${icon}</div><div class="mb-4"><h3 class="font-bold text-[12px] md:text-[14px] leading-tight text-white mb-1">${esc(app.name||'Application')}</h3><span class="text-[9px] font-bold uppercase tracking-wider" style="color:${color}">${esc(app.category||'Application')}</span></div>${app.activationNotice?`<div class="w-full mb-3 px-2 py-2 rounded-xl border border-amber-400/60 bg-amber-500/15 text-amber-300 text-[9px] md:text-[10px] font-extrabold leading-tight uppercase">${esc(app.activationNotice)}</div>`:''}<a href="${esc(app.downloadLink)}" target="_blank" rel="noopener noreferrer" class="btn-install block w-full py-2.5 rounded-xl text-[10px] font-extrabold uppercase tracking-tighter shadow-sm hover:brightness-110 transition-all text-white no-underline">Télécharger</a></div>`;
     }
-    async function apply(){
+    function renderConfig(data){
+        const carousel=document.getElementById('carousel2'); if(!carousel)return;
+        if(!Array.isArray(data?.apps)) return; // Tant que le schéma V3 n'existe pas, le HTML d'origine reste affiché.
+        carousel.querySelectorAll('.glass-square').forEach(el=>el.remove());
+        const apps=data.apps
+            .filter(a=>a&&a.active!==false&&a.name&&valid(a.downloadLink))
+            .sort((a,b)=>(+a.order||0)-(+b.order||0));
+        apps.forEach(a=>{
+            if(a.builtin&&String(a.id||'').startsWith('builtin_')){
+                const base=originalCards.find(x=>x.id===a.id);
+                if(base){
+                    const wrap=document.createElement('div');
+                    wrap.innerHTML=base.html;
+                    const card=wrap.firstElementChild;
+                    applyFields(card,a);
+                    carousel.appendChild(card);
+                    return;
+                }
+            }
+            carousel.insertAdjacentHTML('beforeend',newCard(a));
+        });
+    }
+
+    function startRealtimeTeleprime4K(){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
         snapshotOriginalCards();
         try{
             if(typeof firebase==='undefined'||!firebase.firestore)return;
-            let app;try{app=firebase.app('sesame-public-config')}catch(_){app=firebase.initializeApp(sesameConfig,'sesame-public-config')}
-            const snap=await app.firestore().collection('artifacts').doc('sesameouvretoi').collection('public').doc('data').collection('config').doc('teleprime4kSite').get();
-            if(!snap.exists)return;
-            const data=snap.data()||{}; if(!Array.isArray(data.apps))return; // V3 only; V2 fallback remains intact.
-            carousel.querySelectorAll('.glass-square').forEach(el=>el.remove());
-            const apps=data.apps.filter(a=>a&&a.active!==false&&a.name&&valid(a.downloadLink)).sort((a,b)=>(+a.order||0)-(+b.order||0));
-            apps.forEach(a=>{
-                if(a.builtin&&String(a.id||'').startsWith('builtin_')){
-                    const base=originalCards.find(x=>x.id===a.id);
-                    if(base){const wrap=document.createElement('div');wrap.innerHTML=base.html;const card=wrap.firstElementChild;applyFields(card,a);carousel.appendChild(card);return;}
+            let app;
+            try{app=firebase.app('sesame-public-config')}
+            catch(_){app=firebase.initializeApp(sesameConfig,'sesame-public-config')}
+            const ref=app.firestore()
+                .collection('artifacts').doc('sesameouvretoi')
+                .collection('public').doc('data')
+                .collection('config').doc('teleprime4kSite');
+
+            // Écoute temps réel : toute modification enregistrée depuis Sésame
+            // est appliquée automatiquement sur les pages 4K déjà ouvertes.
+            window.teleprime4KConfigUnsubscribe = ref.onSnapshot(
+                snap=>{
+                    if(!snap.exists) return;
+                    renderConfig(snap.data()||{});
+                },
+                error=>{
+                    console.warn('Écoute temps réel Sésame indisponible : contenu 4K actuel conservé.',error);
                 }
-                carousel.insertAdjacentHTML('beforeend',newCard(a));
-            });
-        }catch(e){console.warn('Configuration Sésame indisponible : cartes HTML d’origine conservées.',e);}
+            );
+        }catch(e){
+            console.warn('Configuration Sésame indisponible : cartes HTML d’origine conservées.',e);
+        }
     }
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+
+    if(document.readyState==='loading')
+        document.addEventListener('DOMContentLoaded',startRealtimeTeleprime4K,{once:true});
+    else
+        startRealtimeTeleprime4K();
 })();
 </script>
 
