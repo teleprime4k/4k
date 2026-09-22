@@ -3297,28 +3297,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon=valid(app.icon)?`<img src="${esc(app.icon)}" class="w-full h-full object-cover rounded-2xl" alt="${esc(app.name)}">`:`<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
         return `<div class="flex-shrink-0 w-36 md:w-44 glass-square rounded-[2rem] p-5 flex flex-col items-center justify-between text-center group snap-center animate-card" data-tp4k-managed="${esc(app.id||'')}"><span class="badge-nouveau uppercase" style="background:${color};${app.badge?'':'display:none'}">${esc(app.badge||'')}</span><div class="icon-box w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-black/20 group-hover:scale-110 transition-transform mb-4" style="background:linear-gradient(135deg,${color},#0f172a)">${icon}</div><div class="mb-4"><h3 class="font-bold text-[12px] md:text-[14px] leading-tight text-white mb-1">${esc(app.name||'Application')}</h3><span class="text-[9px] font-bold uppercase tracking-wider" style="color:${color}">${esc(app.category||'Application')}</span></div>${app.activationNotice?`<div class="w-full mb-3 px-2 py-2 rounded-xl border border-amber-400/60 bg-amber-500/15 text-amber-300 text-[9px] md:text-[10px] font-extrabold leading-tight uppercase">${esc(app.activationNotice)}</div>`:''}<a href="${esc(app.downloadLink)}" target="_blank" rel="noopener noreferrer" class="btn-install block w-full py-2.5 rounded-xl text-[10px] font-extrabold uppercase tracking-tighter shadow-sm hover:brightness-110 transition-all text-white no-underline">Télécharger</a></div>`;
     }
-    let tp4kHasRenderedRemoteConfig=false;
+    const tp4kNodeRegistry=new Map();
+    let tp4kInitialRemoteApplied=false;
+
+    function registerOriginalNodes(){
+        snapshotOriginalCards();
+        originalCards.forEach(entry=>{
+            if(entry?.id && entry?.node){
+                entry.node.dataset.tp4kAppId=entry.id;
+                entry.node.dataset.tp4kBuiltin='true';
+                tp4kNodeRegistry.set(entry.id,entry.node);
+            }
+        });
+    }
 
     function updateDynamicCardInPlace(card,app){
         if(!card)return;
         const h=card.querySelector('h3');
         if(h && h.textContent!==(app.name||'Application')) h.textContent=app.name||'Application';
-
         const category=h?.parentElement?.querySelector('span');
         if(category && category.textContent!==(app.category||'Application')) category.textContent=app.category||'Application';
-
         const badge=card.querySelector('.badge-nouveau');
         if(badge){
-            const badgeText=app.badge||'';
-            if(badge.textContent!==badgeText) badge.textContent=badgeText;
-            badge.style.display=badgeText?'':'none';
-            if(app.badgeColor && badge.style.background!==app.badgeColor) badge.style.background=app.badgeColor;
+            const txt=app.badge||'';
+            if(badge.textContent!==txt) badge.textContent=txt;
+            badge.style.display=txt?'':'none';
+            if(app.badgeColor) badge.style.background=app.badgeColor;
         }
-
         const link=card.querySelector('a.btn-install,a[href]');
-        if(link && valid(app.downloadLink) && link.href!==app.downloadLink) link.href=app.downloadLink;
+        if(link && valid(app.downloadLink)) link.href=app.downloadLink;
 
-        // Pour les cartes ajoutées seulement : change l'image uniquement si une URL explicite existe.
+        // Une image n'est remplacée que si une nouvelle URL a été explicitement enregistrée.
         if(valid(app.icon)){
             const box=card.querySelector('.icon-box');
             const img=box?.querySelector('img');
@@ -3328,87 +3337,137 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function getOrCreateNode(app){
+        const id=String(app.id||'');
+        if(!id)return null;
+
+        // PRIORITÉ ABSOLUE aux cartes HTML d'origine.
+        if(id.startsWith('builtin_')){
+            const original=originalCards.find(x=>x.id===id);
+            if(original?.node){
+                tp4kNodeRegistry.set(id,original.node);
+                return original.node;
+            }
+            // Si l'ID dit "builtin" mais qu'aucune carte d'origine n'existe,
+            // on ne crée surtout pas de doublon dynamique.
+            return null;
+        }
+
+        let node=tp4kNodeRegistry.get(id);
+        if(node && node.isConnected) return node;
+
+        // Réutilise une éventuelle carte dynamique déjà présente.
+        node=document.querySelector(`[data-tp4k-app-id="${CSS.escape(id)}"]`);
+        if(node){
+            tp4kNodeRegistry.set(id,node);
+            return node;
+        }
+
+        const holder=document.createElement('div');
+        holder.innerHTML=newCard(app);
+        node=holder.firstElementChild;
+        if(node){
+            node.dataset.tp4kAppId=id;
+            node.dataset.tp4kBuiltin='false';
+            node.dataset.tp4kDynamic='true';
+            tp4kNodeRegistry.set(id,node);
+        }
+        return node;
+    }
+
+    function dedupeManagedCards(){
+        const carousel=document.getElementById('carousel2'); if(!carousel)return;
+        const seen=new Set();
+        [...carousel.querySelectorAll('[data-tp4k-app-id]')].forEach(node=>{
+            const id=node.dataset.tp4kAppId;
+            if(!id)return;
+            if(seen.has(id)){
+                // Ne supprime jamais l'original au profit d'une copie.
+                const kept=tp4kNodeRegistry.get(id);
+                if(node!==kept && node.dataset.tp4kBuiltin!=='true') node.remove();
+            } else seen.add(id);
+        });
+    }
+
     function renderConfig(data){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
-        if(!Array.isArray(data?.apps)) return;
+        if(!Array.isArray(data?.apps))return;
 
-        const apps=data.apps.slice().sort((a,b)=>(+a.order||0)-(+b.order||0));
-        const activeIds=new Set();
+        if(!tp4kNodeRegistry.size) registerOriginalNodes();
 
-        apps.forEach(app=>{
-            if(!app || !app.id) return;
-            const id=String(app.id);
-            const visible=app.active!==false && app.name && valid(app.downloadLink);
-            if(visible) activeIds.add(id);
-
-            if(app.builtin && id.startsWith('builtin_')){
-                const original=originalCards.find(x=>x.id===id);
-                if(!original)return;
-                const card=original.node;
-
-                // Ne jamais recréer une carte d'origine.
-                // Ne change sa visibilité que si l'état a réellement changé.
-                const shouldDisplay=!!visible;
-                const currentlyDisplayed=card.style.display!=='none';
-                if(shouldDisplay!==currentlyDisplayed) card.style.display=shouldDisplay?'':'none';
-
-                if(visible) applyFields(card,app);
-                return;
-            }
-
-            let card=carousel.querySelector(`[data-tp4k-dynamic-id="${CSS.escape(id)}"]`);
-            if(!visible){
-                if(card) card.remove();
-                return;
-            }
-
-            if(!card){
-                const holder=document.createElement('div');
-                holder.innerHTML=newCard(app);
-                card=holder.firstElementChild;
-                if(card){
-                    card.dataset.tp4kDynamic='true';
-                    card.dataset.tp4kDynamicId=id;
-                    carousel.appendChild(card);
-                }
-            } else {
-                updateDynamicCardInPlace(card,app);
-            }
+        // Un seul enregistrement par ID Firestore : le dernier remplace un éventuel doublon de données.
+        const byId=new Map();
+        data.apps.forEach(app=>{
+            if(app?.id) byId.set(String(app.id),app);
         });
 
-        // Retire seulement les applications dynamiques réellement supprimées.
-        carousel.querySelectorAll('[data-tp4k-dynamic-id]').forEach(card=>{
-            if(!activeIds.has(card.dataset.tp4kDynamicId)) card.remove();
-        });
-
-        // Réordonne uniquement si l'ordre DOM ne correspond réellement plus à Firestore.
+        const apps=[...byId.values()].sort((a,b)=>(+a.order||0)-(+b.order||0));
         const desiredNodes=[];
+        const configuredIds=new Set(byId.keys());
+
         apps.forEach(app=>{
-            if(!app || app.active===false || !app.name || !valid(app.downloadLink)) return;
             const id=String(app.id||'');
-            if(app.builtin && id.startsWith('builtin_')){
-                const original=originalCards.find(x=>x.id===id);
-                if(original) desiredNodes.push(original.node);
+            const visible=app.active!==false && !!app.name && valid(app.downloadLink);
+            const node=getOrCreateNode(app);
+            if(!node)return;
+
+            if(!visible){
+                if(node.style.display!=='none') node.style.display='none';
+                return;
+            }
+
+            if(node.style.display==='none') node.style.display='';
+
+            if(id.startsWith('builtin_')){
+                // Modifie la carte originale elle-même : aucun clone.
+                applyFields(node,app);
             } else {
-                const card=carousel.querySelector(`[data-tp4k-dynamic-id="${CSS.escape(id)}"]`);
-                if(card) desiredNodes.push(card);
+                updateDynamicCardInPlace(node,app);
+            }
+            desiredNodes.push(node);
+        });
+
+        // Une carte d'origine supprimée dans le panneau reste masquée, jamais recréée.
+        originalCards.forEach(entry=>{
+            if(!configuredIds.has(entry.id) && entry.node.style.display!=='none'){
+                entry.node.style.display='none';
             }
         });
 
-        const currentVisible=[...carousel.children].filter(el=>el.matches('.glass-square') && el.style.display!=='none');
-        const orderChanged=desiredNodes.length!==currentVisible.length || desiredNodes.some((node,i)=>currentVisible[i]!==node);
+        // Une application ajoutée puis supprimée est réellement retirée.
+        [...tp4kNodeRegistry.entries()].forEach(([id,node])=>{
+            if(!id.startsWith('builtin_') && !configuredIds.has(id)){
+                if(node?.isConnected) node.remove();
+                tp4kNodeRegistry.delete(id);
+            }
+        });
+
+        dedupeManagedCards();
+
+        // ORDRE STRICT : on déplace les mêmes nœuds, sans en créer de copie.
+        // DocumentFragment évite les rendus intermédiaires pendant le réordonnancement.
+        const currentVisible=[...carousel.children].filter(el=>
+            el.matches('.glass-square') &&
+            el.style.display!=='none' &&
+            el.dataset.tp4kAppId
+        );
+        const orderChanged=
+            currentVisible.length!==desiredNodes.length ||
+            desiredNodes.some((node,i)=>currentVisible[i]!==node);
+
         if(orderChanged){
             const fragment=document.createDocumentFragment();
             desiredNodes.forEach(node=>fragment.appendChild(node));
             carousel.appendChild(fragment);
         }
 
-        tp4kHasRenderedRemoteConfig=true;
+        dedupeManagedCards();
+        tp4kInitialRemoteApplied=true;
     }
 
     function startRealtimeTeleprime4K(){
         const carousel=document.getElementById('carousel2'); if(!carousel)return;
-        snapshotOriginalCards();
+        registerOriginalNodes();
         try{
             if(typeof firebase==='undefined'||!firebase.firestore)return;
             let app;
